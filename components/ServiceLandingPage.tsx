@@ -1,7 +1,7 @@
 'use client';
 
 
-import { useState, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { ServiceHeroArt } from './ServiceHeroArt';
 import type { ServiceLanding } from '@/lib/serviceLandingData';
 
