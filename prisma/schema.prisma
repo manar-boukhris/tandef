@@ -13,30 +13,30 @@ datasource db {
 }
 
 model User {
-  id            Int              @id @default(autoincrement())
-  email         String           @unique
-  password      String
-  name          String
-  phone         String?
-  role          String           @default("customer")
-  createdAt     DateTime         @default(now())
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String?
+  role      String   @default("customer")
+  createdAt DateTime @default(now())
 
-  addresses     Address[]
+  addresses      Address[]
   paymentMethods PaymentMethod[]
-  preferences   UserPreferences?
-  bookings      Booking[]
+  preferences    UserPreferences?
+  bookings       Booking[]
   cleanerProfile Cleaner?
-  resetTokens   PasswordResetToken[]   // ⭐ لازم هالسطر موجود
+  resetTokens    PasswordResetToken[] // ⭐ لازم هالسطر موجود
 }
 
 model Address {
-  id       Int    @id @default(autoincrement())
-  label    String
-  street   String
-  city     String
-  zip      String
-  user     User   @relation(fields: [userId], references: [id])
-  userId   Int
+  id     Int    @id @default(autoincrement())
+  label  String
+  street String
+  city   String
+  zip    String
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 model PaymentMethod {
@@ -50,22 +50,22 @@ model PaymentMethod {
 }
 
 model UserPreferences {
-  id            Int     @id @default(autoincrement())
-  emailEnabled  Boolean @default(true)
-  smsEnabled    Boolean @default(false)
-  frequency     String  @default("weekly")
-  user          User    @relation(fields: [userId], references: [id])
-  userId        Int     @unique
+  id           Int     @id @default(autoincrement())
+  emailEnabled Boolean @default(true)
+  smsEnabled   Boolean @default(false)
+  frequency    String  @default("weekly")
+  user         User    @relation(fields: [userId], references: [id])
+  userId       Int     @unique
 }
 
 model Cleaner {
-  id          Int          @id @default(autoincrement())
-  user        User         @relation(fields: [userId], references: [id])
-  userId      Int          @unique
-  rating      Float        @default(0)
-  bio         String?      @db.Text
-  status      String       @default("pending")
-  photoUrl    String?      // ⭐ zid hedhi el ligne
+  id       Int     @id @default(autoincrement())
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int     @unique
+  rating   Float   @default(0)
+  bio      String? @db.Text
+  status   String  @default("pending")
+  photoUrl String? // ⭐ zid hedhi el ligne
 
   bookings     Booking[]
   availability Availability[]
@@ -88,31 +88,32 @@ model CleanerApplication {
   rejectionNote String?  @db.Text
   submittedAt   DateTime @default(now())
 }
+
 model Availability {
-  id        Int      @id @default(autoincrement())
-  cleaner   Cleaner  @relation(fields: [cleanerId], references: [id])
-  cleanerId Int
-  date      DateTime
-  isAvailable Boolean @default(true)
+  id          Int      @id @default(autoincrement())
+  cleaner     Cleaner  @relation(fields: [cleanerId], references: [id])
+  cleanerId   Int
+  date        DateTime
+  isAvailable Boolean  @default(true)
 }
 
 model Booking {
-  id          Int       @id @default(autoincrement())
-  status      String    @default("upcoming")
-  offerStatus String    @default("none")
-  serviceType String
-  date        DateTime
-  hours       Int
-  price       Float
-  address     String
-  user        User      @relation(fields: [userId], references: [id])
-  userId      Int
-  cleaner     Cleaner?  @relation(fields: [cleanerId], references: [id])
-  cleanerId   Int?
-  invoice     Invoice?
-  review      Review?   // ⭐ zid hedhi el ligne
-  createdAt   DateTime  @default(now())
-  paymentMethod String @default("card")
+  id            Int      @id @default(autoincrement())
+  status        String   @default("upcoming")
+  offerStatus   String   @default("none")
+  serviceType   String
+  date          DateTime
+  hours         Int
+  price         Float
+  address       String
+  user          User     @relation(fields: [userId], references: [id])
+  userId        Int
+  cleaner       Cleaner? @relation(fields: [cleanerId], references: [id])
+  cleanerId     Int?
+  invoice       Invoice?
+  review        Review? // ⭐ zid hedhi el ligne
+  createdAt     DateTime @default(now())
+  paymentMethod String   @default("card")
 }
 
 model Invoice {
