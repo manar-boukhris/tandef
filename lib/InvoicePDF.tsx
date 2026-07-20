@@ -137,7 +137,7 @@ export function InvoicePDF({
           </View>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Zahlungsstatus</Text>
-            <Text style={[styles.statusBadge, status !== 'paid' && styles.statusBadgePending]}>
+            <Text style={status !== 'paid' ? [styles.statusBadge, styles.statusBadgePending] : styles.statusBadge}>
               {status === 'paid' ? 'Bezahlt' : 'Ausstehend'}
             </Text>
           </View>
