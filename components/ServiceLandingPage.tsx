@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+
+import { useState, type ReactNode } from 'react';
+import { ServiceHeroArt } from './ServiceHeroArt';
 import type { ServiceLanding } from '@/lib/serviceLandingData';
 
-const ICONS: Record<string, JSX.Element> = {
+const ICONS: Record<string, ReactNode> = {
   kitchen: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 3v6M16 3v6M4 13h16" /></svg>,
   bath: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M4 12h16v4a4 4 0 01-4 4H8a4 4 0 01-4-4v-4z" /><path d="M6 12V6a2 2 0 012-2" /></svg>,
   bed: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6" /><path d="M3 18h18M5 10V6a2 2 0 012-2h4a2 2 0 012 2v4" /></svg>,
