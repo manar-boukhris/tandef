@@ -15,6 +15,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Cleaner-Profil nicht gefunden.' }, { status: 404 });
   }
 
+  const cleanerId = cleaner.id; // ⭐ zid hedhi el ligne — bech TypeScript ma yestannach 'cleaner' null
+
   const formData = await req.formData();
   const idFile = formData.get('idDoc') as File | null;
   const addressFile = formData.get('addressDoc') as File | null;
@@ -27,7 +29,7 @@ export async function POST(req: Request) {
   const iban = formData.get('iban') as string | null;
   const accountHolder = formData.get('accountHolder') as string | null;
 
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads', `cleaner-${cleaner.id}`);
+  const uploadDir = path.join(process.cwd(), 'public', 'uploads', `cleaner-${cleanerId}`);
   await mkdir(uploadDir, { recursive: true });
 
   async function saveFile(file: File, prefix: string) {
@@ -36,10 +38,10 @@ export async function POST(req: Request) {
     const safeName = `${prefix}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_')}`;
     const filePath = path.join(uploadDir, safeName);
     await writeFile(filePath, buffer);
-    return { name: file.name, url: `/uploads/cleaner-${cleaner.id}/${safeName}` };
+    return { name: file.name, url: `/uploads/cleaner-${cleanerId}/${safeName}` };
   }
 
-  const existingApp = await prisma.cleanerApplication.findUnique({ where: { cleanerId: cleaner.id } });
+  const existingApp = await prisma.cleanerApplication.findUnique({ where: { cleanerId } });
   let docs: Record<string, any> = {};
   if (existingApp && existingApp.documents) {
     try { docs = JSON.parse(existingApp.documents); } catch { docs = {}; }
@@ -69,7 +71,7 @@ export async function POST(req: Request) {
   }
 
   await prisma.cleanerApplication.upsert({
-    where: { cleanerId: cleaner.id },
+    where: { cleanerId },
     update: {
       documents: JSON.stringify(docs),
       status: 'pending',
@@ -83,7 +85,7 @@ export async function POST(req: Request) {
       submittedAt: new Date(),
     },
     create: {
-      cleanerId: cleaner.id,
+      cleanerId,
       documents: JSON.stringify(docs),
       status: 'pending',
       phone: phone || null,
@@ -96,7 +98,7 @@ export async function POST(req: Request) {
   });
 
   await prisma.cleaner.update({
-    where: { id: cleaner.id },
+    where: { id: cleanerId },
     data: photoUrl ? { status: 'pending', photoUrl } : { status: 'pending' },
   });
 
