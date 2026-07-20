@@ -16,21 +16,21 @@ export async function POST(req: Request) {
   }
 
   const formData = await req.formData();
-  const idFile = formData.get('id');
-  const addressFile = formData.get('address');
-  const criminalFile = formData.get('criminal');
-  const photo = formData.get('photo');
-  const phone = formData.get('phone');
-  const city = formData.get('city');
-  const experience = formData.get('experience');
-  const services = formData.get('services');
-  const iban = formData.get('iban');
-  const accountHolder = formData.get('accountHolder');
+  const idFile = formData.get('idDoc') as File | null;
+  const addressFile = formData.get('addressDoc') as File | null;
+  const criminalFile = formData.get('criminalDoc') as File | null;
+  const photo = formData.get('photo') as File | null;
+  const phone = formData.get('phone') as string | null;
+  const city = formData.get('city') as string | null;
+  const experience = formData.get('experience') as string | null;
+  const services = formData.get('services') as string | null;
+  const iban = formData.get('iban') as string | null;
+  const accountHolder = formData.get('accountHolder') as string | null;
 
   const uploadDir = path.join(process.cwd(), 'public', 'uploads', `cleaner-${cleaner.id}`);
   await mkdir(uploadDir, { recursive: true });
 
-  async function saveFile(file, prefix) {
+  async function saveFile(file: File, prefix: string) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const safeName = `${prefix}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_')}`;
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   }
 
   const existingApp = await prisma.cleanerApplication.findUnique({ where: { cleanerId: cleaner.id } });
-  let docs = {};
+  let docs: Record<string, any> = {};
   if (existingApp && existingApp.documents) {
     try { docs = JSON.parse(existingApp.documents); } catch { docs = {}; }
   }
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Bitte lade alle 3 Dokumente hoch.' }, { status: 400 });
   }
 
-  let photoUrl = undefined;
+  let photoUrl: string | undefined;
   if (photo && photo.size > 0) {
     const saved = await saveFile(photo, 'profile');
     photoUrl = saved.url;
