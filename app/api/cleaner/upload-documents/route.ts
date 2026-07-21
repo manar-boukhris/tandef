@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCleanerSession } from '@/lib/session';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { put } from '@vercel/blob';
 
 export async function POST(req: Request) {
   const session = await getCleanerSession();
@@ -15,7 +14,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Cleaner-Profil nicht gefunden.' }, { status: 404 });
   }
 
-  const cleanerId = cleaner.id; // ⭐ zid hedhi el ligne — bech TypeScript ma yestannach 'cleaner' null
+  const cleanerId = cleaner.id;
 
   const formData = await req.formData();
   const idFile = formData.get('idDoc') as File | null;
@@ -29,16 +28,10 @@ export async function POST(req: Request) {
   const iban = formData.get('iban') as string | null;
   const accountHolder = formData.get('accountHolder') as string | null;
 
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads', `cleaner-${cleanerId}`);
-  await mkdir(uploadDir, { recursive: true });
-
   async function saveFile(file: File, prefix: string) {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const safeName = `${prefix}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_')}`;
-    const filePath = path.join(uploadDir, safeName);
-    await writeFile(filePath, buffer);
-    return { name: file.name, url: `/uploads/cleaner-${cleanerId}/${safeName}` };
+    const safeName = `cleaner-${cleanerId}/${prefix}-${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_')}`;
+    const blob = await put(safeName, file, { access: 'public' });
+    return { name: file.name, url: blob.url };
   }
 
   const existingApp = await prisma.cleanerApplication.findUnique({ where: { cleanerId } });
