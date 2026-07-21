@@ -1,16 +1,11 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { upload } from '@vercel/blob/client';
 
 const ALL_SERVICES = ['Haushaltsreinigung', 'Grundreinigung', 'Fensterputzen', 'Bügeln', 'Umzugsreinigung', 'Büroreinigung'];
-
-const DOC_TYPES = [
-  { key: 'id', label: 'Personalausweis oder Reisepass', hint: 'JPG, PNG oder PDF, max. 10 MB' },
-  { key: 'address', label: 'Adressnachweis (z. B. Meldebescheinigung)', hint: 'JPG, PNG oder PDF, max. 10 MB' },
-  { key: 'criminal', label: 'Führungszeugnis (polizeiliches Führungszeugnis)', hint: 'JPG, PNG oder PDF, max. 10 MB' },
-];
 
 export default function CleanerOnboardingPage() {
   const router = useRouter();
@@ -21,67 +16,11 @@ export default function CleanerOnboardingPage() {
   const [accountHolder, setAccountHolder] = useState('');
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-
-  // Fichi wehed li fih l'état mta3 kol document: { file, existingStatus, existingNote }
-  const [docFiles, setDocFiles] = useState({ id: null, address: null, criminal: null });
-  const [existingDocs, setExistingDocs] = useState({});
-  const [docsLoaded, setDocsLoaded] = useState(false);
-
+  const [idDoc, setIdDoc] = useState(null);
+  const [addressDoc, setAddressDoc] = useState(null);
+  const [criminalDoc, setCriminalDoc] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    // Njibou l'état l9dim mta3 l'application (ken kenet mawjouda) bech na3rfou
-    // chkoun mel documents deja accepté w chkoun rfadhou l'admin, w n3amrou
-    // mel jdid les champs l'okhrin (photo, IBAN, ville, etc.) bech ma yerja3ch
-    // l'utilisateur y3awed ykatab kol chay mel bidaya.
-    fetch('/api/cleaner/status')
-      .then(r => r.json())
-      .then(data => {
-        let docs = {};
-        if (data?.application?.documents) {
-          try {
-            const parsed = JSON.parse(data.application.documents);
-            docs = Array.isArray(parsed) ? {} : parsed;
-          } catch {
-            docs = {};
-          }
-        }
-        setExistingDocs(docs);
-
-        const app = data?.application;
-        if (app) {
-          if (app.city) setCity(app.city);
-          if (app.experience) setExperience(app.experience);
-          if (app.iban) setIban(app.iban);
-          if (app.accountHolder) setAccountHolder(app.accountHolder);
-          if (app.services) {
-            try {
-              const parsedServices = JSON.parse(app.services);
-              if (Array.isArray(parsedServices) && parsedServices.length > 0) {
-                setServices(parsedServices);
-              }
-            } catch {
-              // l'ancienne data mouch JSON valide, n5alliw l'valeur par défaut
-            }
-          }
-        }
-
-        const existingPhotoUrl = data?.photoUrl || data?.cleaner?.photoUrl;
-        if (existingPhotoUrl) {
-          setPhotoPreview(existingPhotoUrl);
-        }
-
-        setDocsLoaded(true);
-      })
-      .catch(() => setDocsLoaded(true));
-  }, []);
-
-  function needsUpload(key) {
-    const existing = existingDocs[key];
-    // Yelzem upload jdid ken l'document ma mawjoudech aslan, wala rfadhou l'admin.
-    return !existing || existing.status === 'rejected';
-  }
 
   function toggleService(s) {
     setServices(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]);
@@ -95,51 +34,70 @@ export default function CleanerOnboardingPage() {
     }
   }
 
-  function handleDocChange(key, file) {
-    setDocFiles(prev => ({ ...prev, [key]: file }));
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
 
-    const missing = DOC_TYPES.filter(({ key }) => needsUpload(key) && !docFiles[key]);
-    if (missing.length > 0) {
-      setError(`Bitte lade folgende Dokumente hoch: ${missing.map(m => m.label).join(', ')}`);
+    if (!idDoc || !addressDoc || !criminalDoc) {
+      setError('Bitte lade alle 3 Dokumente hoch.');
       return;
     }
 
     setLoading(true);
 
-    const formData = new FormData();
-    // N'bathou ken les documents eli l'utilisateur 3aslou jdid (les autres, deja accepté,
-    // ma nbathouhomch — l'API tzid tkhalihom kima homa).
-    DOC_TYPES.forEach(({ key }) => {
-      if (docFiles[key]) {
-        formData.append(key, docFiles[key]);
+    try {
+      const idBlob = await upload(`cleaner-docs/id-${Date.now()}-${idDoc.name}`, idDoc, {
+        access: 'public',
+        handleUploadUrl: '/api/cleaner/upload-token',
+      });
+      const addressBlob = await upload(`cleaner-docs/address-${Date.now()}-${addressDoc.name}`, addressDoc, {
+        access: 'public',
+        handleUploadUrl: '/api/cleaner/upload-token',
+      });
+      const criminalBlob = await upload(`cleaner-docs/criminal-${Date.now()}-${criminalDoc.name}`, criminalDoc, {
+        access: 'public',
+        handleUploadUrl: '/api/cleaner/upload-token',
+      });
+
+      let photoUrl = null;
+      if (photo) {
+        const photoBlob = await upload(`cleaner-docs/profile-${Date.now()}-${photo.name}`, photo, {
+          access: 'public',
+          handleUploadUrl: '/api/cleaner/upload-token',
+        });
+        photoUrl = photoBlob.url;
       }
-    });
-    if (photo) {
-      formData.append('photo', photo);
-    }
-    formData.append('city', city);
-    formData.append('experience', experience);
-    formData.append('services', JSON.stringify(services));
-    formData.append('iban', iban);
-    formData.append('accountHolder', accountHolder);
 
-    const res = await fetch('/api/cleaner/upload-documents', {
-      method: 'POST',
-      body: formData,
-    });
-    const data = await res.json();
-    setLoading(false);
+      const res = await fetch('/api/cleaner/upload-documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idUrl: idBlob.url,
+          idName: idDoc.name,
+          addressUrl: addressBlob.url,
+          addressName: addressDoc.name,
+          criminalUrl: criminalBlob.url,
+          criminalName: criminalDoc.name,
+          photoUrl,
+          city,
+          experience,
+          services: JSON.stringify(services),
+          iban,
+          accountHolder,
+        }),
+      });
+      const data = await res.json();
+      setLoading(false);
 
-    if (!res.ok) {
-      setError(data.error || 'Ein Fehler ist aufgetreten.');
-      return;
+      if (!res.ok) {
+        setError(data.error || 'Ein Fehler ist aufgetreten.');
+        return;
+      }
+      router.push(data.redirect);
+    } catch (err) {
+      setLoading(false);
+      setError('Fehler beim Hochladen. Bitte versuche es erneut.');
     }
-    router.push(data.redirect);
   }
 
   return (
@@ -186,17 +144,6 @@ export default function CleanerOnboardingPage() {
           width:40px;height:40px;border-radius:9999px;background:var(--purple-100);
           display:flex;align-items:center;justify-content:center;flex-shrink:0;
         }
-        .doc-approved-row{
-          display:flex;align-items:center;gap:.8rem;border-radius:16px;padding:1.2rem 1.4rem;
-          background:#F0FDF4;border:1.5px solid #BBF7D0;
-        }
-        .doc-approved-badge{
-          margin-left:auto;font-size:.75rem;font-weight:800;color:#15803D;background:#DCFCE7;
-          padding:.3rem .8rem;border-radius:9999px;flex-shrink:0;
-        }
-        .doc-rejected-note{
-          font-size:.78rem;color:#C0392B;margin-bottom:.6rem;background:#FBE7E7;border-radius:10px;padding:.6rem .9rem;
-        }
       `}</style>
 
       <div className="page-bg">
@@ -222,7 +169,6 @@ export default function CleanerOnboardingPage() {
 
           <form onSubmit={handleSubmit}>
 
-            {/* Profilbild */}
             <div className="panel p-8 mb-6">
               <h2 className="font-bold text-lg mb-5" style={{color: 'var(--ink)'}}>Dein Profilbild</h2>
               <div className="flex items-center gap-6">
@@ -237,7 +183,7 @@ export default function CleanerOnboardingPage() {
                   )}
                 </div>
                 <label className="btn-gradient text-white font-semibold px-5 py-2.5 rounded-full cursor-pointer text-sm inline-block">
-                  {photoPreview ? 'Foto ändern' : 'Foto auswählen'}
+                  Foto auswählen
                   <input type="file" className="hidden" accept=".jpg,.jpeg,.png" onChange={handlePhotoChange} />
                 </label>
               </div>
@@ -306,73 +252,45 @@ export default function CleanerOnboardingPage() {
               </div>
               <p className="text-sm mb-6" style={{color: 'var(--muted)'}}>Alle Dokumente werden vertraulich behandelt und nur für die Prüfung deines Kontos verwendet.</p>
 
-              {!docsLoaded && (
-                <p className="text-sm" style={{color: 'var(--muted)'}}>Wird geladen...</p>
-              )}
+              <div className="space-y-4">
 
-              {docsLoaded && (
-                <div className="space-y-4">
-                  {DOC_TYPES.map(({ key, label, hint }) => {
-                    const existing = existingDocs[key];
-                    const isApproved = existing && existing.status === 'approved';
-                    const isRejected = existing && existing.status === 'rejected';
-                    const isPendingReview = existing && existing.status === 'pending';
-                    const file = docFiles[key];
-
-                    // Document deja accepté: ma na3tiwch dropzone, ken n3arfouh accepté.
-                    if (isApproved) {
-                      return (
-                        <div key={key} className="doc-approved-row">
-                          <div className="icon-circle" style={{background: '#DCFCE7'}}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803D" strokeWidth="2"><path d="M20 6L9 17l-5-5" /></svg>
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold" style={{color: 'var(--ink)'}}>{label}</p>
-                            <p className="text-xs" style={{color: 'var(--muted)'}}>{existing.name}</p>
-                          </div>
-                          <span className="doc-approved-badge">Bereits akzeptiert</span>
-                        </div>
-                      );
-                    }
-
-                    // Document f phase de vérification, ma tzedch fih ken l'admin ma 9arrarch mba3d.
-                    if (isPendingReview) {
-                      return (
-                        <div key={key} className="doc-approved-row" style={{background: '#FFF7E6', borderColor: '#F5D9A8'}}>
-                          <div className="icon-circle" style={{background: '#FEF3C7'}}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B7791F" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold" style={{color: 'var(--ink)'}}>{label}</p>
-                            <p className="text-xs" style={{color: 'var(--muted)'}}>{existing.name}</p>
-                          </div>
-                          <span className="doc-approved-badge" style={{color: '#B7791F', background: '#FEF3C7'}}>In Prüfung</span>
-                        </div>
-                      );
-                    }
-
-                    // Document manqoud (jamais uploadé) wela rfadhou l'admin: yelzem upload jdid.
-                    return (
-                      <div key={key}>
-                        <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>{label}</p>
-                        {isRejected && (
-                          <p className="doc-rejected-note">
-                            ✗ Abgelehnt{existing?.note ? ` — ${existing.note}` : ''}. Bitte lade eine neue Datei hoch.
-                          </p>
-                        )}
-                        <label className={`dropzone block ${file ? 'has-file' : ''}`}>
-                          <input type="file" className="hidden" onChange={(e) => handleDocChange(key, e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
-                          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
-                          <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
-                            {file ? `✓ ${file.name}` : 'Datei auswählen oder hierher ziehen'}
-                          </p>
-                          <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>{hint}</p>
-                        </label>
-                      </div>
-                    );
-                  })}
+                <div>
+                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Personalausweis oder Reisepass</p>
+                  <label className={`dropzone block ${idDoc ? 'has-file' : ''}`}>
+                    <input type="file" className="hidden" onChange={(e) => setIdDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
+                    <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
+                      {idDoc ? `✓ ${idDoc.name}` : 'Datei auswählen oder hierher ziehen'}
+                    </p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                  </label>
                 </div>
-              )}
+
+                <div>
+                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Adressnachweis (z. B. Meldebescheinigung)</p>
+                  <label className={`dropzone block ${addressDoc ? 'has-file' : ''}`}>
+                    <input type="file" className="hidden" onChange={(e) => setAddressDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
+                    <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
+                      {addressDoc ? `✓ ${addressDoc.name}` : 'Datei auswählen oder hierher ziehen'}
+                    </p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                  </label>
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Führungszeugnis (polizeiliches Führungszeugnis)</p>
+                  <label className={`dropzone block ${criminalDoc ? 'has-file' : ''}`}>
+                    <input type="file" className="hidden" onChange={(e) => setCriminalDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
+                    <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
+                      {criminalDoc ? `✓ ${criminalDoc.name}` : 'Datei auswählen oder hierher ziehen'}
+                    </p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                  </label>
+                </div>
+
+              </div>
             </div>
 
             <label className="flex items-start gap-3 mb-6 cursor-pointer">
