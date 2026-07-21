@@ -17,10 +17,10 @@ export async function POST(req: Request) {
   const cleanerId = cleaner.id;
 
   const formData = await req.formData();
-  const idFile = formData.get('idDoc') as File | null;
-  const addressFile = formData.get('addressDoc') as File | null;
-  const criminalFile = formData.get('criminalDoc') as File | null;
-  const photo = formData.get('photo') as File | null;
+  const idFile = formData.get('id') as File | null;
+const addressFile = formData.get('address') as File | null;
+const criminalFile = formData.get('criminal') as File | null;
+const photo = formData.get('photo') as File | null;
   const phone = formData.get('phone') as string | null;
   const city = formData.get('city') as string | null;
   const experience = formData.get('experience') as string | null;
