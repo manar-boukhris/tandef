@@ -3,17 +3,29 @@
 
 import { useEffect } from 'react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { useRouter } from 'next/navigation';
+
 export default function HomePage() {
+  const router = useRouter();
+
 
   useEffect(() => {
     document.title = "TANDEF – Trust. Cleanliness. Quality.";
     const menuBtn = document.getElementById('about-menu-btn');
     const menu = document.getElementById('about-menu');
+    
     if (menuBtn && menu) {
       menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('hidden'); });
       document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.add('hidden'); });
     }
+    
   }, []);
+
+  function handleBookingClick(e) {
+    e.preventDefault();
+    const isLoggedIn = !!localStorage.getItem('authToken'); // badel 'authToken' bel key eli tessta3mlou fi l app
+    router.push(isLoggedIn ? '/address' : '/login');
+  }
 
   return (
     <>
@@ -110,10 +122,10 @@ export default function HomePage() {
             Wir kümmern uns<br />um die Sauberkeit.
           </h1>
           <p className="text-base mb-8 max-w-md" style={{color: 'var(--muted)'}}>
-            Zuverlässige Reinigung in Köln – für ein Zuhause und ein Umfeld, in dem Sie sich wohlfühlen.
+            Zuverlässige Reinigung in Deutschland – für ein Zuhause und ein Umfeld, in dem Sie sich wohlfühlen.
           </p>
           <div className="flex flex-wrap gap-4 mb-12">
-            <a href="/address" className="btn-primary text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2">
+            <a href="/address" onClick={handleBookingClick} className="btn-primary text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
               Reinigung buchen
             </a>
@@ -202,10 +214,10 @@ export default function HomePage() {
             <div className="p-6">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M3 11l9-7 9 7" /><path d="M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" /></svg>
               <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Wohnungsreinigung</p>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Gründliche Reinigung Ihrer Wohnung – für ein frisches Zuhause.</p>
+              <p className="text-sm min-h-[60px]" style={{color: 'var(--muted)'}}>Gründliche Reinigung Ihrer Wohnung – für ein frisches Zuhause.</p>
             </div>
             <div className="relative mt-auto">
-              <img src="/images/service_1.png" className="w-full h-36 object-cover" />
+              <img src="/images/sala.jpeg" className="w-full h-36 object-cover" />
               <div className="circle-arrow absolute -top-5 left-5">→</div>
             </div>
           </a>
@@ -214,10 +226,10 @@ export default function HomePage() {
             <div className="p-6">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="4" y="3" width="16" height="18" rx="1" /><path d="M8 7h1M12 7h1M16 7h1M8 11h1M12 11h1M16 11h1M8 15h1M12 15h1M16 15h1" /></svg>
               <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Büroreinigung</p>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Saubere Arbeitsplätze für mehr Wohlbefinden und Produktivität.</p>
+              <p className="text-sm min-h-[60px]" style={{color: 'var(--muted)'}}>Saubere Arbeitsplätze für mehr Wohlbefinden und Produktivität.</p>
             </div>
             <div className="relative mt-auto">
-              <img src="/images/service_2.png" className="w-full h-36 object-cover" />
+              <img src="/images/buro.jpeg" className="w-full h-36 object-cover" />
               <div className="circle-arrow absolute -top-5 left-5">→</div>
             </div>
           </a>
@@ -226,10 +238,10 @@ export default function HomePage() {
             <div className="p-6">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 8l-9-5-9 5 9 5 9-5z" /><path d="M3 8v8l9 5 9-5V8" /><path d="M12 13v8" /></svg>
               <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Umzugsreinigung</p>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Professionelle Reinigung bei Ein- oder Auszug – besichtigungsbereit.</p>
+              <p className="text-sm min-h-[60px]" style={{color: 'var(--muted)'}}>Professionelle Reinigung bei Ein- oder Auszug – besichtigungsbereit.</p>
             </div>
             <div className="relative mt-auto">
-              <img src="/images/service_3.png" className="w-full h-36 object-cover" />
+              <img src="/images/umzug.jpeg" className="w-full h-36 object-cover" />
               <div className="circle-arrow absolute -top-5 left-5">→</div>
             </div>
           </a>
@@ -238,10 +250,10 @@ export default function HomePage() {
             <div className="p-6">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" /><path d="M19 15l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7z" /></svg>
               <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Grundreinigung</p>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Tiefenreinigung für jeden Raum – gründlich bis ins Detail.</p>
+              <p className="text-sm min-h-[60px]" style={{color: 'var(--muted)'}}>Tiefenreinigung für jeden Raum – gründlich bis ins Detail.</p>
             </div>
             <div className="relative mt-auto">
-              <img src="/images/service_4.png" className="w-full h-36 object-cover" />
+              <img src="/images/prod.jpeg" className="w-full h-36 object-cover object-bottom" />
               <div className="circle-arrow absolute -top-5 left-5">→</div>
             </div>
           </a>
@@ -281,12 +293,12 @@ export default function HomePage() {
           <div className="p-10">
             <h3 className="text-2xl font-bold mb-3" style={{color: 'var(--purple-900)'}}>Bereit für ein <span style={{color: 'var(--purple-600)'}}>sauberes Zuhause</span>?</h3>
             <p className="mb-6" style={{color: 'var(--muted)'}}>Buchen Sie jetzt Ihre Reinigung in Köln in nur wenigen Klicks.</p>
-            <a href="/address" className="btn-primary text-white px-6 py-3 rounded-lg font-medium inline-flex items-center gap-2">
+            <a href="/address" onClick={handleBookingClick} className="btn-primary text-white px-6 py-3 rounded-lg font-medium inline-flex items-center gap-2">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
               Jetzt buchen
             </a>
           </div>
-          <img src="/images/cta.png" className="w-full h-full object-cover" style={{minHeight: '260px'}} />
+          <img src="/images/ChatGPT Image 24 juil. 2026, 20_00_14.png" className="w-full h-full object-cover" style={{minHeight: '260px'}} />
         </div>
       </section>
 
@@ -295,7 +307,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-6 gap-8 text-sm">
           <div className="md:col-span-2">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
-            <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Köln – für Zuhause und Unternehmen.</p>
+            <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
             <div className="flex gap-3 mt-5" style={{color: 'var(--purple-700)'}}>
               <span>f</span><span>◎</span><span>w</span><span>✉</span>
             </div>
@@ -326,15 +338,15 @@ export default function HomePage() {
             <ul className="space-y-3" style={{color: 'var(--muted)'}}>
               <li className="flex items-center gap-2">
                 <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.11 4.18 2 2 0 014.1 2h3a2 2 0 012 1.72c.12.9.33 1.77.63 2.6a2 2 0 01-.45 2.11L8.1 9.6a16 16 0 006.3 6.3l1.17-1.18a2 2 0 012.11-.45c.83.3 1.7.51 2.6.63A2 2 0 0122 16.92z" /></svg>
-                0221 123 456 78
+                +4915214440144
               </li>
               <li className="flex items-center gap-2">
                 <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
-                hallo@cleankoeln.de
+                info@tandef.de
               </li>
               <li className="flex items-center gap-2">
                 <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-                Köln und Umgebung
+                Deutschland
               </li>
             </ul>
           </div>

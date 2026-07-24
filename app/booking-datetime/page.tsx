@@ -1,19 +1,24 @@
 // @ts-nocheck
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getDraft, updateDraft } from '@/lib/bookingDraft';
 
-const TIMES = ['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00'];
+// Créneaux horaires : 07:00 -> 22:00, heure par heure
+const TIMES = Array.from({ length: 16 }, (_, i) => `${String(i + 7).padStart(2, '0')}:00`);
+
 const DAY_LABELS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 
-function nextDays(n: number) {
+// Nombre de jours affichés par "page" (une semaine à la fois, navigation illimitée vers l'avant)
+const DAYS_PER_PAGE = 7;
+
+// Génère DAYS_PER_PAGE jours à partir d'aujourd'hui + offset (peut dépasser un mois, plusieurs mois, etc.)
+function getDaysFromOffset(offset: number, count: number) {
   const days = [];
   const today = new Date();
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < count; i++) {
     const d = new Date(today);
-    d.setDate(today.getDate() + i);
+    d.setDate(today.getDate() + offset + i);
     days.push(d);
   }
   return days;
@@ -21,10 +26,24 @@ function nextDays(n: number) {
 
 export default function BookingDatetimePage() {
   const router = useRouter();
-  const days = nextDays(7);
-  const [selectedDate, setSelectedDate] = useState(days[2].toISOString().slice(0, 10));
+
+  const [page, setPage] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const initial = getDaysFromOffset(0, 3);
+    return initial[2].toISOString().slice(0, 10);
+  });
   const [selectedTime, setSelectedTime] = useState('09:00');
   const [hours, setHours] = useState(3);
+
+  const visibleDays = getDaysFromOffset(page * DAYS_PER_PAGE, DAYS_PER_PAGE);
+
+  // Nom du mois (+ année si différente de l'année en cours) pour la semaine affichée
+  const firstVisibleDay = visibleDays[0];
+  const lastVisibleDay = visibleDays[visibleDays.length - 1];
+  const currentYear = new Date().getFullYear();
+  const monthLabel = firstVisibleDay.getMonth() === lastVisibleDay.getMonth()
+    ? firstVisibleDay.toLocaleDateString('de-DE', { month: 'long', ...(firstVisibleDay.getFullYear() !== currentYear ? { year: 'numeric' } : {}) })
+    : `${firstVisibleDay.toLocaleDateString('de-DE', { month: 'long' })} – ${lastVisibleDay.toLocaleDateString('de-DE', { month: 'long', ...(lastVisibleDay.getFullYear() !== currentYear ? { year: 'numeric' } : {}) })}`;
 
   useEffect(() => {
     document.title = "TANDEF – Wann sollen wir kommen?";
@@ -36,8 +55,13 @@ export default function BookingDatetimePage() {
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
     if (menuBtn && menu) {
-      menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('hidden'); });
-      document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.add('hidden'); });
+      menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.toggle('hidden');
+      });
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target)) menu.classList.add('hidden');
+      });
     }
   }, []);
 
@@ -49,21 +73,29 @@ export default function BookingDatetimePage() {
     router.push('/booking-recipient');
   }
 
+  function goPrevWeek() {
+    setPage((p) => Math.max(0, p - 1));
+  }
+
+  function goNextWeek() {
+    setPage((p) => p + 1);
+  }
+
   return (
     <>
       <style jsx global>{`
         :root{--purple-900:#3B0A73;--purple-700:#5B21B6;--purple-600:#6D28D9;--purple-500:#7C3AED;--purple-100:#EDE9FE;--purple-50:#F5F3FF;--ink:#1F1339;--muted:#6B6478;}
-                          body{
-  font-family:'Inter',sans-serif;
-  color:var(--ink);
-  background-color:#F6F4FC;
-  background-image:url('/images/sessions-bg.png');
-  background-size:cover;
-  background-position:top center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  min-height:100vh;
-}
+        body{
+          font-family:'Inter',sans-serif;
+          color:var(--ink);
+          background-color:#F6F4FC;
+          background-image:url('/images/sessions-bg.png');
+          background-size:cover;
+          background-position:top center;
+          background-repeat:no-repeat;
+          background-attachment:fixed;
+          min-height:100vh;
+        }
         h1,h2,h3{font-family:'Poppins',sans-serif;}
         .page-bg{background-color:#F6F4FC;background-image:url('/images/sessions-bg.png');background-size:cover;background-position:top center;background-repeat:no-repeat;background-attachment:fixed;min-height:100vh;}
         .panel{background:#fff;border-radius:20px;box-shadow:0 20px 50px -30px rgba(76,29,149,.25);}
@@ -81,16 +113,19 @@ export default function BookingDatetimePage() {
         .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
         .dropdown-menu a:hover{background:var(--purple-50);}
         .chat-bubble{position:fixed;right:28px;bottom:28px;width:56px;height:56px;border-radius:9999px;background:linear-gradient(135deg,var(--purple-700),var(--purple-500));display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px -8px rgba(76,29,149,.5);}
+        .week-nav-btn{width:36px;height:36px;border-radius:9999px;display:flex;align-items:center;justify-content:center;border:2px solid #ECE8F5;background:#fff;cursor:pointer;transition:.15s ease;}
+        .week-nav-btn:hover:not(:disabled){border-color:#C9B8EC;}
+        .week-nav-btn:disabled{opacity:.35;cursor:not-allowed;}
       `}</style>
 
-      <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
+      <header className="relative bg-white border-b" style={{ borderColor: '#EDE9F5' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-          <a href="/" className="font-bold text-lg" style={{color: 'var(--ink)'}}>Haushaltshilfe</a>
+          <a href="/" className="font-bold text-lg" style={{ color: 'var(--ink)' }}>Haushaltshilfe</a>
           <nav className="flex items-center gap-8 text-sm font-medium relative">
-            <a href="/pro-werden" style={{color: 'var(--purple-700)'}}>Pro werden</a>
-            <a href="/magazin" style={{color: 'var(--purple-700)'}}>Magazin</a>
+            <a href="/pro-werden" style={{ color: 'var(--purple-700)' }}>Pro werden</a>
+            <a href="/magazin" style={{ color: 'var(--purple-700)' }}>Magazin</a>
             <div className="relative">
-              <button id="user-menu-btn" style={{color: 'var(--purple-700)'}}>Konto</button>
+              <button id="user-menu-btn" style={{ color: 'var(--purple-700)' }}>Konto</button>
               <div id="user-menu" className="dropdown-menu hidden absolute right-0 mt-3 w-64 py-2 z-20">
                 <a href="/dashboard">Mein Kundenbereich</a>
                 <a href="/sessions">Meine Sessions</a>
@@ -98,7 +133,7 @@ export default function BookingDatetimePage() {
                 <a href="/account">Mein Profil</a>
                 <a href="/preferences">Meine Kommunikationspräferenzen</a>
                 <a href="/payment-methods">Zahlungsmethoden</a>
-                <a href="#" className="border-t" style={{borderColor: '#EDE9F5'}}>Abmelden</a>
+                <a href="#" className="border-t" style={{ borderColor: '#EDE9F5' }}>Abmelden</a>
               </div>
             </div>
           </nav>
@@ -113,24 +148,38 @@ export default function BookingDatetimePage() {
       </div>
 
       <section className="relative max-w-3xl mx-auto px-6 pt-10 pb-24 text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold mb-3" style={{color: 'var(--purple-700)'}}>Wann sollen wir kommen?</h1>
-        <p className="mb-10" style={{color: 'var(--muted)'}}>Wähle deinen Wunschtag und die passende Uhrzeit.</p>
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-3" style={{ color: 'var(--purple-700)' }}>Wann sollen wir kommen?</h1>
+        <p className="mb-10" style={{ color: 'var(--muted)' }}>Wähle deinen Wunschtag und die passende Uhrzeit.</p>
 
         <div className="panel p-8 mb-8 text-left">
-          <p className="font-semibold mb-5" style={{color: 'var(--ink)'}}>Wähle einen Tag</p>
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <p className="font-semibold" style={{ color: 'var(--ink)' }}>Wähle einen Tag</p>
+              <p className="text-sm mt-0.5" style={{ color: 'var(--muted)' }}>{monthLabel}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button type="button" className="week-nav-btn" onClick={goPrevWeek} disabled={page === 0} aria-label="Vorherige Woche">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
+              </button>
+              <button type="button" className="week-nav-btn" onClick={goNextWeek} aria-label="Nächste Woche">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-4 sm:grid-cols-7 gap-3 mb-10">
-            {days.map(d => {
+            {visibleDays.map(d => {
               const iso = d.toISOString().slice(0, 10);
               return (
                 <button key={iso} onClick={() => setSelectedDate(iso)} className={`day-chip ${selectedDate === iso ? 'selected' : ''}`}>
-                  <span className="block text-xs" style={{color: 'var(--muted)'}}>{DAY_LABELS[d.getDay()]}</span>
+                  <span className="block text-xs" style={{ color: 'var(--muted)' }}>{DAY_LABELS[d.getDay()]}</span>
                   <span className="block font-bold text-lg">{d.getDate()}</span>
                 </button>
               );
             })}
           </div>
 
-          <p className="font-semibold mb-5" style={{color: 'var(--ink)'}}>Wähle eine Uhrzeit</p>
+          <p className="font-semibold mb-5" style={{ color: 'var(--ink)' }}>Wähle eine Uhrzeit</p>
           <div className="flex flex-wrap gap-3">
             {TIMES.map(t => (
               <button key={t} onClick={() => setSelectedTime(t)} className={`time-chip ${selectedTime === t ? 'selected' : ''}`}>{t}</button>
@@ -139,10 +188,10 @@ export default function BookingDatetimePage() {
         </div>
 
         <div className="panel p-6 mb-8 flex items-center gap-4 text-left">
-          <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0" style={{background: 'var(--purple-100)'}}>
+          <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0" style={{ background: 'var(--purple-100)' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /></svg>
           </div>
-          <p style={{color: 'var(--muted)'}}>Deine Reinigung: <span className="font-semibold" style={{color: 'var(--ink)'}}>{summary}</span></p>
+          <p style={{ color: 'var(--muted)' }}>Deine Reinigung: <span className="font-semibold" style={{ color: 'var(--ink)' }}>{summary}</span></p>
         </div>
 
         <button onClick={handleNext} className="btn-gradient inline-flex items-center justify-center gap-2 text-white font-semibold px-12 py-4 rounded-full">
