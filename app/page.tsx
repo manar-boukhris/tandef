@@ -344,7 +344,7 @@ export default function HomePage() {
             </ul>
           </div>
         </div>
-        <div className="text-center text-xs pb-8" style={{color: 'var(--muted)'}}>© 2024 CleanKöln. Alle Rechte vorbehalten.</div>
+        <div className="text-center text-xs pb-8" style={{color: 'var(--muted)'}}>© 2026 Tandef. Alle Rechte vorbehalten.</div>
       </footer>
     </>
   );

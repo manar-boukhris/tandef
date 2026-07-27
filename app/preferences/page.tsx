@@ -1,26 +1,78 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+const FREQUENCIES = [
+  { value: 'instant', title: 'Sofort', desc: 'Ich möchte alle wichtigen Infos sofort erhalten.', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 01-3.4 0" /></svg> },
+  { value: 'daily', title: 'Täglich', desc: 'Ich möchte eine tägliche Zusammenfassung erhalten.', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /><path d="M12 14h.01" /></svg> },
+  { value: 'weekly', title: 'Wöchentlich', desc: 'Ich möchte eine wöchentliche Zusammenfassung erhalten.', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg> },
+];
 
 export default function PreferencesPage() {
+  const [userName, setUserName] = useState('');
+  const [emailOptIn, setEmailOptIn] = useState(true);
+  const [smsOptIn, setSmsOptIn] = useState(true);
+  const [frequency, setFrequency] = useState('instant');
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     document.title = "TANDEF – Kommunikationseinstellungen";
-    document.querySelectorAll('[data-toggle]').forEach(t => {
-        t.addEventListener('click', () => t.classList.toggle('on'));
-      });
-      document.querySelectorAll('[data-freq]').forEach(card => {
-        card.addEventListener('click', () => {
-          document.querySelectorAll('[data-freq]').forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
-        });
-      });
-      const menuBtn = document.getElementById('user-menu-btn');
-      const menu = document.getElementById('user-menu');
+
+    const menuBtn = document.getElementById('user-menu-btn');
+    const menu = document.getElementById('user-menu');
+    if (menuBtn && menu) {
       menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('hidden'); });
       document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.add('hidden'); });
+    }
+
+    async function loadPreferences() {
+      try {
+        const res = await fetch('/api/customer/preferences');
+        const data = await res.json();
+        if (!res.ok) {
+          setError(data.error || 'Fehler beim Laden.');
+          return;
+        }
+        setUserName(data.name);
+        setEmailOptIn(data.emailOptIn);
+        setSmsOptIn(data.smsOptIn);
+        setFrequency(data.notificationFrequency);
+      } catch {
+        setError('Fehler beim Laden deiner Einstellungen.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPreferences();
   }, []);
+
+  async function handleSave() {
+    setSaving(true);
+    setSaveMsg('');
+    setError('');
+    try {
+      const res = await fetch('/api/customer/preferences', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ emailOptIn, smsOptIn, notificationFrequency: frequency }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Fehler beim Speichern.');
+        return;
+      }
+      setSaveMsg('Änderungen gespeichert!');
+      setTimeout(() => setSaveMsg(''), 3000);
+    } catch {
+      setError('Fehler beim Speichern. Bitte versuche es erneut.');
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <>
@@ -50,7 +102,7 @@ export default function PreferencesPage() {
           .panel{background:#fff;border-radius:20px;box-shadow:0 20px 50px -30px rgba(76,29,149,.25);}
           .toggle{
             width:48px;height:27px;border-radius:9999px;background:#DDD6EC;
-            position:relative;cursor:pointer;transition:.2s ease;flex-shrink:0;
+            position:relative;cursor:pointer;transition:.2s ease;flex-shrink:0;border:none;
           }
           .toggle::after{
             content:'';position:absolute;top:3px;left:3px;
@@ -61,6 +113,7 @@ export default function PreferencesPage() {
           .toggle.on::after{left:24px;}
           .btn-gradient{background:linear-gradient(90deg,var(--purple-700),var(--purple-500));transition:.2s ease;}
           .btn-gradient:hover{filter:brightness(1.05);}
+          .btn-gradient:disabled{opacity:.6;cursor:not-allowed;}
           .icon-circle{
             width:44px;height:44px;border-radius:9999px;background:var(--purple-100);
             display:flex;align-items:center;justify-content:center;flex-shrink:0;
@@ -98,7 +151,9 @@ export default function PreferencesPage() {
       `}</style>
       <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-          <a href="/" className="font-bold text-lg" style={{color: 'var(--ink)'}}>Haushaltshilfe</a>
+        <a href="/dashboard" className="flex items-center">
+  <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
+</a>
           <nav className="flex items-center gap-8 text-sm font-medium relative">
             <a href="/pro-werden" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
@@ -113,7 +168,7 @@ export default function PreferencesPage() {
                 <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
                 </span>
-                <span className="flex items-center gap-1">Yousef A.
+                <span className="flex items-center gap-1">{loading ? '...' : userName}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
                 </span>
               </button>
@@ -141,6 +196,10 @@ export default function PreferencesPage() {
 
       <section className="relative max-w-4xl mx-auto px-6 pb-24">
 
+        {error && (
+          <p className="text-sm mb-4 font-medium" style={{color: '#C0392B'}}>{error}</p>
+        )}
+
         <div className="panel p-8 mb-8">
           <div className="space-y-0">
 
@@ -152,7 +211,13 @@ export default function PreferencesPage() {
                 <p className="font-bold" style={{color: 'var(--ink)'}}>Angebote und Neuigkeiten per E-Mail</p>
                 <p className="text-sm" style={{color: 'var(--muted)'}}>Ich möchte Angebote und Neuigkeiten von TANDEF per E-Mail erhalten.</p>
               </div>
-              <div className="toggle on" data-toggle></div>
+              <button
+                type="button"
+                className={`toggle ${emailOptIn ? 'on' : ''}`}
+                onClick={() => setEmailOptIn(v => !v)}
+                disabled={loading}
+                aria-label="E-Mail Benachrichtigungen"
+              />
             </div>
 
             <div className="flex items-center gap-4 pt-6">
@@ -163,15 +228,28 @@ export default function PreferencesPage() {
                 <p className="font-bold" style={{color: 'var(--ink)'}}>Angebote und Neuigkeiten per SMS</p>
                 <p className="text-sm" style={{color: 'var(--muted)'}}>Ich möchte Angebote und Neuigkeiten von TANDEF per SMS erhalten.</p>
               </div>
-              <div className="toggle on" data-toggle></div>
+              <button
+                type="button"
+                className={`toggle ${smsOptIn ? 'on' : ''}`}
+                onClick={() => setSmsOptIn(v => !v)}
+                disabled={loading}
+                aria-label="SMS Benachrichtigungen"
+              />
             </div>
 
           </div>
 
-          <button className="btn-gradient text-white font-semibold px-8 py-3.5 rounded-full inline-flex items-center gap-2 mt-8">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><path d="M17 21v-8H7v8M7 3v5h8" /></svg>
-            Änderungen speichern
-          </button>
+          <div className="flex items-center gap-4 mt-8">
+            <button
+              onClick={handleSave}
+              disabled={saving || loading}
+              className="btn-gradient text-white font-semibold px-8 py-3.5 rounded-full inline-flex items-center gap-2"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" /><path d="M17 21v-8H7v8M7 3v5h8" /></svg>
+              {saving ? 'Wird gespeichert...' : 'Änderungen speichern'}
+            </button>
+            {saveMsg && <span className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>{saveMsg}</span>}
+          </div>
         </div>
 
         <div className="panel p-8">
@@ -179,99 +257,78 @@ export default function PreferencesPage() {
           <p className="text-sm mb-6" style={{color: 'var(--muted)'}}>Wähle, wie oft du Benachrichtigungen erhalten möchtest.</p>
 
           <div className="grid sm:grid-cols-3 gap-4">
-
-            <div className="freq-card selected p-5" data-freq>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="radio-dot"></span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 01-3.4 0" /></svg>
-                <p className="font-bold" style={{color: 'var(--ink)'}}>Sofort</p>
+            {FREQUENCIES.map(f => (
+              <div
+                key={f.value}
+                onClick={() => setFrequency(f.value)}
+                className={`freq-card p-5 ${frequency === f.value ? 'selected' : ''}`}
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="radio-dot"></span>
+                  {f.icon}
+                  <p className="font-bold" style={{color: 'var(--ink)'}}>{f.title}</p>
+                </div>
+                <p className="text-sm" style={{color: 'var(--muted)'}}>{f.desc}</p>
               </div>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Ich möchte alle wichtigen Infos sofort erhalten.</p>
-            </div>
-
-            <div className="freq-card p-5" data-freq>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="radio-dot"></span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /><path d="M12 14h.01" /></svg>
-                <p className="font-bold" style={{color: 'var(--ink)'}}>Täglich</p>
-              </div>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Ich möchte eine tägliche Zusammenfassung erhalten.</p>
-            </div>
-
-            <div className="freq-card p-5" data-freq>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="radio-dot"></span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-                <p className="font-bold" style={{color: 'var(--ink)'}}>Wöchentlich</p>
-              </div>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>Ich möchte eine wöchentliche Zusammenfassung erhalten.</p>
-            </div>
-
+            ))}
           </div>
         </div>
 
       </section>
 
-      {/* Footer */}
-      <footer className="footer-dark">
-        <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-5 gap-8 text-sm">
-          <div className="md:col-span-1">
-            <p className="font-medium mb-5 max-w-[180px] text-white">Reinigungsdienste für ein sauberes Zuhause.</p>
-            <div className="flex gap-3">
-              <a href="#" className="social-icon-dark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg></a>
-              <a href="#" className="social-icon-dark"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-9h3l.5-4H13V6.5c0-1.2.3-2 2-2h2V1h-3c-3 0-4.5 1.7-4.5 4.5V9H8v4h2.5v9H13z" /></svg></a>
-              <a href="#" className="social-icon-dark"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a1 1 0 00-1-1h-1.7c-2.3 0-4.5 1.2-5.6 3.4-.5.9-.7 1.9-.7 3.1v2H7.2a1 1 0 00-1 1v2.9a1 1 0 001 1H10v7a1 1 0 001 1h3a1 1 0 001-1v-7h2a1 1 0 001-.9l.3-2.9a1 1 0 00-1-1.1h-2.3V8.6c0-.8.4-1.5 1.4-1.5H18a1 1 0 001-1V3z" /></svg></a>
-              <a href="#" className="social-icon-dark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="4" width="20" height="16" rx="4" /><path d="M10 9l5 3-5 3V9z" fill="currentColor" stroke="none" /></svg></a>
+    {/* Footer */}
+    <footer className="footer-dark">
+        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-6 gap-4 sm:gap-6 text-sm">
+          <div className="col-span-2">
+            <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
+            <p style={{color: '#D9CDF0'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
+            <div className="flex gap-3 mt-5 text-white">
+              <span>f</span><span>◎</span><span>w</span><span>✉</span>
             </div>
           </div>
           <div>
-            <p className="font-semibold mb-3 text-white">Unser Unternehmen</p>
+            <p className="font-semibold mb-3 text-white">Leistungen</p>
             <ul className="space-y-2" style={{color: '#D9CDF0'}}>
-              <li><a href="#" className="hover:text-white">So funktioniert TANDEF</a></li>
-              <li><a href="#" className="hover:text-white">TANDEF Bewertungen</a></li>
-              <li><a href="#" className="hover:text-white">TANDEF Magazin</a></li>
-              <li><a href="#" className="hover:text-white">Über uns</a></li>
-              <li><a href="#" className="hover:text-white">Warum TANDEF</a></li>
+              <li><a href="/wohnungsreinigung" className="hover:text-white">Wohnungsreinigung</a></li>
+              <li><a href="/bueroreinigung" className="hover:text-white">Büroreinigung</a></li>
+              <li><a href="/umzugsreinigung" className="hover:text-white">Umzugsreinigung</a></li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-3 text-white">Für Kunden</p>
+            <p className="font-semibold mb-3 text-white">Unternehmen</p>
             <ul className="space-y-2" style={{color: '#D9CDF0'}}>
-              <li><a href="/" className="hover:text-white">Haushaltshilfe</a></li>
-              <li><a href="#" className="hover:text-white">Reinigungskraft</a></li>
-              <li><a href="#" className="hover:text-white">Putzfrau</a></li>
-              <li><a href="#" className="hover:text-white">Reinigungsservice</a></li>
-              <li><a href="#" className="hover:text-white">Putzfee</a></li>
-              <li><a href="#" className="hover:text-white">Putzhilfe</a></li>
-              <li><a href="#" className="hover:text-white">Putzkraft</a></li>
-              <li><a href="#" className="hover:text-white">Haushaltsreinigung</a></li>
+              <li><a href="/ueber-uns" className="hover:text-white">Über uns</a></li>
+              <li><a href="/unser-team" className="hover:text-white">Unser Team</a></li>
+              <li><a href="/karriere" className="hover:text-white">Karriere</a></li>
+              <li><a href="/kontakt" className="hover:text-white">Kontakt</a></li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-3 text-white">Für Reinigungskräfte</p>
+            <p className="font-semibold mb-3 text-white">Rechtliches</p>
             <ul className="space-y-2" style={{color: '#D9CDF0'}}>
-              <li><a href="/pro-werden" className="hover:text-white">TANDEF-Pro werden</a></li>
+              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-3 text-white">Hilfe &amp; Kontakt</p>
+            <p className="font-semibold mb-3 text-white">Kontakt</p>
             <ul className="space-y-3" style={{color: '#D9CDF0'}}>
-              <li><a href="#" className="hover:text-white">FAQ / Casacenter</a></li>
-              <li><a href="#" className="hover:text-white">Kontaktiere uns</a></li>
-              <li className="flex items-center gap-2">
-                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
-                <a href="mailto:info@tandef.de" className="hover:text-white">info@tandef.de</a>
-              </li>
               <li className="flex items-center gap-2">
                 <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.11 4.18 2 2 0 014.1 2h3a2 2 0 012 1.72c.12.9.33 1.77.63 2.6a2 2 0 01-.45 2.11L8.1 9.6a16 16 0 006.3 6.3l1.17-1.18a2 2 0 012.11-.45c.83.3 1.7.51 2.6.63A2 2 0 0122 16.92z" /></svg>
-                030 555 748 20
+                +4915214440144
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
+                info@tandef.de
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                Deutschland
               </li>
             </ul>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs pb-8" style={{color: '#C9B8EC'}}>
-          <span>© 2024 TANDEF. Alle Rechte vorbehalten.</span>
-          <span>Made with ❤️ in Germany</span>
+          <span>© 2026 TANDEF. Alle Rechte vorbehalten.</span>
         </div>
       </footer>
 

@@ -76,7 +76,9 @@ export default function InvoicesPage() {
 
       <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-          <a href="/" className="font-bold text-lg" style={{color: 'var(--ink)'}}>Haushaltshilfe</a>
+        <a href="/dashboard" className="flex items-center">
+  <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
+</a>
           <nav className="flex items-center gap-8 text-sm font-medium relative">
             <a href="/pro-werden" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
