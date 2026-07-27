@@ -175,6 +175,60 @@ export default function UnserTeamPage() {
           <img src="/images/cleaning-supplies.png" className="w-56 h-40 object-contain shrink-0" />
         </div>
       </section>
+                       {/* Footer */}
+                       <footer className="border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-6 gap-8 text-sm">
+          <div className="md:col-span-2">
+            <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
+            <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
+            <div className="flex gap-3 mt-5" style={{color: 'var(--purple-700)'}}>
+              <span>f</span><span>◎</span><span>w</span><span>✉</span>
+            </div>
+          </div>
+          <div>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Leistungen</p>
+            <ul className="space-y-2" style={{color: 'var(--muted)'}}>
+              <li><a href="/wohnungsreinigung" className="hover:opacity-70">Wohnungsreinigung</a></li>
+              <li><a href="/bueroreinigung" className="hover:opacity-70">Büroreinigung</a></li>
+              <li><a href="/umzugsreinigung" className="hover:opacity-70">Umzugsreinigung</a></li>
+            
+            </ul>
+          </div>
+          <div>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Unternehmen</p>
+            <ul className="space-y-2" style={{color: 'var(--muted)'}}>
+              <li> <a href="/ueber-uns" className="hover:opacity-70">Über uns</a></li>
+              <li><a href="/unser-team" className="hover:opacity-70">Unser Team</a></li>
+              <li><a href="/karriere" className="hover:opacity-70">Karriere</a></li>
+              <li><a href="/kontakt" className="hover:opacity-70">Kontakt</a></li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Rechtliches</p>
+            <ul className="space-y-2" style={{color: 'var(--muted)'}}>
+              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Kontakt</p>
+            <ul className="space-y-3" style={{color: 'var(--muted)'}}>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.11 4.18 2 2 0 014.1 2h3a2 2 0 012 1.72c.12.9.33 1.77.63 2.6a2 2 0 01-.45 2.11L8.1 9.6a16 16 0 006.3 6.3l1.17-1.18a2 2 0 012.11-.45c.83.3 1.7.51 2.6.63A2 2 0 0122 16.92z" /></svg>
+                +4915214440144
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
+                info@tandef.de
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                Deutschland
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="text-center text-xs pb-8" style={{color: 'var(--muted)'}}>© 2026 Tandef. Alle Rechte vorbehalten.</div>
+      </footer>
     </>
   );
 }

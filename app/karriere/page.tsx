@@ -127,7 +127,7 @@ export default function KarrierePage() {
             <a href="#warum" className="btn-outline font-semibold px-6 py-3 rounded-lg">Warum TANDEF?</a>
           </div>
         </div>
-        <HeroImg src="/images/team-couch.jpg" height="420px" />
+        <HeroImg src="/images/karriere.jpeg" height="420px" />
       </section>
 
       <section id="warum" className="max-w-6xl mx-auto px-6 pb-16">

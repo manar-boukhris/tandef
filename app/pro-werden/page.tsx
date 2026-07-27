@@ -366,12 +366,7 @@ export default function ProWerdenPage() {
             Alle Fragen ansehen
           </a>
         </div>
-        <div className="flex justify-center">
-          <a href="/register?role=cleaner" className="btn-primary inline-flex items-center justify-center gap-2 text-white font-semibold px-10 py-4 rounded-full">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M20 8v6M23 11h-6" /></svg>
-            Jetzt als Reinigungskraft registrieren
-          </a>
-        </div>
+        
       </section>
 
       {/* Warum TANDEF */}
@@ -426,52 +421,59 @@ export default function ProWerdenPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-5 gap-8 text-sm">
+                  {/* Footer */}
+                  <footer className="border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-6 gap-8 text-sm">
           <div className="md:col-span-2">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
-            <p style={{color: 'var(--muted)'}}>Du hast das Talent, wir haben die Kunden.</p>
+            <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
             <div className="flex gap-3 mt-5" style={{color: 'var(--purple-700)'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-9h3l.5-4H13V6.5c0-1.2.3-2 2-2h2V1h-3c-3 0-4.5 1.7-4.5 4.5V9H8v4h2.5v9H13z" /></svg>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a1 1 0 00-1-1h-1.7c-2.3 0-4.5 1.2-5.6 3.4-.5.9-.7 1.9-.7 3.1v2H7.2a1 1 0 00-1 1v2.9a1 1 0 001 1H10v7a1 1 0 001 1h3a1 1 0 001-1v-7h2a1 1 0 001-.9l.3-2.9a1 1 0 00-1-1.1h-2.3V8.6c0-.8.4-1.5 1.4-1.5H18a1 1 0 001-1V3z" /></svg>
+              <span>f</span><span>◎</span><span>w</span><span>✉</span>
             </div>
           </div>
           <div>
-            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Über uns</p>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Leistungen</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li><a href="/ueber-uns" className="hover:opacity-70">Über TANDEF</a></li>
-              <li><a href="#" className="hover:opacity-70">So funktioniert's</a></li>
-              <li><a href="/" className="hover:opacity-70">Für Kunden</a></li>
-              <li><a href="/magazin" className="hover:opacity-70">TANDEF Magazin</a></li>
+              <li><a href="/wohnungsreinigung" className="hover:opacity-70">Wohnungsreinigung</a></li>
+              <li><a href="/bueroreinigung" className="hover:opacity-70">Büroreinigung</a></li>
+              <li><a href="/umzugsreinigung" className="hover:opacity-70">Umzugsreinigung</a></li>
+            
+            </ul>
+          </div>
+          <div>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Unternehmen</p>
+            <ul className="space-y-2" style={{color: 'var(--muted)'}}>
+              <li> <a href="/ueber-uns" className="hover:opacity-70">Über uns</a></li>
+              <li><a href="/unser-team" className="hover:opacity-70">Unser Team</a></li>
+              <li><a href="/karriere" className="hover:opacity-70">Karriere</a></li>
               <li><a href="/kontakt" className="hover:opacity-70">Kontakt</a></li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Support</p>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Rechtliches</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li><a href="#" className="hover:opacity-70">Häufige Fragen</a></li>
-              <li><a href="#" className="hover:opacity-70">Sicherheit</a></li>
-              <li><a href="#" className="hover:opacity-70">Richtlinien</a></li>
-              <li><a href="#" className="hover:opacity-70">AGB</a></li>
-              <li><a href="#" className="hover:opacity-70">Datenschutz</a></li>
+              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Für Profis</p>
-            <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li><a href="/register?role=cleaner" className="hover:opacity-70">Profis werden</a></li>
-              <li><a href="/login" className="hover:opacity-70">Profi Login</a></li>
-              <li><a href="#" className="hover:opacity-70">Tipps &amp; Tricks</a></li>
-              <li><a href="#" className="hover:opacity-70">Partner werden</a></li>
+            <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Kontakt</p>
+            <ul className="space-y-3" style={{color: 'var(--muted)'}}>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.11 4.18 2 2 0 014.1 2h3a2 2 0 012 1.72c.12.9.33 1.77.63 2.6a2 2 0 01-.45 2.11L8.1 9.6a16 16 0 006.3 6.3l1.17-1.18a2 2 0 012.11-.45c.83.3 1.7.51 2.6.63A2 2 0 0122 16.92z" /></svg>
+                +4915214440144
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
+                info@tandef.de
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                Deutschland
+              </li>
             </ul>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs pb-8" style={{color: 'var(--muted)'}}>
-          <span>© 2024 TANDEF. Alle Rechte vorbehalten.</span>
-          
-        </div>
+        <div className="text-center text-xs pb-8" style={{color: 'var(--muted)'}}>© 2026 Tandef. Alle Rechte vorbehalten.</div>
       </footer>
     </>
   );
