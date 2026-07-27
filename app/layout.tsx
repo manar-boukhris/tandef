@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
   title: "TANDEF – Trust. Cleanliness. Quality.",
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body className="bg-white">
         <div id="google_translate_element"></div>
         {children}
+        <ChatWidget />
         <Script
           id="google-translate-init"
           strategy="afterInteractive"
