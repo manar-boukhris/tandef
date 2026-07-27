@@ -208,7 +208,7 @@ export default function HomePage() {
       {/* Unsere Leistungen */}
       <section id="leistungen" className="max-w-6xl mx-auto px-6 py-10">
         <h2 className="text-3xl font-bold text-center mb-12" style={{color: 'var(--purple-900)'}}>Unsere <span style={{color: 'var(--purple-600)'}}>Leistungen</span></h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
 
           <a href="/wohnungsreinigung" className="card overflow-hidden flex flex-col">
             <div className="p-6">
@@ -246,17 +246,7 @@ export default function HomePage() {
             </div>
           </a>
 
-          <a href="/grundreinigung" className="card overflow-hidden flex flex-col">
-            <div className="p-6">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z" /><path d="M19 15l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7z" /></svg>
-              <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Grundreinigung</p>
-              <p className="text-sm min-h-[60px]" style={{color: 'var(--muted)'}}>Tiefenreinigung für jeden Raum – gründlich bis ins Detail.</p>
-            </div>
-            <div className="relative mt-auto">
-              <img src="/images/prod.jpeg" className="w-full h-36 object-cover object-bottom" />
-              <div className="circle-arrow absolute -top-5 left-5">→</div>
-            </div>
-          </a>
+          
 
         </div>
       </section>
@@ -318,7 +308,7 @@ export default function HomePage() {
               <li><a href="/wohnungsreinigung" className="hover:opacity-70">Wohnungsreinigung</a></li>
               <li><a href="/bueroreinigung" className="hover:opacity-70">Büroreinigung</a></li>
               <li><a href="/umzugsreinigung" className="hover:opacity-70">Umzugsreinigung</a></li>
-              <li><a href="/grundreinigung" className="hover:opacity-70">Grundreinigung</a></li>
+            
             </ul>
           </div>
           <div>

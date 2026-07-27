@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 import { getDraft, updateDraft } from '@/lib/bookingDraft';
 
 const SERVICES = [
-  { name: 'Regelmäßige Reinigung', price: '24,90', oldPrice: '26,90', emoji: '🧹', featured: true, desc: 'Wiederkehrende Reinigung mit deinem persönlichen Pro – wöchentlich oder alle zwei Wochen.' },
-  { name: 'Einmalige Reinigung', price: '26,90', oldPrice: '', emoji: '✨', desc: 'Eine einzelne Reinigung ohne Verpflichtung – ideal zum Ausprobieren.' },
-  { name: 'Grundreinigung', price: '29,90', oldPrice: '', emoji: '🧽', desc: 'Tiefenreinigung bis ins Detail – auch Fenster, Backofen und schwer erreichbare Stellen.' },
-  { name: 'Reinigung der Ferienwohnung', price: '26,90', oldPrice: '', emoji: '🏠', desc: 'Schnelle Reinigung zwischen zwei Gästen – perfekt für Airbnb & Ferienwohnungen.' },
+  { name: 'Regelmäßige Reinigung', price: '24,90', oldPrice: '26,90', icon: '/images/broom.png', featured: true, desc: 'Wiederkehrende Reinigung mit deinem persönlichen Pro – wöchentlich oder alle zwei Wochen.' },
+  { name: 'Einmalige Reinigung', price: '26,90', oldPrice: '', icon: '/images/sparkle.png', desc: 'Eine einzelne Reinigung ohne Verpflichtung – ideal zum Ausprobieren.' },
+  { name: 'Grundreinigung', price: '29,90', oldPrice: '', icon: '/images/sponge.png', desc: 'Tiefenreinigung bis ins Detail – auch Fenster, Backofen und schwer erreichbare Stellen.' },
+  { name: 'Reinigung der Ferienwohnung', price: '26,90', oldPrice: '', icon: '/images/house.png', desc: 'Schnelle Reinigung zwischen zwei Gästen – perfekt für Airbnb & Ferienwohnungen.' },
 ];
 
 export default function BookingServiceTypePage() {
@@ -70,8 +70,10 @@ export default function BookingServiceTypePage() {
         .service-card{background:#fff;border:2px solid #ECE8F5;border-radius:18px;transition:.2s ease;cursor:pointer;overflow:hidden;}
         .service-card:hover{border-color:#C9B8EC;}
         .service-card.selected{border-color:var(--purple-600);box-shadow:0 15px 35px -20px rgba(76,29,149,.35);}
-        .service-emoji{width:100px;height:100px;border-radius:14px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;font-size:2.8rem;flex-shrink:0;}
-        .service-emoji-sm{width:60px;height:60px;border-radius:12px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;}
+        .service-emoji{width:100px;height:100px;border-radius:14px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:14px;}
+        .service-emoji img{width:100%;height:100%;object-fit:contain;}
+        .service-emoji-sm{width:60px;height:60px;border-radius:12px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:10px;}
+        .service-emoji-sm img{width:100%;height:100%;object-fit:contain;}
         .badge{background:var(--purple-100);color:var(--purple-700);font-size:.7rem;font-weight:700;padding:.25rem .6rem;border-radius:9999px;}
         .info-banner{background:var(--purple-50);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:flex-start;}
         .cart-row{width:100%;display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #EFEAF6;text-align:left;background:none;cursor:pointer;}
@@ -189,7 +191,7 @@ export default function BookingServiceTypePage() {
                     {isSelected ? (
                       <>
                         <div className="flex items-start gap-5 mb-4">
-                          <div className="service-emoji">{service.emoji}</div>
+                          <div className="service-emoji"><img src={service.icon} alt={service.name} /></div>
                           <div className="flex-1">
                             <div className="flex items-center justify-between gap-3 mb-1">
                               <p className="font-bold text-lg" style={{color: 'var(--ink)'}}>{service.name}</p>
@@ -225,7 +227,7 @@ export default function BookingServiceTypePage() {
                     ) : (
                       <>
                         <div className="flex items-center gap-5">
-                          <div className="service-emoji-sm">{service.emoji}</div>
+                          <div className="service-emoji-sm"><img src={service.icon} alt={service.name} /></div>
                           <div className="flex-1">
                             <p className="font-bold" style={{color: 'var(--ink)'}}>{service.name}</p>
                             <p className="text-sm" style={{color: 'var(--muted)'}}>{service.price} €/Std.</p>

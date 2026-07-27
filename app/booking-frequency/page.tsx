@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import { getDraft, updateDraft } from '@/lib/bookingDraft';
 
 const OPTIONS = [
-  { name: 'Wöchentlich', desc: 'Immer dieselbe Reinigungskraft, gleicher Tag jede Woche.', price: '14,90', badge: 'Beliebt' },
-  { name: 'Alle zwei Wochen', desc: 'Regelmäßige Reinigung mit flexiblem Rhythmus.', price: '16,90' },
-  { name: 'Einmalig', desc: 'Eine einzelne Reinigung ohne Verpflichtung.', price: '19,90' },
+  { name: 'Wöchentlich', desc: 'Immer dieselbe Reinigungskraft, gleicher Tag jede Woche.', badge: 'Beliebt' },
+  { name: 'Alle zwei Wochen', desc: 'Regelmäßige Reinigung mit flexiblem Rhythmus.' },
+  { name: 'Einmalig', desc: 'Eine einzelne Reinigung ohne Verpflichtung.' },
 ];
 
 export default function BookingFrequencyPage() {
@@ -115,10 +115,6 @@ export default function BookingFrequencyPage() {
                   {opt.badge && <span className="badge">{opt.badge}</span>}
                 </div>
                 <p className="text-sm" style={{color: 'var(--muted)'}}>{opt.desc}</p>
-              </div>
-              <div className="text-right shrink-0">
-                <p className="font-extrabold" style={{color: 'var(--purple-700)'}}>{opt.price} €</p>
-                <p className="text-xs" style={{color: 'var(--muted)'}}>pro Stunde</p>
               </div>
               <span className="check-dot shrink-0">
                 {selected === opt.name && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M5 12l5 5 9-9" /></svg>}
