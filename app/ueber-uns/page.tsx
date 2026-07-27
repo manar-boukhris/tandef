@@ -103,8 +103,8 @@ export default function UeberUnsPage() {
             TANDEF – Sauberkeit, der Sie <span style={{color: 'var(--purple-700)'}}>vertrauen</span> können.
           </h1>
           <p className="text-base mb-8 max-w-md" style={{color: 'var(--muted)'}}>
-            Wir sind ein Unternehmen aus Köln mit der Mission, Reinigung einfacher, zuverlässiger und transparenter zu machen.
-            Mit geprüften Reinigungskräften und einem klaren Qualitätsversprechen sorgen wir für saubere Ergebnisse und zufriedene Kunden – jedes Mal.
+          TANDEF verbindet Kunden mit professionellen Reinigungspartnern – einfach, sicher und zuverlässig. 
+          Unsere Mission ist es, hochwertige Reinigungsdienstleistungen für Privat- und Geschäftskunden so einfach zugänglich zu machen wie eine Online-Bestellung. Mit geprüften Partnern, transparenten Abläufen und höchsten Qualitätsstandards sorgen wir für erstklassige Ergebnisse – jedes Mal.
           </p>
           <div className="flex flex-wrap gap-3 mb-10">
             <a href="/address" className="btn-primary text-white font-semibold px-6 py-3 rounded-lg">Jetzt Reinigung buchen</a>
@@ -116,7 +116,7 @@ export default function UeberUnsPage() {
             <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>Zuverlässig & versichert</div>
           </div>
         </div>
-        <HeroImg src="/images/team-couch.jpg" height="420px" />
+        <HeroImg src="/images/tandef.jpeg" height="420px" />
       </section>
 
       <section id="geschichte" className="max-w-7xl mx-auto px-6 pb-20 grid lg:grid-cols-2 gap-10 items-center">
@@ -124,15 +124,18 @@ export default function UeberUnsPage() {
           <HeroImg src="/images/cologne-cathedral.jpg" height="340px" position="center" />
           <div className="story-badge absolute bottom-6 left-6">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-            Aus Köln.<br />Für Köln.
+            Aus Köln.<br />Für die welt.
           </div>
         </div>
         <div>
           <p className="text-sm font-bold mb-3" style={{color: 'var(--purple-700)'}}>UNSERE GESCHICHTE</p>
           <h2 className="text-3xl font-extrabold mb-5" style={{color: 'var(--ink)'}}>Wie alles begann</h2>
-          <p className="mb-4" style={{color: 'var(--muted)'}}>TANDEF wurde 2020 in Köln gegründet – mit einer einfachen Idee: Reinigung sollte so unkompliziert sein wie die Bestellung eines Taxis.</p>
-          <p className="mb-4" style={{color: 'var(--muted)'}}>Wir haben selbst erlebt, wie schwierig es ist, eine zuverlässige Reinigungskraft zu finden. Deshalb haben wir TANDEF ins Leben gerufen: eine Plattform, die Qualität, Vertrauen und Komfort verbindet.</p>
-          <p style={{color: 'var(--muted)'}}>Heute sind wir stolz darauf, hunderten Haushalten und Unternehmen in Köln ein sauberes und angenehmes Umfeld zu bieten.</p>
+          <p className="mb-4" style={{color: 'var(--muted)'}}>TANDEF wurde im Jahr 2026 mit einer klaren Vision gegründet: professionelle Reinigungsdienstleistungen einfacher, transparenter und vertrauenswürdiger zu machen.
+ </p>
+          <p className="mb-4" style={{color: 'var(--muted)'}}>Wir haben erkannt, dass es für viele Menschen schwierig ist, zuverlässige Reinigungspartner zu finden. Deshalb haben wir eine Plattform entwickelt, die Kunden mit sorgfältig geprüften und professionellen Reinigungspartnern verbindet.</p>
+          <p style={{color: 'var(--muted)'}}>Unser Ziel ist es nicht nur, Reinigungsservices anzubieten, sondern einen neuen Qualitätsstandard für die gesamte Branche zu schaffen – mit Transparenz, Zuverlässigkeit und moderner Technologie.</p>
+          <p className="mb-4" style={{color: 'var(--muted)'}}>
+            Was in Deutschland begann, entwickelt sich Schritt für Schritt zu einer internationalen Plattform. Unsere Vision ist klar: Menschen und professionelle Reinigungspartner weltweit miteinander zu verbinden und hochwertige Dienstleistungen überall zugänglich zu machen.</p>
         </div>
       </section>
 

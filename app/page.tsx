@@ -314,7 +314,10 @@ export default function HomePage() {
           <div>
             <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Unternehmen</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li>Über uns</li><li>Unser Team</li><li>Karriere</li><li>Kontakt</li>
+              <li> <a href="/ueber-uns" className="hover:opacity-70">Über uns</a></li>
+              <li><a href="/unser-team" className="hover:opacity-70">Unser Team</a></li>
+              <li><a href="/karriere" className="hover:opacity-70">Karriere</a></li>
+              <li><a href="/kontakt" className="hover:opacity-70">Kontakt</a></li>
             </ul>
           </div>
           <div>

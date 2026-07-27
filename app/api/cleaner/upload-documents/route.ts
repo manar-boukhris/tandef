@@ -16,12 +16,15 @@ export async function POST(req: Request) {
   const cleanerId = cleaner.id;
 
   const {
-    idUrl, idName, addressUrl, addressName, criminalUrl, criminalName,
+    idUrl, idName,
+    gewerbeUrl, gewerbeName,
+    steuerUrl, steuerName,
+    criminalUrl, criminalName,
     photoUrl, city, experience, services, iban, accountHolder,
   } = await req.json();
 
-  if (!idUrl || !addressUrl || !criminalUrl) {
-    return NextResponse.json({ error: 'Bitte lade alle 3 Dokumente hoch.' }, { status: 400 });
+  if (!idUrl || !gewerbeUrl || !steuerUrl) {
+    return NextResponse.json({ error: 'Bitte lade den Personalausweis, die Gewerbeanmeldung und deine Steuernummer hoch.' }, { status: 400 });
   }
 
   const existingApp = await prisma.cleanerApplication.findUnique({ where: { cleanerId } });
@@ -31,8 +34,14 @@ export async function POST(req: Request) {
   }
 
   docs.id = { name: idName, url: idUrl, status: 'pending', note: null };
-  docs.address = { name: addressName, url: addressUrl, status: 'pending', note: null };
-  docs.criminal = { name: criminalName, url: criminalUrl, status: 'pending', note: null };
+  docs.gewerbe = { name: gewerbeName, url: gewerbeUrl, status: 'pending', note: null };
+  docs.steuer = { name: steuerName, url: steuerUrl, status: 'pending', note: null };
+
+  if (criminalUrl) {
+    docs.criminal = { name: criminalName, url: criminalUrl, status: 'pending', note: null };
+  } else {
+    delete docs.criminal;
+  }
 
   await prisma.cleanerApplication.upsert({
     where: { cleanerId },

@@ -98,8 +98,8 @@ export default function UnserTeamPage() {
             Die Menschen hinter <span style={{color: 'var(--purple-700)'}}>TANDEF</span>
           </h1>
           <p className="text-base mb-8 max-w-md" style={{color: 'var(--muted)'}}>
-            Hinter jedem sauberen Zuhause und Büro steht ein Team, das mit Leidenschaft, Erfahrung und Herz arbeitet.
-            Lernen Sie die Menschen kennen, die TANDEF jeden Tag besser machen.
+          Hinter TANDEF steht ein engagiertes Team, das eine moderne Plattform für professionelle Reinigungsservices entwickelt. 
+          Gemeinsam arbeiten wir daran, Kunden mit zuverlässigen Reinigungspartnern zu verbinden und Qualität neu zu definieren.
           </p>
           <div className="grid grid-cols-3 gap-4">
             <div><p className="font-bold text-sm mb-1">Leidenschaftlich</p><p className="text-xs" style={{color: 'var(--muted)'}}>Wir lieben, was wir tun.</p></div>
@@ -107,7 +107,7 @@ export default function UnserTeamPage() {
             <div><p className="font-bold text-sm mb-1">Gemeinsam</p><p className="text-xs" style={{color: 'var(--muted)'}}>Ein starkes Team für beste Ergebnisse.</p></div>
           </div>
         </div>
-        <HeroImg src="/images/team-couch.jpg" height="420px" />
+        <HeroImg src="/images/tandef.jpeg" height="420px" />
       </section>
 
       <section className="max-w-6xl mx-auto px-6 pb-16">
@@ -129,7 +129,7 @@ export default function UnserTeamPage() {
       <section className="max-w-6xl mx-auto px-6 pb-16 grid lg:grid-cols-2 gap-10 items-center">
         <div>
           <h2 className="text-2xl font-extrabold mb-4">Unser <span style={{color: 'var(--purple-700)'}}>Reinigungsteam</span></h2>
-          <p className="mb-5" style={{color: 'var(--muted)'}}>Unsere Reinigungskräfte sind das Herzstück von TANDEF. Alle werden sorgfältig ausgewählt, geprüft und regelmäßig geschult, um höchste Qualitätsstandards zu gewährleisten.</p>
+          <p className="mb-5" style={{color: 'var(--muted)'}}>TANDEF arbeitet mit selbstständigen und geprüften Reinigungspartnern zusammen. Jeder Partner wird sorgfältig geprüft und erfüllt unsere Qualitätsstandards, damit unsere Kunden jederzeit professionelle Ergebnisse erhalten.</p>
           <ul className="space-y-2 mb-6">
             {['Hintergrundgeprüft & verifiziert', 'Professionell geschult', 'Erfahren & zuverlässig', 'Mit Sorgfalt und Respekt'].map(t => (
               <li key={t} className="flex items-center gap-2 text-sm">
@@ -138,7 +138,7 @@ export default function UnserTeamPage() {
               </li>
             ))}
           </ul>
-          <a href="/pro-werden" className="btn-outline font-semibold px-5 py-2.5 rounded-lg inline-block text-sm">Mehr über unsere Helfer</a>
+  
         </div>
         <HeroImg src="/images/cleaning-team.jpg" height="320px" position="center" />
       </section>

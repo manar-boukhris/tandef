@@ -11,7 +11,7 @@ export default function ProWerdenPage() {
     const availValue = document.getElementById('avail-value');
     const avgIncome = document.getElementById('avg-income');
     const maxIncome = document.getElementById('max-income');
-    const RATE = 20;
+    const RATE = 18;
 
     function updateSlider(){
       const hoursPerWeek = parseInt(slider.value, 10);
@@ -167,7 +167,7 @@ export default function ProWerdenPage() {
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
                   </p>
                   <p className="text-xs" style={{color: 'var(--muted)'}}>Im Durchschnitt</p>
-                  <p className="text-2xl font-extrabold" style={{color: 'var(--purple-700)'}}><span id="avg-income">20</span> €/Std.</p>
+                  <p className="text-2xl font-extrabold" style={{color: 'var(--purple-700)'}}><span id="avg-income">18</span> €/Std.</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs" style={{color: 'var(--muted)'}}>bis zu</p>
@@ -219,7 +219,7 @@ export default function ProWerdenPage() {
               <span className="stars">★★★★★</span>
             </div>
             <div className="rounded-3xl overflow-hidden">
-              <img src="/images/pro-hero.png" alt="TANDEF Reinigungsprofi bei der Arbeit" className="w-full h-full object-cover rounded-3xl" style={{minHeight: '420px'}} />
+              <img src="/images/WhatsApp Image 2026-07-21 at 22.24.05.jpeg" alt="TANDEF Reinigungsprofi bei der Arbeit" className="w-full h-full object-cover rounded-3xl" style={{minHeight: '420px'}} />
             </div>
           </div>
 
@@ -470,7 +470,7 @@ export default function ProWerdenPage() {
         </div>
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs pb-8" style={{color: 'var(--muted)'}}>
           <span>© 2024 TANDEF. Alle Rechte vorbehalten.</span>
-          <span>Made with ❤️ in Germany</span>
+          
         </div>
       </footer>
     </>

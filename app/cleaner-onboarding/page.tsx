@@ -17,7 +17,8 @@ export default function CleanerOnboardingPage() {
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [idDoc, setIdDoc] = useState(null);
-  const [addressDoc, setAddressDoc] = useState(null);
+  const [gewerbeDoc, setGewerbeDoc] = useState(null);
+  const [steuerDoc, setSteuerDoc] = useState(null);
   const [criminalDoc, setCriminalDoc] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,8 +39,8 @@ export default function CleanerOnboardingPage() {
     e.preventDefault();
     setError('');
 
-    if (!idDoc || !addressDoc || !criminalDoc) {
-      setError('Bitte lade alle 3 Dokumente hoch.');
+    if (!idDoc || !gewerbeDoc || !steuerDoc) {
+      setError('Bitte lade den Personalausweis, die Gewerbeanmeldung und deine Steuernummer hoch.');
       return;
     }
 
@@ -50,14 +51,22 @@ export default function CleanerOnboardingPage() {
         access: 'public',
         handleUploadUrl: '/api/cleaner/upload-token',
       });
-      const addressBlob = await upload(`cleaner-docs/address-${Date.now()}-${addressDoc.name}`, addressDoc, {
+      const gewerbeBlob = await upload(`cleaner-docs/gewerbe-${Date.now()}-${gewerbeDoc.name}`, gewerbeDoc, {
         access: 'public',
         handleUploadUrl: '/api/cleaner/upload-token',
       });
-      const criminalBlob = await upload(`cleaner-docs/criminal-${Date.now()}-${criminalDoc.name}`, criminalDoc, {
+      const steuerBlob = await upload(`cleaner-docs/steuer-${Date.now()}-${steuerDoc.name}`, steuerDoc, {
         access: 'public',
         handleUploadUrl: '/api/cleaner/upload-token',
       });
+
+      let criminalBlob = null;
+      if (criminalDoc) {
+        criminalBlob = await upload(`cleaner-docs/criminal-${Date.now()}-${criminalDoc.name}`, criminalDoc, {
+          access: 'public',
+          handleUploadUrl: '/api/cleaner/upload-token',
+        });
+      }
 
       let photoUrl = null;
       if (photo) {
@@ -74,10 +83,12 @@ export default function CleanerOnboardingPage() {
         body: JSON.stringify({
           idUrl: idBlob.url,
           idName: idDoc.name,
-          addressUrl: addressBlob.url,
-          addressName: addressDoc.name,
-          criminalUrl: criminalBlob.url,
-          criminalName: criminalDoc.name,
+          gewerbeUrl: gewerbeBlob.url,
+          gewerbeName: gewerbeDoc.name,
+          steuerUrl: steuerBlob.url,
+          steuerName: steuerDoc.name,
+          criminalUrl: criminalBlob ? criminalBlob.url : null,
+          criminalName: criminalDoc ? criminalDoc.name : null,
           photoUrl,
           city,
           experience,
@@ -143,6 +154,10 @@ export default function CleanerOnboardingPage() {
         .icon-circle{
           width:40px;height:40px;border-radius:9999px;background:var(--purple-100);
           display:flex;align-items:center;justify-content:center;flex-shrink:0;
+        }
+        .optional-tag{
+          background:#F1EFF6;color:var(--muted);font-size:.7rem;font-weight:700;
+          padding:.2rem .55rem;border-radius:9999px;margin-left:.5rem;
         }
       `}</style>
 
@@ -267,24 +282,39 @@ export default function CleanerOnboardingPage() {
                 </div>
 
                 <div>
-                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Adressnachweis (z. B. Meldebescheinigung)</p>
-                  <label className={`dropzone block ${addressDoc ? 'has-file' : ''}`}>
-                    <input type="file" className="hidden" onChange={(e) => setAddressDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
+                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Gewerbeanmeldung</p>
+                  <label className={`dropzone block ${gewerbeDoc ? 'has-file' : ''}`}>
+                    <input type="file" className="hidden" onChange={(e) => setGewerbeDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
                     <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
-                      {addressDoc ? `✓ ${addressDoc.name}` : 'Datei auswählen oder hierher ziehen'}
+                      {gewerbeDoc ? `✓ ${gewerbeDoc.name}` : 'Datei auswählen oder hierher ziehen'}
                     </p>
                     <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
                   </label>
                 </div>
 
                 <div>
-                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Führungszeugnis (polizeiliches Führungszeugnis)</p>
+                  <p className="text-sm font-semibold mb-2" style={{color: 'var(--ink)'}}>Steuernummer / USt-IdNr. (Nachweis)</p>
+                  <label className={`dropzone block ${steuerDoc ? 'has-file' : ''}`}>
+                    <input type="file" className="hidden" onChange={(e) => setSteuerDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
+                    <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
+                      {steuerDoc ? `✓ ${steuerDoc.name}` : 'Datei auswählen oder hierher ziehen'}
+                    </p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                  </label>
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold mb-2 flex items-center" style={{color: 'var(--ink)'}}>
+                    Führungszeugnis
+                    <span className="optional-tag">Optional</span>
+                  </p>
                   <label className={`dropzone block ${criminalDoc ? 'has-file' : ''}`}>
                     <input type="file" className="hidden" onChange={(e) => setCriminalDoc(e.target.files?.[0] || null)} accept=".jpg,.jpeg,.png,.pdf" />
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" className="mx-auto mb-2"><path d="M12 16V4M12 4l-4 4M12 4l4 4" /><path d="M20 16v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3" /></svg>
                     <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
-                      {criminalDoc ? `✓ ${criminalDoc.name}` : 'Datei auswählen oder hierher ziehen'}
+                      {criminalDoc ? `✓ ${criminalDoc.name}` : 'Datei auswählen oder hierher ziehen (optional)'}
                     </p>
                     <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
                   </label>
