@@ -8,10 +8,10 @@ function initials(name) {
 }
 
 const TEAM = [
-  { name: 'Ahmet Y.', role: 'Gründer & Geschäftsführer', color: '#5B21B6' },
-  { name: 'Elif K.', role: 'Kundenservice Leitung', color: '#EC7C9D' },
-  { name: 'Mert T.', role: 'Operations Manager', color: '#4E7FD1' },
-  { name: 'Sarah L.', role: 'Marketing Managerin', color: '#8FB37F' },
+  { name: 'Youssef.', role: 'Gründer & Geschäftsführer', color: '#5B21B6' },
+ 
+  { name: 'Manar.', role: 'Operations Manager', color: '#4E7FD1' },
+  
 ];
 
 function HeroImg({ src, height, position = 'center 30%' }) {

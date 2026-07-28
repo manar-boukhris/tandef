@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
@@ -11,6 +11,15 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const menuBtn = document.getElementById('about-menu-btn');
+    const menu = document.getElementById('about-menu');
+    if (menuBtn && menu) {
+      menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('hidden'); });
+      document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.add('hidden'); });
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -83,7 +92,13 @@ export default function LoginPage() {
             width:88px;height:88px;border-radius:9999px;
             background:var(--purple-50);
             display:flex;align-items:center;justify-content:center;
+            padding:20px;
           }
+          .icon-badge img{width:100%;height:100%;object-fit:contain;}
+          .dropdown-menu{background:#fff;border-radius:14px;box-shadow:0 20px 45px -15px rgba(76,29,149,.3);}
+          .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
+          .dropdown-menu a:hover{background:var(--purple-50);}
+          .footer-dark{background:linear-gradient(to bottom, var(--purple-700), var(--purple-900));}
           footer a:hover{opacity:.75;}
       `}</style>
       <div className="page-bg">
@@ -91,8 +106,10 @@ export default function LoginPage() {
         {/* Header */}
         <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
           <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-            <a href="/" className="font-bold text-lg" style={{color: 'var(--ink)'}}>Haushaltshilfe</a>
-            <nav className="flex items-center gap-8 text-sm font-medium">
+            <a href="/" className="flex items-center">
+              <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
+            </a>
+            <nav className="flex items-center gap-8 text-sm font-medium relative">
               <a href="/pro-werden" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
                 Pro werden
@@ -101,6 +118,18 @@ export default function LoginPage() {
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
                 Magazin
               </a>
+              <div className="relative">
+                <button id="about-menu-btn" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
+                  Über uns
+                </button>
+                <div id="about-menu" className="dropdown-menu hidden absolute left-0 mt-3 w-56 py-2 z-30">
+                  <a href="/ueber-uns">Über uns</a>
+                  <a href="/unser-team">Unser Team</a>
+                  <a href="/karriere">Karriere</a>
+                  <a href="/kontakt">Kontakt</a>
+                </div>
+              </div>
               <a href="/login" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="10" r="3" /><path d="M6.5 19a6 6 0 0111 0" /></svg>
                 Login
@@ -114,13 +143,7 @@ export default function LoginPage() {
           <div className="login-card w-full max-w-md p-8 md:p-10 text-center">
 
             <div className="icon-badge mx-auto mb-6">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.6">
-                <path d="M12 21c0-5 3-8 3-12 0 4 3 5 3 8a3 3 0 01-6 4z" />
-                <path d="M12 21c0-5-3-8-3-12 0 4-3 5-3 8a3 3 0 006 4z" />
-                <path d="M12 21V9" />
-                <path d="M12 9c0-4 2-6 2-8 0 2 2 3 2 6a4 4 0 01-4 4z" />
-                <path d="M12 9c0-4-2-6-2-8 0 2-2 3-2 6a4 4 0 004 4z" />
-              </svg>
+              <img src="/images/logo-leaf.png" alt="TANDEF" />
             </div>
 
             <h1 className="text-3xl font-extrabold mb-3" style={{color: 'var(--purple-900)'}}>Willkommen zurück!</h1>
@@ -197,70 +220,58 @@ export default function LoginPage() {
       </div>
 
       {/* Footer */}
-      <footer className="text-white" style={{background: 'var(--purple-900)'}}>
-        <div className="max-w-7xl mx-auto px-6 pt-16 pb-8 grid md:grid-cols-5 gap-10">
-          <div className="md:col-span-1">
-            <p className="mb-5" style={{color: '#D8CCEE'}}>Reinigungsdienste für ein sauberes Zuhause.</p>
-            <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 rounded-full flex items-center justify-center" style={{background: 'rgba(255,255,255,.12)'}}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 2 .25 2.4.4a4.9 4.9 0 011.8 1.15 4.9 4.9 0 011.15 1.8c.16.4.35 1.2.4 2.4.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 2-.4 2.4a4.9 4.9 0 01-1.15 1.8 4.9 4.9 0 01-1.8 1.15c-.4.16-1.2.35-2.4.4-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-2-.25-2.4-.4a4.9 4.9 0 01-1.8-1.15 4.9 4.9 0 01-1.15-1.8c-.16-.4-.35-1.2-.4-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-2 .4-2.4a4.9 4.9 0 011.15-1.8A4.9 4.9 0 015.6 2.75c.4-.16 1.2-.35 2.4-.4C9.3 2.2 9.7 2.2 12 2.2zm0 1.8c-3.15 0-3.52 0-4.77.07-1 .05-1.6.2-1.95.35a3.1 3.1 0 00-1.15.75 3.1 3.1 0 00-.75 1.15c-.14.35-.3.94-.35 1.95C3 9.28 3 9.65 3 12s0 3.52.07 4.77c.05 1 .2 1.6.35 1.95.15.4.35.75.75 1.15.4.4.74.6 1.15.75.35.14.94.3 1.95.35 1.25.06 1.62.07 4.77.07s3.52 0 4.77-.07c1-.05 1.6-.2 1.95-.35a3.1 3.1 0 001.15-.75c.4-.4.6-.74.75-1.15.14-.35.3-.94.35-1.95.06-1.25.07-1.62.07-4.77s0-3.52-.07-4.77c-.05-1-.2-1.6-.35-1.95a3.1 3.1 0 00-.75-1.15 3.1 3.1 0 00-1.15-.75c-.35-.14-.94-.3-1.95-.35C15.52 4 15.15 4 12 4zm0 3.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 1.8a2.7 2.7 0 100 5.4 2.7 2.7 0 000-5.4zm5.7-2a1.05 1.05 0 11-2.1 0 1.05 1.05 0 012.1 0z" /></svg>
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full flex items-center justify-center" style={{background: 'rgba(255,255,255,.12)'}}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z" /></svg>
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full flex items-center justify-center" style={{background: 'rgba(255,255,255,.12)'}}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M16.6 2h-3.1v13.4a2.7 2.7 0 11-2.1-2.63V9.5a5.9 5.9 0 103.1 5.18V8.3a7.4 7.4 0 004.1 1.25V6.4a4.3 4.3 0 01-2-4.4z" /></svg>
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full flex items-center justify-center" style={{background: 'rgba(255,255,255,.12)'}}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M21.6 7.2s-.2-1.5-.8-2.1c-.8-.8-1.7-.8-2.1-.9C15.9 4 12 4 12 4h0s-3.9 0-6.7.2c-.4 0-1.3.1-2.1.9-.6.6-.8 2.1-.8 2.1S2.2 9 2.2 10.7v1.6c0 1.8.2 3.5.2 3.5s.2 1.5.8 2.1c.8.8 1.8.8 2.3.9C7.3 19 12 19 12 19s3.9 0 6.7-.2c.4 0 1.3-.1 2.1-.9.6-.6.8-2.1.8-2.1s.2-1.7.2-3.5v-1.6c0-1.8-.2-3.5-.2-3.5zM9.9 14.6V8.9l5.4 2.85-5.4 2.85z" /></svg>
-              </a>
+      <footer className="footer-dark">
+        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-6 gap-4 sm:gap-6 text-sm">
+          <div className="col-span-2">
+            <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
+            <p style={{color: '#D9CDF0'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
+            <div className="flex gap-3 mt-5 text-white">
+              <span>f</span><span>◎</span><span>w</span><span>✉</span>
             </div>
           </div>
           <div>
-            <p className="font-semibold mb-4">Unser Unternehmen</p>
-            <ul className="space-y-3 text-sm" style={{color: '#D8CCEE'}}>
-              <li><a href="#">So funktioniert TANDEF</a></li>
-              <li><a href="#">TANDEF Bewertungen</a></li>
-              <li><a href="#">TANDEF Magazin</a></li>
-              <li><a href="#">Karriere</a></li>
-              <li><a href="#">Kontakt</a></li>
+            <p className="font-semibold mb-3 text-white">Leistungen</p>
+            <ul className="space-y-2" style={{color: '#D9CDF0'}}>
+              <li><a href="/wohnungsreinigung" className="hover:text-white">Wohnungsreinigung</a></li>
+              <li><a href="/bueroreinigung" className="hover:text-white">Büroreinigung</a></li>
+              <li><a href="/umzugsreinigung" className="hover:text-white">Umzugsreinigung</a></li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-4">Für Kunden</p>
-            <ul className="space-y-3 text-sm" style={{color: '#D8CCEE'}}>
-              <li><a href="#">Haushaltshilfe</a></li>
-              <li><a href="#">Reinigungskraft</a></li>
-              <li><a href="#">Putzfrau</a></li>
-              <li><a href="#">Geschenkgutschein</a></li>
-              <li><a href="#">Hilfe &amp; Support</a></li>
+            <p className="font-semibold mb-3 text-white">Unternehmen</p>
+            <ul className="space-y-2" style={{color: '#D9CDF0'}}>
+              <li><a href="/ueber-uns" className="hover:text-white">Über uns</a></li>
+              <li><a href="/unser-team" className="hover:text-white">Unser Team</a></li>
+              <li><a href="/karriere" className="hover:text-white">Karriere</a></li>
+              <li><a href="/kontakt" className="hover:text-white">Kontakt</a></li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-4">Für Reinigungskräfte</p>
-            <ul className="space-y-3 text-sm" style={{color: '#D8CCEE'}}>
-              <li><a href="#">TANDEF-Pro werden</a></li>
+            <p className="font-semibold mb-3 text-white">Rechtliches</p>
+            <ul className="space-y-2" style={{color: '#D9CDF0'}}>
+              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
             </ul>
           </div>
           <div>
-            <p className="font-semibold mb-4">Hilfe &amp; Kontakt</p>
-            <ul className="space-y-3 text-sm" style={{color: '#D8CCEE'}}>
-              <li><a href="#">FAQ / Casecenter</a></li>
-              <li><a href="#">Kontaktiere uns</a></li>
+            <p className="font-semibold mb-3 text-white">Kontakt</p>
+            <ul className="space-y-3" style={{color: '#D9CDF0'}}>
               <li className="flex items-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D8CCEE" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.11 4.18 2 2 0 014.1 2h3a2 2 0 012 1.72c.12.9.33 1.77.63 2.6a2 2 0 01-.45 2.11L8.1 9.6a16 16 0 006.3 6.3l1.17-1.18a2 2 0 012.11-.45c.83.3 1.7.51 2.6.63A2 2 0 0122 16.92z" /></svg>
+                +4915214440144
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
                 info@tandef.de
               </li>
               <li className="flex items-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D8CCEE" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.11 4.18 2 2 0 014.1 2h3a2 2 0 012 1.72c.12.9.33 1.77.63 2.6a2 2 0 01-.45 2.11L8.1 9.6a16 16 0 006.3 6.3l1.17-1.18a2 2 0 012.11-.45c.83.3 1.7.51 2.6.63A2 2 0 0122 16.92z" /></svg>
-                030 555 748 20
+                <svg className="shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                Deutschland
               </li>
             </ul>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between border-t text-sm" style={{borderColor: 'rgba(255,255,255,.15)', color: '#C3B4E0'}}>
-          <p>© 2024 TANDEF. Alle Rechte vorbehalten.</p>
-          <p className="flex items-center gap-1 mt-2 md:mt-0">Made with <span style={{color: '#A78BFA'}}>💜</span> in Germany</p>
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs pb-8" style={{color: '#C9B8EC'}}>
+          <span>© 2026 TANDEF. Alle Rechte vorbehalten.</span>
         </div>
       </footer>
     </>

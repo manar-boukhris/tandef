@@ -5,6 +5,14 @@ import { useState, useEffect, type ReactNode } from 'react';
 import { ServiceHeroArt } from './ServiceHeroArt';
 import type { ServiceLanding } from '@/lib/serviceLandingData';
 
+const WHY_ITEMS = [
+    { icon: '/images/people.png', title: 'Sichere Zukunft', desc: 'TANDEF wächst stetig. Werden Sie Teil eines Unternehmens mit einer klaren Vision und langfristiger Perspektive.' },
+    { icon: '/images/chart.png', title: 'Persönliche Entwicklung', desc: 'Wir bieten Ihnen Schulungen und Weiterbildungen, damit Sie sich fachlich und persönlich weiterentwickeln können.' },
+    { icon: '/images/heart.png', title: 'Wertschätzung', desc: 'Ihre Arbeit zählt. Wir erkennen Ihre Leistung an und schaffen ein Umfeld, in dem Sie sich wohlfühlen und gehört werden.' },
+    { icon: '/images/wallet.png', title: 'Faire Vergütung', desc: 'Wir bieten eine faire Bezahlung und zusätzliche Benefits, die Ihre Arbeit und Ihr Engagement würdigen.' },
+    { icon: '/images/clock.png', title: 'Starkes Team', desc: 'Ein respektvolles Miteinander und Teamgeist machen uns stark. Gemeinsam erreichen wir mehr.' },
+  ];
+  
 const ICONS: Record<string, ReactNode> = {
   kitchen: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 3v6M16 3v6M4 13h16" /></svg>,
   bath: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M4 12h16v4a4 4 0 01-4 4H8a4 4 0 01-4-4v-4z" /><path d="M6 12V6a2 2 0 012-2" /></svg>,
@@ -81,6 +89,15 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
         .faq-chevron{transition:transform .2s ease;}
         .faq-chevron.open{transform:rotate(180deg);}
         .cta-banner{background:linear-gradient(135deg,var(--purple-100),#FCE7F3);border-radius:24px;}
+
+        /* Section "Warum TANDEF" — classes manquantes qui causaient les icônes géantes */
+        .why-panel{background:var(--purple-50);border-radius:20px;padding:48px 40px;}
+        .why-icon-circle{width:70px;height:70px;border-radius:9999px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:16px;}
+        .why-icon-circle img{width:100%;height:100%;object-fit:contain;}
+        .why-item{display:flex;align-items:flex-start;gap:18px;padding:0 28px;margin-bottom:1.5rem;}
+        .why-divider-v{border-left:1px solid #E2D9F5;}
+        .why-divider-h{border-top:1px solid #E2D9F5;}
+        .why-dash{height:1px;width:36px;background:#B9A5EC;display:inline-block;vertical-align:middle;}
       `}</style>
 
       <header className="bg-white border-b" style={{ borderColor: '#EDE9F5' }}>
@@ -216,17 +233,40 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
       </section>
 
       <section className="max-w-6xl mx-auto px-6 pb-16">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-10" style={{ color: 'var(--ink)' }}>Warum TANDEF?</h2>
-        <div className={`grid sm:grid-cols-2 ${data.whyUs.length > 4 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-5`}>
-          {data.whyUs.map(w => (
-            <div key={w.title} className="why-card p-6">
-              <div className="why-icon mb-4">{ICONS[w.icon]}</div>
-              <p className="font-bold mb-1" style={{ color: 'var(--ink)' }}>{w.title}</p>
-              <p className="text-sm" style={{ color: 'var(--muted)' }}>{w.desc}</p>
-            </div>
-          ))}
+        <div className="why-panel">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-2">Warum <span style={{color: 'var(--purple-700)'}}>TANDEF</span>?</h2>
+          <p className="text-center text-sm mb-10 flex items-center justify-center gap-3" style={{color: 'var(--muted)'}}>
+            <span className="why-dash"></span>
+            Ihre Vorteile bei TANDEF auf einen Blick.
+            <span className="why-dash"></span>
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3">
+            {WHY_ITEMS.slice(0, 3).map((item, i) => (
+              <div key={item.title} className={`why-item pb-8 ${i > 0 ? 'why-divider-v' : ''}`}>
+                <div className="why-icon-circle"><img src={item.icon} alt={item.title} /></div>
+                <div>
+                  <p className="font-bold mb-1.5">{item.title}</p>
+                  <p className="text-sm" style={{color: 'var(--muted)'}}>{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 why-divider-h pt-8">
+            {WHY_ITEMS.slice(3, 5).map((item, i) => (
+              <div key={item.title} className={`why-item ${i > 0 ? 'why-divider-v' : ''}`}>
+                <div className="why-icon-circle"><img src={item.icon} alt={item.title} /></div>
+                <div>
+                  <p className="font-bold mb-1.5">{item.title}</p>
+                  <p className="text-sm" style={{color: 'var(--muted)'}}>{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
 
       <section className="max-w-6xl mx-auto px-6 pb-20 grid md:grid-cols-2 gap-10">
         <div>

@@ -48,7 +48,9 @@ h1,h2,h3{font-family:'Poppins',sans-serif;}
       `}</style>
       <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-          <a href="/" className="font-bold text-lg" style={{color: 'var(--ink)'}}>Haushaltshilfe</a>
+        <a href="/cleaner-dashboard" className="flex items-center">
+  <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
+</a>
           <p className="text-sm font-medium" style={{color: 'var(--muted)'}}>Registrierung als Reinigungskraft</p>
         </div>
       </header>

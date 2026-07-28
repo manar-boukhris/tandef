@@ -16,10 +16,10 @@ function HeroImg({ src, height, position = 'center 30%' }) {
 }
 
 const LEADERSHIP = [
-  { name: 'Ahmet Y.', role: 'Gründer & Geschäftsführer', desc: 'Visionär und Gründer von TANDEF. Verantwortlich für Strategie, Wachstum und Unternehmensentwicklung.', color: '#5B21B6' },
-  { name: 'Elif K.', role: 'Kundenservice Leitung', desc: 'Sorgt dafür, dass unsere Kunden die beste Erfahrung machen und steht ihrem Team immer zur Seite.', color: '#EC7C9D' },
-  { name: 'Mert T.', role: 'Operations Manager', desc: 'Verantwortlich für operative Abläufe, Qualitätskontrolle und die Optimierung unserer Reinigungsprozesse.', color: '#4E7FD1' },
-  { name: 'Sarah L.', role: 'Marketing Managerin', desc: 'Leitet unsere Marketingstrategie und sorgt dafür, dass TANDEF weiterhin wächst und bekannt wird.', color: '#8FB37F' },
+  { name: 'Youssef ', role: 'Gründer & Geschäftsführer', desc: 'Visionär und Gründer von TANDEF. Verantwortlich für Strategie, Wachstum und Unternehmensentwicklung.', color: '#5B21B6' },
+ 
+ 
+  { name: 'Manar B.', role: 'Marketing Managerin', desc: 'Leitet unsere Marketingstrategie und sorgt dafür, dass TANDEF weiterhin wächst und bekannt wird.', color: '#8FB37F' },
 ];
 
 export default function UnserTeamPage() {
@@ -113,10 +113,10 @@ export default function UnserTeamPage() {
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-2">Unsere <span style={{color: 'var(--purple-700)'}}>Führung</span></h2>
         <p className="text-center mb-10" style={{color: 'var(--muted)'}}>Die Führungskräfte, die TANDEF mit Vision und Strategie leiten.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
           {LEADERSHIP.map(p => (
             <div key={p.name} className="lead-card p-6">
-              <div className="lead-avatar mb-4" style={{background: p.color}}>{initials(p.name)}</div>
+              <div className="lead-avatar mb-2" style={{background: p.color}}>{initials(p.name)}</div>
               <p className="font-bold">{p.name}</p>
               <p className="text-xs font-semibold mb-3" style={{color: 'var(--purple-700)'}}>{p.role}</p>
               <p className="text-sm mb-4" style={{color: 'var(--muted)'}}>{p.desc}</p>
@@ -126,9 +126,9 @@ export default function UnserTeamPage() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 pb-16 grid lg:grid-cols-2 gap-10 items-center">
+      <section className="max-w-6xl mx-auto px-6 pb-16 ">
         <div>
-          <h2 className="text-2xl font-extrabold mb-4">Unser <span style={{color: 'var(--purple-700)'}}>Reinigungsteam</span></h2>
+          <h2 className="text-center  text-2xl font-extrabold mb-4">Unser <span style={{color: 'var(--purple-700)'}}>Reinigungsteam</span></h2>
           <p className="mb-5" style={{color: 'var(--muted)'}}>TANDEF arbeitet mit selbstständigen und geprüften Reinigungspartnern zusammen. Jeder Partner wird sorgfältig geprüft und erfüllt unsere Qualitätsstandards, damit unsere Kunden jederzeit professionelle Ergebnisse erhalten.</p>
           <ul className="space-y-2 mb-6">
             {['Hintergrundgeprüft & verifiziert', 'Professionell geschult', 'Erfahren & zuverlässig', 'Mit Sorgfalt und Respekt'].map(t => (
@@ -140,7 +140,7 @@ export default function UnserTeamPage() {
           </ul>
   
         </div>
-        <HeroImg src="/images/cleaning-team.jpg" height="320px" position="center" />
+        
       </section>
 
       <section className="max-w-6xl mx-auto px-6 pb-16">
