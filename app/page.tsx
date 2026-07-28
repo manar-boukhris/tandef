@@ -78,13 +78,13 @@ export default function HomePage() {
       `}</style>
       {/* Header */}
       <header className="max-w-7xl mx-auto flex items-center justify-between px-6 py-6">
-        <div className="flex items-center">
-          <img src="/images/logo.png" alt="TANDEF – Trust. Cleanliness. Quality." className="h-10 w-auto" />
-        </div>
+      <div className="flex items-center">
+  <img src="/images/logo.png" alt="TANDEF – Trust. Cleanliness. Quality." className="h-16 w-auto" />
+</div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
-  <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70">
+        <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-    Für Helfer
+    Pro werden
   </a>
   <a href="/magazin" className="flex items-center gap-1.5 hover:opacity-70">
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
@@ -256,12 +256,12 @@ export default function HomePage() {
         <div className="rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-8 py-10 px-6" style={{background: 'var(--purple-50)'}}>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>1.200+</p>
+            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>600+</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Zufriedene Kunden</p>
           </div>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>2.500+</p>
+            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>500+</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Abgeschlossene Reinigungen</p>
           </div>
           <div className="text-center">
@@ -288,7 +288,7 @@ export default function HomePage() {
               Jetzt buchen
             </a>
           </div>
-          <img src="/images/ChatGPT Image 24 juil. 2026, 20_00_14.png" className="w-full h-full object-cover" style={{minHeight: '260px'}} />
+          <img src="/images/cleaning-supplies.png" className="w-full h-full object-cover" style={{minHeight: '260px'}} />
         </div>
       </section>
 

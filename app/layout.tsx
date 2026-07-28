@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import ChatWidget from '@/components/ChatWidget';
@@ -6,6 +6,12 @@ import ChatWidget from '@/components/ChatWidget';
 export const metadata: Metadata = {
   title: "TANDEF – Trust. Cleanliness. Quality.",
   description: "TANDEF – Zuverlässige Reinigung, gebucht in wenigen Minuten.",
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -22,9 +28,20 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <style>{`
+          /* Empêche le widget Google Translate de casser la mise en page mobile
+             (il injecte une iframe + un décalage inline sur <body>) */
           .goog-te-banner-frame, .goog-te-gadget-icon { display: none !important; }
-          body { top: 0 !important; }
           #google_translate_element { display: none; }
+
+          html { overflow-x: hidden; }
+          body {
+            position: static !important;
+            top: 0 !important;
+            overflow-x: hidden;
+            min-height: 100vh;
+          }
+          body > .skiptranslate { display: none !important; }
+          iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; }
         `}</style>
       </head>
       <body className="bg-white">
@@ -40,6 +57,12 @@ export default function RootLayout({
               { pageLanguage: 'de', includedLanguages: 'de,en,fr,ar', autoDisplay: false },
               'google_translate_element'
             );
+            const resetBodyPosition = () => {
+              document.body.style.position = 'static';
+              document.body.style.top = '0px';
+            };
+            const observer = new MutationObserver(resetBodyPosition);
+            observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
           }
         `}</Script>
         <Script
