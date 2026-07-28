@@ -82,9 +82,9 @@ export type ServiceLanding = {
       reviewCount: '4,9/5 (über 1.800 Bewertungen)',
       includes: [
         { icon: 'desk', title: 'Arbeitsplätze', desc: 'Reinigung von Schreibtischen, Tischen und Arbeitsbereichen' },
-        { icon: 'trash', title: 'Böden & Flächen', desc: 'Saugen, wischen und Pflege aller Bodenbeläge' },
+        { icon: 'bath', title: 'Böden & Flächen', desc: 'Saugen, wischen und Pflege aller Bodenbeläge' },
         { icon: 'bath', title: 'Sanitärbereiche', desc: 'Hygienische Reinigung von WCs, Waschbecken und Fliesen' },
-        { icon: 'coffee', title: 'Küchenbereiche', desc: 'Reinigung von Küchen, Spülen, Mikrowellen und Oberflächen' },
+        { icon: 'kitchen', title: 'Küchenbereiche', desc: 'Reinigung von Küchen, Spülen, Mikrowellen und Oberflächen' },
         { icon: 'more', title: 'Weitere Bereiche', desc: 'Glasflächen, Türen, Lichtschalter und häufig berührte Stellen' },
       ],
       hint: 'Leistungen können je nach Bedarf individuell angepasst werden.',

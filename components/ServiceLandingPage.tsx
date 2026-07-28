@@ -12,13 +12,17 @@ const WHY_ITEMS = [
     { icon: '/images/wallet.png', title: 'Faire Vergütung', desc: 'Wir bieten eine faire Bezahlung und zusätzliche Benefits, die Ihre Arbeit und Ihr Engagement würdigen.' },
     { icon: '/images/clock.png', title: 'Starkes Team', desc: 'Ein respektvolles Miteinander und Teamgeist machen uns stark. Gemeinsam erreichen wir mehr.' },
   ];
-  
+
+// Icônes "Was ist enthalten" — images PNG (fond transparent) au lieu de SVG
+const INCLUDE_IMG_ICONS: Record<string, string> = {
+  kitchen: '/images/kitchen.png',
+  bath: '/images/bath.png',
+  bed: '/images/living.png',
+  floor: '/images/floor.png',
+  more: '/images/door.png',
+};
+
 const ICONS: Record<string, ReactNode> = {
-  kitchen: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 3v6M16 3v6M4 13h16" /></svg>,
-  bath: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M4 12h16v4a4 4 0 01-4 4H8a4 4 0 01-4-4v-4z" /><path d="M6 12V6a2 2 0 012-2" /></svg>,
-  bed: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M3 18v-6a2 2 0 012-2h14a2 2 0 012 2v6" /><path d="M3 18h18M5 10V6a2 2 0 012-2h4a2 2 0 012 2v4" /></svg>,
-  floor: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M4 4l16 16M4 20L20 4" /></svg>,
-  more: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><rect x="4" y="4" width="7" height="7" rx="1" /><rect x="13" y="4" width="7" height="7" rx="1" /><rect x="4" y="13" width="7" height="7" rx="1" /><rect x="13" y="13" width="7" height="7" rx="1" /></svg>,
   desk: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><rect x="3" y="4" width="18" height="10" rx="1" /><path d="M7 14v6M17 14v6" /></svg>,
   trash: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" /></svg>,
   coffee: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M4 9h13v6a4 4 0 01-4 4H8a4 4 0 01-4-4V9z" /><path d="M17 10h2a2 2 0 010 4h-2" /></svg>,
@@ -33,6 +37,13 @@ const ICONS: Record<string, ReactNode> = {
   lock: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>,
   headset: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M3 12a9 9 0 0118 0v5a2 2 0 01-2 2h-2v-7h4M3 17v-5h4v7H5a2 2 0 01-2-2z" /></svg>,
 };
+
+function renderIncludeIcon(key: string) {
+  if (INCLUDE_IMG_ICONS[key]) {
+    return <img src={INCLUDE_IMG_ICONS[key]} alt={key} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />;
+  }
+  return ICONS[key];
+}
 
 function initials(name: string) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -74,7 +85,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
         .btn-outline:hover{background:var(--purple-50);}
         .price-tag{background:#fff;border-radius:16px;box-shadow:0 20px 45px -20px rgba(76,29,149,.35);}
         .include-card{background:#F9F7FE;border-radius:16px;}
-        .include-icon{width:52px;height:52px;border-radius:9999px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;}
+        .include-icon{width:52px;height:52px;border-radius:9999px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;padding:11px;}
         .plan-card{background:#fff;border:1.5px solid #ECE8F5;border-radius:18px;position:relative;}
         .plan-card.popular{border-color:var(--purple-600);box-shadow:0 20px 45px -20px rgba(76,29,149,.35);}
         .plan-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--purple-700);color:#fff;font-size:.75rem;font-weight:700;padding:.3rem 1rem;border-radius:9999px;white-space:nowrap;}
@@ -185,7 +196,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
         <div className={`grid sm:grid-cols-2 ${data.includes.length > 5 ? 'lg:grid-cols-6' : 'lg:grid-cols-5'} gap-5`}>
           {data.includes.map(inc => (
             <div key={inc.title} className="include-card p-6 text-center">
-              <div className="include-icon mx-auto mb-4">{ICONS[inc.icon]}</div>
+              <div className="include-icon mx-auto mb-4">{renderIncludeIcon(inc.icon)}</div>
               <p className="font-bold mb-2" style={{ color: 'var(--ink)' }}>{inc.title}</p>
               <p className="text-sm" style={{ color: 'var(--muted)' }}>{inc.desc}</p>
             </div>

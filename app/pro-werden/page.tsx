@@ -1,9 +1,10 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ProWerdenPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     document.title = "TANDEF – Reinigungsprofis in deiner Nähe finden";
@@ -92,7 +93,8 @@ export default function ProWerdenPage() {
           .faq-item summary{list-style:none;cursor:pointer;}
           .faq-item summary::-webkit-details-marker{display:none;}
           .faq-item[open] summary .faq-chevron{transform:rotate(180deg);}
-          .why-icon{width:64px;height:64px;border-radius:9999px;background:var(--purple-50);display:flex;align-items:center;justify-content:center;}
+          .why-icon{width:64px;height:64px;border-radius:9999px;background:var(--purple-50);display:flex;align-items:center;justify-content:center;padding:14px;}
+          .why-icon img{width:100%;height:100%;object-fit:contain;}
           .cta-banner{
             background:linear-gradient(120deg,var(--purple-900),var(--purple-600));border-radius:28px;
           }
@@ -134,11 +136,59 @@ export default function ProWerdenPage() {
               Login
             </a>
           </nav>
-          <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full inline-flex items-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-            Reinigung buchen
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="/address" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              Reinigung buchen
+            </a>
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Menü öffnen"
+              style={{color: 'var(--purple-700)'}}
+            >
+              {mobileMenuOpen ? (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
+            </button>
+          </div>
         </div>
+
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t px-6 py-4 flex flex-col gap-1 text-sm font-medium" style={{borderColor: '#EDE9F5', color: 'var(--ink)'}}>
+            <a href="/" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
+              Für Kunden
+            </a>
+            <a href="/magazin" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
+              Magazin
+            </a>
+            <a href="/ueber-uns" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" /></svg>
+              Über uns
+            </a>
+            <a href="/unser-team" className="flex items-center gap-2.5 py-3 pl-8 text-sm" style={{color: 'var(--muted)'}} onClick={() => setMobileMenuOpen(false)}>
+              Unser Team
+            </a>
+            <a href="/karriere" className="flex items-center gap-2.5 py-3 pl-8 text-sm" style={{color: 'var(--muted)'}} onClick={() => setMobileMenuOpen(false)}>
+              Karriere
+            </a>
+            <a href="/kontakt" className="flex items-center gap-2.5 py-3 pl-8 text-sm" style={{color: 'var(--muted)'}} onClick={() => setMobileMenuOpen(false)}>
+              Kontakt
+            </a>
+            <a href="/login" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+              Login
+            </a>
+            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full inline-flex items-center justify-center gap-2 mt-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              Reinigung buchen
+            </a>
+          </nav>
+        )}
       </header>
 
       {/* Hero */}
@@ -377,7 +427,7 @@ export default function ProWerdenPage() {
 
             <div>
               <div className="why-icon mx-auto mb-4">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0V4z" /><path d="M5 4H3v2a4 4 0 004 4M19 4h2v2a4 4 0 01-4 4" /></svg>
+                <img src="/images/person.png" alt="Wer sind wir?" />
               </div>
               <p className="font-bold mb-2" style={{color: 'var(--purple-700)'}}>Wer sind wir?</p>
               <p className="text-sm" style={{color: 'var(--muted)'}}>2016 gegründet, ist TANDEF die führende Plattform für Reinigungsprofis. Mehr als 10.000 unabhängige Profis vertrauen auf uns.</p>
@@ -385,7 +435,7 @@ export default function ProWerdenPage() {
 
             <div>
               <div className="why-icon mx-auto mb-4">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M15 4V2M15 10v-2M11 6H9M21 6h-2M17.5 3.5l-1.4 1.4M17.5 8.5l-1.4-1.4M12.5 8.5l1.4-1.4M12.5 3.5l1.4 1.4" /><path d="M3 21l9-9M14 12l7-7" /></svg>
+                <img src="/images/target.png" alt="Unsere Mission" />
               </div>
               <p className="font-bold mb-2" style={{color: 'var(--purple-700)'}}>Unsere Mission</p>
               <p className="text-sm" style={{color: 'var(--muted)'}}>Wir digitalisieren die Reinigungsbranche und schaffen bessere Arbeitsbedingungen. So kannst du dich auf das konzentrieren, was wirklich zählt: deine Arbeit.</p>
@@ -393,7 +443,7 @@ export default function ProWerdenPage() {
 
             <div>
               <div className="why-icon mx-auto mb-4">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" /></svg>
+                <img src="/images/heart-outline.png" alt="Unser Engagement" />
               </div>
               <p className="font-bold mb-2" style={{color: 'var(--purple-700)'}}>Unser Engagement</p>
               <p className="text-sm" style={{color: 'var(--muted)'}}>Wir sind für dich da – als Vermittler, Unterstützer und Partner. Dein Erfolg ist unser Antrieb.</p>

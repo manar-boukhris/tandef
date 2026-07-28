@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "./globals.css";
 import ChatWidget from '@/components/ChatWidget';
-
+import CookieConsent from '@/components/CookieConsent';
 export const metadata: Metadata = {
   title: "TANDEF – Trust. Cleanliness. Quality.",
   description: "TANDEF – Zuverlässige Reinigung, gebucht in wenigen Minuten.",
@@ -48,6 +48,7 @@ export default function RootLayout({
         <div id="google_translate_element"></div>
         {children}
         <ChatWidget />
+        <CookieConsent />
         <Script
           id="google-translate-init"
           strategy="afterInteractive"

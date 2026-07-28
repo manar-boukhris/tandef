@@ -1,13 +1,13 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const router = useRouter();
-
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     document.title = "TANDEF – Trust. Cleanliness. Quality.";
@@ -77,39 +77,87 @@ export default function HomePage() {
           }
       `}</style>
       {/* Header */}
-      <header className="max-w-7xl mx-auto flex items-center justify-between px-6 py-6">
-      <div className="flex items-center">
-  <img src="/images/logo.png" alt="TANDEF – Trust. Cleanliness. Quality." className="h-16 w-auto" />
-</div>
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
-        <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-    Pro werden
-  </a>
-  <a href="/magazin" className="flex items-center gap-1.5 hover:opacity-70">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
-    Magazin
-  </a>
+      <header className="max-w-7xl mx-auto px-6 py-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <img src="/images/logo.png" alt="TANDEF – Trust. Cleanliness. Quality." className="h-16 w-auto" />
+          </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
+            <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              Pro werden
+            </a>
+            <a href="/magazin" className="flex items-center gap-1.5 hover:opacity-70">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
+              Magazin
+            </a>
 
-  <div className="relative">
-    <button id="about-menu-btn" className="flex items-center gap-1.5 hover:opacity-70">
-      Über uns
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-    </button>
-    <div id="about-menu" className="hidden absolute left-0 mt-3 w-56 py-2 z-30 bg-white rounded-xl" style={{boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)'}}>
-      <a href="/ueber-uns" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Über uns</a>
-      <a href="/unser-team" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Unser Team</a>
-      <a href="/karriere" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Karriere</a>
-      <a href="/kontakt" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Kontakt</a>
-    </div>
-  </div>
+            <div className="relative">
+              <button id="about-menu-btn" className="flex items-center gap-1.5 hover:opacity-70">
+                Über uns
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+              </button>
+              <div id="about-menu" className="hidden absolute left-0 mt-3 w-56 py-2 z-30 bg-white rounded-xl" style={{boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)'}}>
+                <a href="/ueber-uns" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Über uns</a>
+                <a href="/unser-team" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Unser Team</a>
+                <a href="/karriere" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Karriere</a>
+                <a href="/kontakt" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Kontakt</a>
+              </div>
+            </div>
 
-  <a href="/login" className="flex items-center gap-1.5 hover:opacity-70">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-    Login
-  </a>
-  <LanguageSwitcher />
-</nav>
+            <a href="/login" className="flex items-center gap-1.5 hover:opacity-70">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+              Login
+            </a>
+            <LanguageSwitcher />
+          </nav>
+
+          <button
+            className="md:hidden flex items-center justify-center w-10 h-10"
+            onClick={() => setMobileMenuOpen(v => !v)}
+            aria-label="Menü öffnen"
+            style={{color: 'var(--purple-700)'}}
+          >
+            {mobileMenuOpen ? (
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+            ) : (
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+            )}
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <nav className="md:hidden flex flex-col gap-1 text-sm font-medium mt-4 pt-4 border-t" style={{borderColor: '#EDE9F5', color: 'var(--ink)'}}>
+            <a href="/pro-werden" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+              Pro werden
+            </a>
+            <a href="/magazin" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
+              Magazin
+            </a>
+            <a href="/ueber-uns" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
+              Über uns
+            </a>
+            <a href="/unser-team" className="flex items-center gap-2.5 py-3 pl-8 text-sm" style={{color: 'var(--muted)'}} onClick={() => setMobileMenuOpen(false)}>
+              Unser Team
+            </a>
+            <a href="/karriere" className="flex items-center gap-2.5 py-3 pl-8 text-sm" style={{color: 'var(--muted)'}} onClick={() => setMobileMenuOpen(false)}>
+              Karriere
+            </a>
+            <a href="/kontakt" className="flex items-center gap-2.5 py-3 pl-8 text-sm" style={{color: 'var(--muted)'}} onClick={() => setMobileMenuOpen(false)}>
+              Kontakt
+            </a>
+            <a href="/login" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+              Login
+            </a>
+            <div className="py-3">
+              <LanguageSwitcher />
+            </div>
+          </nav>
+        )}
       </header>
 
       {/* Hero */}
@@ -134,7 +182,7 @@ export default function HomePage() {
               Preise ansehen
             </a>
           </div>
-          <div className="grid grid-cols-3 gap-6 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div className="flex gap-2">
               <svg className="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" /></svg>
               <div>

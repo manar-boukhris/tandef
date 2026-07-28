@@ -11,7 +11,7 @@ export type BookingDraft = {
     petsDetails?: string;
     cleanerId?: number;
     address?: string;
-    paymentMethod?: string; // ⭐ zid hedhi
+    paymentMethod?: string; // ⭐ 
   };
   
   const KEY = 'bookingDraft';
