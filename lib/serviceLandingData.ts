@@ -29,7 +29,7 @@ export type ServiceLanding = {
       titleAccent: 'in Deutschland',
       subtitle: 'Genießen Sie ein sauberes Zuhause ohne Stress. Unsere geprüften Reinigungskräfte kümmern sich zuverlässig um Ihre Wohnung.',
       trustBadges: ['Geprüfte Profis', 'Zufriedenheitsgarantie'],
-      priceFrom: '32,90 €',
+      priceFrom: '24,90 €',
       priceUnit: 'pro Stunde',
       reviewCount: '4,9/5 (über 2.500 Bewertungen)',
       includes: [
@@ -71,9 +71,9 @@ export type ServiceLanding = {
     },
   
     bueroreinigung: {
-      slug: 'bueroreinigung',
+      slug: 'Firmenreinigung',
       badge: '★ Für ein produktives Arbeitsumfeld',
-      title: 'Büroreinigung',
+      title: 'Firmenreinigung',
       titleAccent: 'in Deutschland',
       subtitle: 'Saubere Arbeitsplätze für motivierte Mitarbeiter und einen professionellen Eindruck bei Kunden. Zuverlässig, flexibel und gründlich.',
       trustBadges: ['Geprüfte Profis', 'Zufriedenheitsgarantie'],
@@ -105,7 +105,7 @@ export type ServiceLanding = {
         { name: 'Sabrina L.', stars: 4, time: 'vor 3 Wochen', text: 'Klare Empfehlung für jede Firma, die Wert auf Sauberkeit und Hygiene legt.' },
       ],
       faqs: [
-        { q: 'Wie oft ist eine Büroreinigung sinnvoll?', a: 'Das hängt von der Größe und Nutzung ab – täglich, wöchentlich oder individuell nach Bedarf.' },
+        { q: 'Wie oft ist eine Firmenreinigung sinnvoll?', a: 'Das hängt von der Größe und Nutzung ab – täglich, wöchentlich oder individuell nach Bedarf.' },
         { q: 'Können wir einen individuellen Reinigungsplan erstellen?', a: 'Ja, wir passen die Leistungen gerne an Ihre spezifischen Anforderungen an.' },
         { q: 'Bringen Sie die eigenen Reinigungsmittel mit?', a: 'Ja, unsere Teams bringen professionelle Reinigungsmittel mit.' },
         { q: 'Was passiert, wenn wir mit der Reinigung nicht zufrieden sind?', a: 'Wir bieten eine Zufriedenheitsgarantie und reinigen bei Bedarf kostenlos nach.' },
@@ -113,8 +113,8 @@ export type ServiceLanding = {
       ],
       ctaTitle: 'Für ein',
       ctaAccent: 'sauberes & produktives Büro',
-      ctaSubtitle: 'Buchen Sie jetzt Ihre Büroreinigung in Deutschland in nur wenigen Klicks.',
-      ctaButton: 'Jetzt Büroreinigung buchen',
+      ctaSubtitle: 'Buchen Sie jetzt Ihre Firmenreinigung in Deutschland in nur wenigen Klicks.',
+      ctaButton: 'Jetzt Firmenreinigung buchen',
       heroImage: '/images/WhatsApp Image 2026-07-21 at 22.07.28.jpeg',
     },
   

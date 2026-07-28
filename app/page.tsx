@@ -273,7 +273,7 @@ export default function HomePage() {
           <a href="/bueroreinigung" className="card overflow-hidden flex flex-col">
             <div className="p-6">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="4" y="3" width="16" height="18" rx="1" /><path d="M8 7h1M12 7h1M16 7h1M8 11h1M12 11h1M16 11h1M8 15h1M12 15h1M16 15h1" /></svg>
-              <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Büroreinigung</p>
+              <p className="font-semibold mt-4 mb-1" style={{color: 'var(--purple-900)'}}>Firmenreinigung</p>
               <p className="text-sm min-h-[60px]" style={{color: 'var(--muted)'}}>Saubere Arbeitsplätze für mehr Wohlbefinden und Produktivität.</p>
             </div>
             <div className="relative mt-auto">
@@ -304,12 +304,12 @@ export default function HomePage() {
         <div className="rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-8 py-10 px-6" style={{background: 'var(--purple-50)'}}>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>600+</p>
+            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>400+</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Zufriedene Kunden</p>
           </div>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>500+</p>
+            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>600+</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Abgeschlossene Reinigungen</p>
           </div>
           <div className="text-center">

@@ -353,7 +353,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
             <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Leistungen</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
               <li><a href="/wohnungsreinigung" className="hover:opacity-70">Wohnungsreinigung</a></li>
-              <li><a href="/bueroreinigung" className="hover:opacity-70">Büroreinigung</a></li>
+              <li><a href="/bueroreinigung" className="hover:opacity-70">Firmenreinigung</a></li>
               <li><a href="/umzugsreinigung" className="hover:opacity-70">Umzugsreinigung</a></li>
             
             </ul>

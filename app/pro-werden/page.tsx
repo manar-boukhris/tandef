@@ -6,6 +6,12 @@ import { useEffect, useState } from 'react';
 export default function ProWerdenPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  function handleBookingClick(e) {
+    e.preventDefault();
+    const isLoggedIn = !!localStorage.getItem('authToken'); // badel 'authToken' bel key eli tessta3mlou fi l app
+    window.location.href = isLoggedIn ? '/address' : '/login';
+  }
+
   useEffect(() => {
     document.title = "TANDEF – Reinigungsprofis in deiner Nähe finden";
     const slider = document.getElementById('avail-slider');
@@ -137,7 +143,7 @@ export default function ProWerdenPage() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <a href="/address" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center gap-2">
+            <a href="/address" onClick={handleBookingClick} className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
               Reinigung buchen
             </a>
@@ -183,7 +189,7 @@ export default function ProWerdenPage() {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
               Login
             </a>
-            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full inline-flex items-center justify-center gap-2 mt-2">
+            <a href="/address" onClick={handleBookingClick} className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full inline-flex items-center justify-center gap-2 mt-2">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
               Reinigung buchen
             </a>
