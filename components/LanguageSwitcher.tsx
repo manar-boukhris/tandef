@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 
 const LANGUAGES = [
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'ar', label: 'العربية', flag: '🇸🇾' },
+  { code: 'de', label: 'DE' },
+  { code: 'en', label: 'EN' },
+  { code: 'ar', label: 'AR' },
 ];
 
 function getCookie(name: string) {
@@ -15,7 +14,6 @@ function getCookie(name: string) {
 }
 
 export function LanguageSwitcher() {
-  const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState('de');
 
   useEffect(() => {
@@ -28,48 +26,37 @@ export function LanguageSwitcher() {
   }, []);
 
   function changeLanguage(lang: string) {
+    if (lang === current) return;
     if (lang === 'de') {
       document.cookie = 'googtrans=/de/de; path=/;';
     } else {
       document.cookie = `googtrans=/de/${lang}; path=/;`;
     }
-    setOpen(false);
+    setCurrent(lang);
     window.location.reload();
   }
 
-  const currentLang = LANGUAGES.find(l => l.code === current) || LANGUAGES[0];
-
   return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(v => !v)}
-        className="flex items-center gap-1.5 text-sm font-medium hover:opacity-70"
-        style={{ color: 'var(--purple-700)' }}
-      >
-        <span className="text-base leading-none">{currentLang.flag}</span>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} />
-          <div
-            className="absolute right-0 mt-3 w-40 py-2 z-40 bg-white rounded-xl"
-            style={{ boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)' }}
+    <div
+      className="inline-flex items-center gap-0.5 p-1 rounded-full"
+      style={{ background: '#EDE9F5' }}
+    >
+      {LANGUAGES.map(l => {
+        const isActive = l.code === current;
+        return (
+          <button
+            key={l.code}
+            onClick={() => changeLanguage(l.code)}
+            className="px-3 py-1.5 rounded-full text-xs font-bold transition-all"
+            style={{
+              background: isActive ? 'var(--purple-700)' : 'transparent',
+              color: isActive ? '#fff' : '#6B6478',
+            }}
           >
-            {LANGUAGES.map(l => (
-              <button
-                key={l.code}
-                onClick={() => changeLanguage(l.code)}
-                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-left hover:opacity-70"
-                style={{ color: '#1F1339', background: l.code === current ? '#F5F3FF' : 'transparent' }}
-              >
-                <span className="text-base leading-none">{l.flag}</span>
-                {l.label}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+            {l.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
