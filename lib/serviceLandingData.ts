@@ -81,7 +81,7 @@ export type ServiceLanding = {
       priceUnit: 'pro Stunde',
       reviewCount: '4,9/5 (über 1.800 Bewertungen)',
       includes: [
-        { icon: 'desk', title: 'Arbeitsplätze', desc: 'Reinigung von Schreibtischen, Tischen und Arbeitsbereichen' },
+        { icon: 'buroo', title: 'Arbeitsplätze', desc: 'Reinigung von Schreibtischen, Tischen und Arbeitsbereichen' },
         { icon: 'bath', title: 'Böden & Flächen', desc: 'Saugen, wischen und Pflege aller Bodenbeläge' },
         { icon: 'bath', title: 'Sanitärbereiche', desc: 'Hygienische Reinigung von WCs, Waschbecken und Fliesen' },
         { icon: 'kitchen', title: 'Küchenbereiche', desc: 'Reinigung von Küchen, Spülen, Mikrowellen und Oberflächen' },

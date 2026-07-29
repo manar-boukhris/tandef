@@ -29,19 +29,34 @@ export default function RootLayout({
         />
         <style>{`
           /* Empêche le widget Google Translate de casser la mise en page mobile
-             (il injecte une iframe + un décalage inline sur <body>) */
-          .goog-te-banner-frame, .goog-te-gadget-icon { display: none !important; }
+             ET cache complètement la barre "This page has been translated..." */
+          .goog-te-banner-frame,
+          .goog-te-banner-frame.skiptranslate,
+          iframe.goog-te-banner-frame,
+          iframe.skiptranslate,
+          .goog-te-gadget-icon,
+          .goog-tooltip,
+          .goog-tooltip:hover,
+          .goog-text-highlight,
+          #goog-gt-tt,
+          .goog-te-balloon-frame,
+          .goog-te-spinner-pos {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+          }
           #google_translate_element { display: none; }
+          .goog-text-highlight { background: none !important; box-shadow: none !important; }
 
           html { overflow-x: hidden; }
           body {
             position: static !important;
-            top: 0 !important;
+            top: 0px !important;
             overflow-x: hidden;
             min-height: 100vh;
           }
           body > .skiptranslate { display: none !important; }
-          iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; }
         `}</style>
       </head>
       <body className="bg-white">

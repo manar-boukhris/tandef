@@ -20,6 +20,8 @@ const INCLUDE_IMG_ICONS: Record<string, string> = {
   bed: '/images/living.png',
   floor: '/images/floor.png',
   more: '/images/door.png',
+  buroo:'/images/platz.png',
+  window:'/images/fenester.png',
 };
 
 const ICONS: Record<string, ReactNode> = {
