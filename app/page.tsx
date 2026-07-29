@@ -371,7 +371,9 @@ export default function HomePage() {
           <div>
             <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Rechtliches</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
+            <li><a href="/agb" className="hover:opacity-70">AGB</a></li>
+<li><a href="/datenschutz" className="hover:opacity-70">Datenschutz</a></li>
+<li><a href="/impressum" className="hover:opacity-70">Impressum</a></li>
             </ul>
           </div>
           <div>
