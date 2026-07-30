@@ -19,6 +19,8 @@ export default function KontaktPage() {
   const [message, setMessage] = useState('');
   const [agreed, setAgreed] = useState(false);
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
@@ -32,10 +34,31 @@ export default function KontaktPage() {
     }
   }, []);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setError('');
     if (!name || !email || !message || !agreed) return;
-    setSent(true);
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, subject: topic, message }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
+        return;
+      }
+
+      setSent(true);
+    } catch {
+      setError('Fehler beim Senden. Bitte versuche es erneut.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   const faqs = [
@@ -53,6 +76,7 @@ export default function KontaktPage() {
         h1,h2,h3{font-family:'Poppins',sans-serif;}
         .btn-primary{background:var(--purple-700);transition:.2s ease;}
         .btn-primary:hover{background:var(--purple-900);}
+        .btn-primary:disabled{opacity:.6;cursor:not-allowed;}
         .trust-item{text-align:left;}
         .icon-badge{width:44px;height:44px;border-radius:9999px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;}
         .field{border:1.5px solid #ECE8F5;border-radius:10px;padding:.8rem 1rem;width:100%;outline:none;transition:.15s ease;}
@@ -161,6 +185,9 @@ export default function KontaktPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <p className="text-sm font-medium" style={{color: '#C0392B'}}>{error}</p>
+              )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <input className="field" placeholder="Ihr Name *" value={name} onChange={e => setName(e.target.value)} required />
                 <input className="field" type="email" placeholder="Ihre E-Mail *" value={email} onChange={e => setEmail(e.target.value)} required />
@@ -176,11 +203,11 @@ export default function KontaktPage() {
               <textarea className="field" rows={4} placeholder="Ihre Nachricht *" value={message} onChange={e => setMessage(e.target.value)} required />
               <label className="flex items-start gap-2 text-sm" style={{color: 'var(--muted)'}}>
                 <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} className="mt-1" required />
-                Ich stimme der <a href="#" className="underline" style={{color: 'var(--purple-700)'}}>Datenschutzerklärung</a> zu.*
+                Ich stimme der <a href="/datenschutz" className="underline" style={{color: 'var(--purple-700)'}}>Datenschutzerklärung</a> zu.*
               </label>
-              <button type="submit" className="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-flex items-center gap-2">
+              <button type="submit" disabled={loading} className="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-flex items-center gap-2">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
-                Nachricht senden
+                {loading ? 'Wird gesendet...' : 'Nachricht senden'}
               </button>
             </form>
           )}
@@ -263,7 +290,9 @@ export default function KontaktPage() {
           <div>
             <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Rechtliches</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
+              <li><a href="/agb" className="hover:opacity-70">AGB</a></li>
+              <li><a href="/datenschutz" className="hover:opacity-70">Datenschutz</a></li>
+              <li><a href="/impressum" className="hover:opacity-70">Impressum</a></li>
             </ul>
           </div>
           <div>

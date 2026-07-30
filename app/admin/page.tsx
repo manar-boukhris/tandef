@@ -127,6 +127,7 @@ export default function AdminPage() {
             </a>
             <a onClick={() => scrollToSection('section-clients')}>👥 Kunden</a>
             <a onClick={() => scrollToSection('section-bookings')}>📅 Buchungen</a>
+            <a onClick={() => router.push('/admin/reklamationen')}>📩 Reklamationen</a>
           </div>
           <div className="admin-side-bottom">
             <a onClick={() => router.push('/')}>🌐 Website ansehen</a>

@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.css";
 import ChatWidget from '@/components/ChatWidget';
 import CookieConsent from '@/components/CookieConsent';
+import GoogleTranslateGate from '@/components/GoogleTranslateGate';
+
 export const metadata: Metadata = {
   title: "TANDEF – Trust. Cleanliness. Quality.",
   description: "TANDEF – Zuverlässige Reinigung, gebucht in wenigen Minuten.",
@@ -60,31 +61,10 @@ export default function RootLayout({
         `}</style>
       </head>
       <body className="bg-white">
-        <div id="google_translate_element"></div>
         {children}
         <ChatWidget />
         <CookieConsent />
-        <Script
-          id="google-translate-init"
-          strategy="afterInteractive"
-        >{`
-          function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-              { pageLanguage: 'de', includedLanguages: 'de,en,fr,ar', autoDisplay: false },
-              'google_translate_element'
-            );
-            const resetBodyPosition = () => {
-              document.body.style.position = 'static';
-              document.body.style.top = '0px';
-            };
-            const observer = new MutationObserver(resetBodyPosition);
-            observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-          }
-        `}</Script>
-        <Script
-          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
-        />
+        <GoogleTranslateGate />
       </body>
     </html>
   );
