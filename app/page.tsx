@@ -75,16 +75,23 @@ export default function HomePage() {
             display:flex;align-items:center;justify-content:center;
             color:white;
           }
+          .social-icon{
+            width:36px;height:36px;border-radius:9999px;
+            background:var(--purple-100);
+            display:flex;align-items:center;justify-content:center;
+            color:var(--purple-700);transition:.15s ease;
+          }
+          .social-icon:hover{background:var(--purple-700);color:#fff;}
       `}</style>
       {/* Header */}
       <header className="max-w-7xl mx-auto px-6 py-6">
-        <div className="flex items-center justify-between">
+        <div className="grid grid-cols-[auto_1fr_auto] md:grid-cols-[auto_1fr_auto] items-center gap-4">
           <div className="flex items-center">
             <img src="/images/logo.png" alt="TANDEF – Trust. Cleanliness. Quality." className="h-16 w-auto" />
           </div>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
+
+          <nav className="hidden md:flex items-center justify-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
             <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-              
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
               Pro werden
             </a>
@@ -98,7 +105,7 @@ export default function HomePage() {
                 Über uns
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
               </button>
-              <div id="about-menu" className="hidden absolute left-0 mt-3 w-56 py-2 z-30 bg-white rounded-xl" style={{boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)'}}>
+              <div id="about-menu" className="hidden absolute left-1/2 -translate-x-1/2 mt-3 w-56 py-2 z-30 bg-white rounded-xl" style={{boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)'}}>
                 <a href="/ueber-uns" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Über uns</a>
                 <a href="/unser-team" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Unser Team</a>
                 <a href="/karriere" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Karriere</a>
@@ -110,21 +117,25 @@ export default function HomePage() {
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
               Login
             </a>
-            <LanguageSwitcher />
           </nav>
 
-          <button
-            className="md:hidden flex items-center justify-center w-10 h-10"
-            onClick={() => setMobileMenuOpen(v => !v)}
-            aria-label="Menü öffnen"
-            style={{color: 'var(--purple-700)'}}
-          >
-            {mobileMenuOpen ? (
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
-            ) : (
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
-            )}
-          </button>
+          <div className="flex items-center gap-3">
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Menü öffnen"
+              style={{color: 'var(--purple-700)'}}
+            >
+              {mobileMenuOpen ? (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              ) : (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
+            </button>
+          </div>
         </div>
 
         {mobileMenuOpen && (
@@ -162,7 +173,7 @@ export default function HomePage() {
       </header>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pt-8 pb-16 grid md:grid-cols-2 gap-10 items-center">
+      <section className="max-w-7xl mx-auto px-6 pt-8 pb-16 grid lg:grid-cols-2 gap-10 items-center">
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold leading-tight" style={{color: 'var(--purple-900)'}}>
             Mehr Zeit für<br />das Wesentliche.
@@ -305,7 +316,7 @@ export default function HomePage() {
         <div className="rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-8 py-10 px-6" style={{background: 'var(--purple-50)'}}>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>400+</p>
+            <p className="text-2xl font-bold" style={{color: 'var(--purple-900)'}}>500+</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Zufriedene Kunden</p>
           </div>
           <div className="text-center">
@@ -328,7 +339,7 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="max-w-6xl mx-auto px-6 mb-16">
-        <div className="rounded-2xl grid md:grid-cols-2 items-center overflow-hidden" style={{background: 'var(--purple-50)'}}>
+        <div className="rounded-2xl grid lg:grid-cols-2 items-center overflow-hidden" style={{background: 'var(--purple-50)'}}>
           <div className="p-10">
             <h3 className="text-2xl font-bold mb-3" style={{color: 'var(--purple-900)'}}>Bereit für ein <span style={{color: 'var(--purple-600)'}}>sauberes Zuhause</span>?</h3>
             <p className="mb-6" style={{color: 'var(--muted)'}}>Buchen Sie jetzt Ihre Reinigung in Köln in nur wenigen Klicks.</p>
@@ -347,8 +358,16 @@ export default function HomePage() {
           <div className="md:col-span-2">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
             <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
-            <div className="flex gap-3 mt-5" style={{color: 'var(--purple-700)'}}>
-              <span>f</span><span>◎</span><span>w</span><span>✉</span>
+            <div className="flex gap-3 mt-5">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z"/></svg>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
+              </a>
+              <a href="https://wa.me/4915214440144" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.2 14.9 3.8 13.5 3.8 12c0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.1.2-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.4 3.8 3.4.5.2.9.4 1.3.5.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z"/></svg>
+              </a>
             </div>
           </div>
           <div>
