@@ -24,6 +24,7 @@ function HeroImg({ src, height, position = 'center 30%' }) {
 
 export default function UeberUnsPage() {
   const [stats, setStats] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     document.title = "TANDEF – Über uns";
@@ -57,39 +58,75 @@ export default function UeberUnsPage() {
         .cta-banner{background:var(--purple-50);border-radius:20px;overflow:hidden;}
         .dropdown-menu a{display:block;padding:.6rem 1.25rem;font-size:.9rem;}
         .dropdown-menu a:hover{background:var(--purple-50);}
+        .social-icon{
+          width:36px;height:36px;border-radius:9999px;
+          background:var(--purple-100);
+          display:flex;align-items:center;justify-content:center;
+          color:var(--purple-700);transition:.15s ease;
+        }
+        .social-icon:hover{background:var(--purple-700);color:#fff;}
       `}</style>
 
       <header className="bg-white border-b" style={{borderColor: '#EDE9F5'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
           <a href="/" className="flex items-center gap-2"><img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" /></a>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
-            <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-              Für Helfer
+          <nav className="hidden md:flex items-center justify-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
+            <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
+              Pro werden
             </a>
             <a href="/magazin" className="flex items-center gap-1.5 hover:opacity-70">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
               Magazin
             </a>
+
             <div className="relative">
-              <button id="about-menu-btn" className="flex items-center gap-1.5" style={{color: 'var(--purple-700)'}}>
+              <button id="about-menu-btn" className="flex items-center gap-1.5 hover:opacity-70">
                 Über uns
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
               </button>
-              <div id="about-menu" className="dropdown-menu hidden absolute left-0 mt-3 w-56 py-2 z-30 bg-white rounded-xl" style={{boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)'}}>
-                <a href="/ueber-uns" style={{color: 'var(--ink)'}}>Über uns</a>
-                <a href="/unser-team" style={{color: 'var(--ink)'}}>Unser Team</a>
-                <a href="/karriere" style={{color: 'var(--ink)'}}>Karriere</a>
-                <a href="/kontakt" style={{color: 'var(--ink)'}}>Kontakt</a>
+              <div id="about-menu" className="hidden absolute left-1/2 -translate-x-1/2 mt-3 w-56 py-2 z-30 bg-white rounded-xl" style={{boxShadow: '0 20px 45px -15px rgba(76,29,149,.3)'}}>
+                <a href="/ueber-uns" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Über uns</a>
+                <a href="/unser-team" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Unser Team</a>
+                <a href="/karriere" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Karriere</a>
+                <a href="/kontakt" className="block px-5 py-2.5 text-sm hover:opacity-70" style={{color: 'var(--ink)'}}>Kontakt</a>
               </div>
             </div>
+
             <a href="/login" className="flex items-center gap-1.5 hover:opacity-70">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
               Login
             </a>
           </nav>
-          <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full">Reinigung buchen</a>
+
+          <div className="flex items-center gap-3">
+            <a href="/address" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Menü öffnen"
+              style={{color: 'var(--purple-700)'}}
+            >
+              {mobileMenuOpen ? (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
+            </button>
+          </div>
         </div>
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t px-6 py-4 flex flex-col gap-1 text-sm font-medium" style={{borderColor: '#EDE9F5', color: 'var(--ink)'}}>
+            <a href="/pro-werden" className="py-3">Pro werden</a>
+            <a href="/magazin" className="py-3">Magazin</a>
+            <a href="/ueber-uns" className="py-3">Über uns</a>
+            <a href="/unser-team" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Unser Team</a>
+            <a href="/karriere" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Karriere</a>
+            <a href="/kontakt" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Kontakt</a>
+            <a href="/login" className="py-3">Login</a>
+            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
+          </nav>
+        )}
       </header>
 
       <div className="max-w-7xl mx-auto px-6 pt-4 text-sm" style={{color: 'var(--muted)'}}>
@@ -99,7 +136,7 @@ export default function UeberUnsPage() {
       <section className="max-w-7xl mx-auto px-6 pt-8 pb-16 grid lg:grid-cols-2 gap-10 items-center">
         <div>
           <p className="text-sm font-bold mb-3" style={{color: 'var(--purple-700)'}}>ÜBER UNS</p>
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-5" style={{color: 'var(--ink)'}}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-5" style={{color: 'var(--ink)'}}>
             TANDEF – Sauberkeit, der Sie <span style={{color: 'var(--purple-700)'}}>vertrauen</span> können.
           </h1>
           <p className="text-base mb-8 max-w-md" style={{color: 'var(--muted)'}}>
@@ -110,7 +147,7 @@ export default function UeberUnsPage() {
             <a href="/address" className="btn-primary text-white font-semibold px-6 py-3 rounded-lg">Jetzt Reinigung buchen</a>
             <a href="#geschichte" className="btn-outline font-semibold px-6 py-3 rounded-lg">Mehr über uns</a>
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" /></svg>Gegründet in Köln für unsere Region</div>
             <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>+1.200 zufriedene Kunden</div>
             <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>Zuverlässig & versichert</div>
@@ -167,15 +204,15 @@ export default function UeberUnsPage() {
       </section>
 
       <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="stats-band grid grid-cols-2 md:grid-cols-4 gap-8 py-10 px-8">
+        <div className="stats-band grid grid-cols-2 lg:grid-cols-4 gap-8 py-10 px-8">
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-            <p className="text-2xl font-bold">{stats ? `${stats.customers}+` : '—'}</p>
+            <p className="text-2xl font-bold">500</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Zufriedene Kunden</p>
           </div>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-            <p className="text-2xl font-bold">{stats ? `${stats.cleanings}+` : '—'}</p>
+            <p className="text-2xl font-bold">600</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Abgeschlossene Reinigungen</p>
           </div>
           <div className="text-center">
@@ -185,7 +222,7 @@ export default function UeberUnsPage() {
           </div>
           <div className="text-center">
             <svg className="mx-auto mb-2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M9 12l2 2 4-4" /></svg>
-            <p className="text-2xl font-bold">{stats ? `${stats.recommendPct}%` : '—'}</p>
+            <p className="text-2xl font-bold">98%</p>
             <p className="text-sm" style={{color: 'var(--muted)'}}>Weiterempfehlung</p>
           </div>
         </div>
@@ -223,15 +260,22 @@ export default function UeberUnsPage() {
         </div>
       </section>
 
-
-                 {/* Footer */}
-                 <footer className="border-t border-gray-100">
+  {/* Footer */}
+  <footer className="border-t border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-6 gap-8 text-sm">
           <div className="md:col-span-2">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
             <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
-            <div className="flex gap-3 mt-5" style={{color: 'var(--purple-700)'}}>
-              <span>f</span><span>◎</span><span>w</span><span>✉</span>
+            <div className="flex gap-3 mt-5">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z"/></svg>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
+              </a>
+              <a href="https://wa.me/4915214440144" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.2 14.9 3.8 13.5 3.8 12c0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.1.2-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.4 3.8 3.4.5.2.9.4 1.3.5.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z"/></svg>
+              </a>
             </div>
           </div>
           <div>
@@ -255,7 +299,9 @@ export default function UeberUnsPage() {
           <div>
             <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Rechtliches</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
+            <li><a href="/agb" className="hover:opacity-70">AGB</a></li>
+<li><a href="/datenschutz" className="hover:opacity-70">Datenschutz</a></li>
+<li><a href="/impressum" className="hover:opacity-70">Impressum</a></li>
             </ul>
           </div>
           <div>

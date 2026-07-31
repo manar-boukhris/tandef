@@ -56,7 +56,9 @@ export default function ProWerdenPage() {
           .hero-card{
             background:linear-gradient(135deg,#F3EEFC,#EDE9FE 60%,#F6F4FC);
             border-radius:28px;
+            min-width:0;
           }
+          .hero-card > div{min-width:0;}
           .rating-pill{
             background:#fff;border-radius:9999px;box-shadow:0 12px 30px -12px rgba(76,29,149,.35);
           }
@@ -106,6 +108,13 @@ export default function ProWerdenPage() {
           }
           .dropdown-menu a{display:block;padding:.6rem 1.25rem;font-size:.9rem;}
           .dropdown-menu a:hover{background:var(--purple-50);}
+          .social-icon{
+            width:36px;height:36px;border-radius:9999px;
+            background:var(--purple-100);
+            display:flex;align-items:center;justify-content:center;
+            color:var(--purple-700);transition:.15s ease;
+          }
+          .social-icon:hover{background:var(--purple-700);color:#fff;}
       `}</style>
       {/* Header */}
       <header className="bg-white border-b" style={{borderColor: '#EDE9F5'}}>
@@ -198,18 +207,18 @@ export default function ProWerdenPage() {
       </header>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pb-10">
-        <div className="hero-card grid md:grid-cols-2 gap-10 items-center p-8 md:p-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-10">
+        <div className="hero-card grid lg:grid-cols-2 gap-10 items-center p-6 sm:p-8 md:p-12">
 
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-5" style={{color: 'var(--ink)'}}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-5" style={{color: 'var(--ink)'}}>
               Reinigungsprofis<br />in <span style={{color: 'var(--purple-600)'}}>deiner Nähe</span> finden
             </h1>
             <p className="text-base mb-8 max-w-md" style={{color: 'var(--muted)'}}>
               Zuverlässige Reinigungskräfte schnell und flexibel – genau dann, wenn du sie brauchst.
             </p>
 
-            <div className="panel-white p-6 mb-6">
+            <div className="panel-white p-5 sm:p-6 mb-6">
               <div className="flex items-center justify-between mb-3">
                 <p className="font-semibold text-sm" style={{color: 'var(--ink)'}}>Deine Verfügbarkeit</p>
                 <p className="font-bold text-sm" style={{color: 'var(--purple-700)'}}><span id="avail-value">25</span> Std. pro Woche</p>
@@ -364,7 +373,7 @@ export default function ProWerdenPage() {
       <section className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-center mb-10" style={{color: 'var(--purple-700)'}}>Häufige Fragen</h2>
 
-        <div className="grid md:grid-cols-2 gap-4 mb-8">
+        <div className="grid lg:grid-cols-2 gap-4 mb-8">
 
           <details className="faq-item p-5">
             <summary className="flex items-center justify-between font-semibold" style={{color: 'var(--ink)'}}>
@@ -429,7 +438,7 @@ export default function ProWerdenPage() {
       <section className="py-16" style={{background: 'var(--purple-50)'}}>
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-12" style={{color: 'var(--ink)'}}>Warum <span style={{color: 'var(--purple-600)'}}>TANDEF</span> die beste Wahl für Profis ist</h2>
-          <div className="grid md:grid-cols-3 gap-10 mb-10">
+          <div className="grid lg:grid-cols-3 gap-10 mb-10">
 
             <div>
               <div className="why-icon mx-auto mb-4">
