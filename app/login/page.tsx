@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const menuBtn = document.getElementById('about-menu-btn');
@@ -88,6 +89,8 @@ export default function LoginPage() {
             transition:.2s ease;
           }
           .btn-gradient:hover{filter:brightness(1.05);}
+          .btn-primary{background:var(--purple-700);transition:.2s ease;}
+          .btn-primary:hover{background:var(--purple-900);}
           .icon-badge{
             width:88px;height:88px;border-radius:9999px;
             background:var(--purple-50);
@@ -98,6 +101,13 @@ export default function LoginPage() {
           .dropdown-menu{background:#fff;border-radius:14px;box-shadow:0 20px 45px -15px rgba(76,29,149,.3);}
           .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
           .dropdown-menu a:hover{background:var(--purple-50);}
+          .social-icon{
+            width:36px;height:36px;border-radius:9999px;
+            background:rgba(255,255,255,.12);
+            display:flex;align-items:center;justify-content:center;
+            color:#fff;transition:.15s ease;
+          }
+          .social-icon:hover{background:rgba(255,255,255,.25);}
           .footer-dark{background:linear-gradient(to bottom, var(--purple-700), var(--purple-900));}
           footer a:hover{opacity:.75;}
       `}</style>
@@ -109,19 +119,19 @@ export default function LoginPage() {
             <a href="/" className="flex items-center">
               <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
             </a>
-            <nav className="flex items-center gap-8 text-sm font-medium relative">
-              <a href="/pro-werden" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
+              <a href="/pro-werden" className="flex items-center gap-1.5 hover:opacity-70">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
                 Pro werden
               </a>
-              <a href="/magazin" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
+              <a href="/magazin" className="flex items-center gap-1.5 hover:opacity-70">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
                 Magazin
               </a>
               <div className="relative">
-                <button id="about-menu-btn" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
+                <button id="about-menu-btn" className="flex items-center gap-1.5" style={{color: 'var(--purple-700)'}}>
                   Über uns
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
                 </button>
                 <div id="about-menu" className="dropdown-menu hidden absolute left-0 mt-3 w-56 py-2 z-30">
                   <a href="/ueber-uns">Über uns</a>
@@ -130,12 +140,35 @@ export default function LoginPage() {
                   <a href="/kontakt">Kontakt</a>
                 </div>
               </div>
-              <a href="/login" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="10" r="3" /><path d="M6.5 19a6 6 0 0111 0" /></svg>
+              <a href="/login" className="flex items-center gap-1.5 hover:opacity-70">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
                 Login
               </a>
             </nav>
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Menü öffnen"
+              style={{color: 'var(--purple-700)'}}
+            >
+              {mobileMenuOpen ? (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
+            </button>
           </div>
+          {mobileMenuOpen && (
+            <nav className="md:hidden border-t px-6 py-4 flex flex-col gap-1 text-sm font-medium" style={{borderColor: '#EDE9F5', color: 'var(--ink)'}}>
+              <a href="/pro-werden" className="py-3">Pro werden</a>
+              <a href="/magazin" className="py-3">Magazin</a>
+              <a href="/ueber-uns" className="py-3">Über uns</a>
+              <a href="/unser-team" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Unser Team</a>
+              <a href="/karriere" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Karriere</a>
+              <a href="/kontakt" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Kontakt</a>
+              <a href="/login" className="py-3">Login</a>
+            </nav>
+          )}
         </header>
 
         {/* Login card */}
@@ -221,12 +254,20 @@ export default function LoginPage() {
 
       {/* Footer */}
       <footer className="footer-dark">
-        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-6 gap-4 sm:gap-6 text-sm">
+        <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-8 text-sm">
           <div className="col-span-2">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
             <p style={{color: '#D9CDF0'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
-            <div className="flex gap-3 mt-5 text-white">
-              <span>f</span><span>◎</span><span>w</span><span>✉</span>
+            <div className="flex gap-3 mt-5">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z"/></svg>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
+              </a>
+              <a href="https://wa.me/4915214440144" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.2 14.9 3.8 13.5 3.8 12c0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.1.2-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.4 3.8 3.4.5.2.9.4 1.3.5.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z"/></svg>
+              </a>
             </div>
           </div>
           <div>
@@ -249,7 +290,9 @@ export default function LoginPage() {
           <div>
             <p className="font-semibold mb-3 text-white">Rechtliches</p>
             <ul className="space-y-2" style={{color: '#D9CDF0'}}>
-              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
+              <li><a href="/agb" className="hover:text-white">AGB</a></li>
+              <li><a href="/datenschutz" className="hover:text-white">Datenschutz</a></li>
+              <li><a href="/impressum" className="hover:text-white">Impressum</a></li>
             </ul>
           </div>
           <div>

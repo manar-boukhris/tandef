@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function initials(name) {
   return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -23,6 +23,8 @@ const LEADERSHIP = [
 ];
 
 export default function UnserTeamPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   useEffect(() => {
     document.title = "TANDEF – Unser Team";
 
@@ -52,6 +54,13 @@ export default function UnserTeamPage() {
         .cta-banner{background:var(--purple-50);border-radius:20px;overflow:hidden;}
         .dropdown-menu a{display:block;padding:.6rem 1.25rem;font-size:.9rem;}
         .dropdown-menu a:hover{background:var(--purple-50);}
+        .social-icon{
+          width:36px;height:36px;border-radius:9999px;
+          background:var(--purple-100);
+          display:flex;align-items:center;justify-content:center;
+          color:var(--purple-700);transition:.15s ease;
+        }
+        .social-icon:hover{background:var(--purple-700);color:#fff;}
       `}</style>
 
       <header className="bg-white border-b" style={{borderColor: '#EDE9F5'}}>
@@ -83,8 +92,34 @@ export default function UnserTeamPage() {
               Login
             </a>
           </nav>
-          <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full">Reinigung buchen</a>
+          <div className="flex items-center gap-3">
+            <a href="/login" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Menü öffnen"
+              style={{color: 'var(--purple-700)'}}
+            >
+              {mobileMenuOpen ? (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              ) : (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
+            </button>
+          </div>
         </div>
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t px-6 py-4 flex flex-col gap-1 text-sm font-medium" style={{borderColor: '#EDE9F5', color: 'var(--ink)'}}>
+            <a href="/pro-werden" className="py-3">Für Helfer</a>
+            <a href="/magazin" className="py-3">Magazin</a>
+            <a href="/ueber-uns" className="py-3">Über uns</a>
+            <a href="/unser-team" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Unser Team</a>
+            <a href="/karriere" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Karriere</a>
+            <a href="/kontakt" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Kontakt</a>
+            <a href="/login" className="py-3">Login</a>
+            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
+          </nav>
+        )}
       </header>
 
       <div className="max-w-7xl mx-auto px-6 pt-4 text-sm" style={{color: 'var(--muted)'}}>
@@ -94,14 +129,14 @@ export default function UnserTeamPage() {
       <section className="max-w-7xl mx-auto px-6 pt-8 pb-16 grid lg:grid-cols-2 gap-10 items-center">
         <div>
           <p className="text-sm font-bold mb-3" style={{color: 'var(--purple-700)'}}>UNSER TEAM</p>
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mb-5" style={{color: 'var(--ink)'}}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-5" style={{color: 'var(--ink)'}}>
             Die Menschen hinter <span style={{color: 'var(--purple-700)'}}>TANDEF</span>
           </h1>
           <p className="text-base mb-8 max-w-md" style={{color: 'var(--muted)'}}>
           Hinter TANDEF steht ein engagiertes Team, das eine moderne Plattform für professionelle Reinigungsservices entwickelt. 
           Gemeinsam arbeiten wir daran, Kunden mit zuverlässigen Reinigungspartnern zu verbinden und Qualität neu zu definieren.
           </p>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div><p className="font-bold text-sm mb-1">Leidenschaftlich</p><p className="text-xs" style={{color: 'var(--muted)'}}>Wir lieben, was wir tun.</p></div>
             <div><p className="font-bold text-sm mb-1">Zuverlässig</p><p className="text-xs" style={{color: 'var(--muted)'}}>Vertrauen ist unser Fundament.</p></div>
             <div><p className="font-bold text-sm mb-1">Gemeinsam</p><p className="text-xs" style={{color: 'var(--muted)'}}>Ein starkes Team für beste Ergebnisse.</p></div>
@@ -175,14 +210,22 @@ export default function UnserTeamPage() {
           <img src="/images/cleaning-supplies.png" className="w-56 h-40 object-contain shrink-0" />
         </div>
       </section>
-                       {/* Footer */}
-                       <footer className="border-t border-gray-100">
+                {/* Footer */}
+  <footer className="border-t border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-6 gap-8 text-sm">
           <div className="md:col-span-2">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
             <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
-            <div className="flex gap-3 mt-5" style={{color: 'var(--purple-700)'}}>
-              <span>f</span><span>◎</span><span>w</span><span>✉</span>
+            <div className="flex gap-3 mt-5">
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z"/></svg>
+              </a>
+              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
+              </a>
+              <a href="https://wa.me/4915214440144" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.2 14.9 3.8 13.5 3.8 12c0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.3.4-.4.1-.1.2-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.4 3.8 3.4.5.2.9.4 1.3.5.5.2 1 .1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.1-.4-.2z"/></svg>
+              </a>
             </div>
           </div>
           <div>
@@ -206,7 +249,9 @@ export default function UnserTeamPage() {
           <div>
             <p className="font-semibold mb-3" style={{color: 'var(--purple-900)'}}>Rechtliches</p>
             <ul className="space-y-2" style={{color: 'var(--muted)'}}>
-              <li>AGB</li><li>Datenschutz</li><li>Impressum</li>
+            <li><a href="/agb" className="hover:opacity-70">AGB</a></li>
+<li><a href="/datenschutz" className="hover:opacity-70">Datenschutz</a></li>
+<li><a href="/impressum" className="hover:opacity-70">Impressum</a></li>
             </ul>
           </div>
           <div>

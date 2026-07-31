@@ -54,7 +54,8 @@ function RegisterForm() {
             --ink:#1F1339;
             --muted:#6B6478;
           }
-          body{font-family:'Inter',sans-serif;color:var(--ink);}
+          html{overflow-x:hidden;}
+          body{font-family:'Inter',sans-serif;color:var(--ink);overflow-x:hidden;}
           h1,h2,h3,.display{font-family:'Poppins',sans-serif;}
           .page-bg{
             background:linear-gradient(135deg,#E9E4FB 0%,#EFE3F6 45%,#FBE7F0 100%);
@@ -76,6 +77,7 @@ function RegisterForm() {
             background:#fff;
             border-radius:24px;
             box-shadow:0 30px 60px -20px rgba(76,29,149,.25);
+            min-width:0;
           }
           .field{
             background:#F7F6FA;
@@ -91,6 +93,7 @@ function RegisterForm() {
             background:transparent;
             outline:none;
             width:100%;
+            min-width:0;
           }
           .field input::placeholder{color:#9C96A8;}
           .btn-primary{
@@ -114,6 +117,7 @@ function RegisterForm() {
             border:1.5px solid #C9C3D6;
             position:relative;
             transition:.15s ease;
+            flex-shrink:0;
           }
           .gender-option.selected .radio-dot{
             border-color:var(--purple-600);
@@ -143,24 +147,24 @@ function RegisterForm() {
             display:flex;gap:8px;background:#F0EDF9;padding:5px;border-radius:9999px;margin-bottom:24px;
           }
           .role-btn{
-            flex:1;text-align:center;padding:.7rem 1rem;border-radius:9999px;font-weight:600;font-size:.9rem;
+            flex:1;text-align:center;padding:.7rem .5rem;border-radius:9999px;font-weight:600;font-size:.85rem;
             cursor:pointer;transition:.2s ease;color:var(--muted);
           }
           .role-btn.active{
             background:linear-gradient(90deg,var(--purple-700),var(--purple-600));color:#fff;
           }
+          @media(min-width:640px){
+            .role-btn{font-size:.9rem;padding:.7rem 1rem;}
+          }
       `}</style>
       {/* Header */}
       <header className="bg-white">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-          <a href="/" className="flex items-center gap-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-5">
+          <a href="/" className="flex items-center gap-2 shrink-0">
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
           </a>
-          <nav className="flex items-center gap-8 text-sm font-medium" style={{color: 'var(--ink)'}}>
-            <a href="#" className="flex flex-col items-center gap-1 hover:opacity-70">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1F1339" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
-              Für Kunden
-            </a>
+          <nav className="flex items-center gap-4 sm:gap-8 text-sm font-medium" style={{color: 'var(--ink)'}}>
+            
             <a href="/login" className="flex flex-col items-center gap-1 hover:opacity-70">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1F1339" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
               Login
@@ -170,49 +174,49 @@ function RegisterForm() {
       </header>
 
       {/* Content */}
-      <section className="max-w-7xl mx-auto px-6 pt-14 pb-20 grid lg:grid-cols-2 gap-14 items-start">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-20 grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
 
         {/* Left column */}
-        <div>
-          <div className="badge-rating inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-8" style={{color: 'var(--muted)'}}>
+        <div className="min-w-0">
+          <div className="badge-rating inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6 sm:mb-8" style={{color: 'var(--muted)'}}>
             Bewertung 4,9
             <span style={{color: 'var(--purple-700)'}}>★★★★★</span>
           </div>
 
-          <h1 className="text-4xl md:text-[2.75rem] font-extrabold leading-tight mb-1" style={{color: 'var(--ink)'}}>
+          <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] font-extrabold leading-tight mb-1" style={{color: 'var(--ink)'}}>
             Reinigungskunden in
           </h1>
-          <h1 className="text-4xl md:text-[2.75rem] font-extrabold leading-tight mb-6" style={{color: 'var(--purple-600)'}}>
+          <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] font-extrabold leading-tight mb-6" style={{color: 'var(--purple-600)'}}>
             deiner Nähe finden
           </h1>
 
-          <p className="text-lg mb-10 max-w-md" style={{color: 'var(--muted)'}}>
+          <p className="text-base sm:text-lg mb-8 sm:mb-10 max-w-md" style={{color: 'var(--muted)'}}>
             Zuverlässige Reinigungskräfte schnell und flexibel – genau dann, wenn du sie brauchst.
           </p>
 
-          <div className="grid sm:grid-cols-2 gap-5 max-w-xl">
-            <div className="feature-card p-6">
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-5 max-w-xl">
+            <div className="feature-card p-5 sm:p-6">
               <div className="feature-icon mb-4">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" /><path d="M9 12l2 2 4-4" /></svg>
               </div>
               <p className="font-bold mb-1" style={{color: 'var(--ink)'}}>Sicher &amp; geprüft</p>
               <p className="text-sm" style={{color: 'var(--muted)'}}>Alle Helfer sind verifiziert und geprüft.</p>
             </div>
-            <div className="feature-card p-6">
+            <div className="feature-card p-5 sm:p-6">
               <div className="feature-icon mb-4">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>
               </div>
               <p className="font-bold mb-1" style={{color: 'var(--ink)'}}>Schnell &amp; flexibel</p>
               <p className="text-sm" style={{color: 'var(--muted)'}}>Buche in wenigen Minuten.</p>
             </div>
-            <div className="feature-card p-6">
+            <div className="feature-card p-5 sm:p-6">
               <div className="feature-icon mb-4">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 3l2.6 5.6 6.2.9-4.5 4.3 1 6.1L12 17l-5.3 2.9 1-6.1L3.2 9.5l6.2-.9L12 3z" /></svg>
               </div>
               <p className="font-bold mb-1" style={{color: 'var(--ink)'}}>Zufriedenheit garantiert</p>
               <p className="text-sm" style={{color: 'var(--muted)'}}>4,9/5 Sterne Bewertung durch Kunden.</p>
             </div>
-            <div className="feature-card p-6">
+            <div className="feature-card p-5 sm:p-6">
               <div className="feature-icon mb-4">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" /><path d="M12 8v5M12 16v.01" /></svg>
               </div>
@@ -223,9 +227,9 @@ function RegisterForm() {
         </div>
 
         {/* Right column: form card */}
-        <div className="form-card p-8 lg:p-10 lg:-mt-6">
+        <div className="form-card p-6 sm:p-8 lg:p-10 lg:-mt-6">
           <div className="flex items-center gap-4 mb-8">
-            <button type="button" className="text-gray-400 hover:text-gray-600">
+            <button type="button" className="text-gray-400 hover:text-gray-600 shrink-0">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
             </button>
             <div className="progress-track flex-1">
@@ -255,7 +259,7 @@ function RegisterForm() {
           )}
 
           <form onSubmit={handleSubmit}>
-            <div className="flex items-center gap-8 mb-6">
+            <div className="flex items-center gap-6 sm:gap-8 mb-6">
               <label
                 className={`flex items-center gap-2 cursor-pointer gender-option ${gender === 'frau' ? 'selected' : ''}`}
                 onClick={() => setGender('frau')}
@@ -274,19 +278,19 @@ function RegisterForm() {
 
             <div className="space-y-4">
               <div className="field flex items-center gap-3 px-4 py-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+                <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
                 <input type="text" placeholder="Vorname" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
               </div>
               <div className="field flex items-center gap-3 px-4 py-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+                <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
                 <input type="text" placeholder="Nachname" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
               </div>
               <div className="field flex items-center gap-3 px-4 py-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
+                <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
                 <input type="email" placeholder="E-Mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div className="field flex items-center gap-3 px-4 py-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>
+                <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Passwort"
@@ -304,17 +308,17 @@ function RegisterForm() {
                 </button>
               </div>
               <div className="field flex items-center gap-3 px-4 py-3">
-                <span className="text-base leading-none">🇩🇪</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-                <span className="w-px h-4 bg-gray-300"></span>
+                <span className="text-base leading-none shrink-0">🇩🇪</span>
+                <svg className="shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+                <span className="w-px h-4 bg-gray-300 shrink-0"></span>
                 <input type="tel" placeholder="Telefon" value={phone} onChange={(e) => setPhone(e.target.value)} />
               </div>
               <div className="field flex items-center gap-3 px-4 py-3">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
                 <input type="text" placeholder="Adresse" value={address} onChange={(e) => setAddress(e.target.value)} />
               </div>
               <div className="field flex items-center gap-3 px-4 py-3 cursor-pointer">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
+                <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
                 <input type="date" placeholder="Geburtsdatum" className="date-input" />
               </div>
             </div>
