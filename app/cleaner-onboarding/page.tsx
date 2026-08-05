@@ -3,9 +3,27 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { upload } from '@vercel/blob/client';
 
 const ALL_SERVICES = ['Haushaltsreinigung', 'Grundreinigung', 'Fensterputzen', 'Bügeln', 'Umzugsreinigung', 'Büroreinigung'];
+
+// Upload server-side (via notre propre API route), pour éviter le bug CORS
+// connu du client-upload direct de @vercel/blob (v2.x).
+async function uploadFile(file, prefix) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('prefix', prefix);
+
+  const res = await fetch('/api/cleaner/upload-file', {
+    method: 'POST',
+    body: formData,
+  });
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || 'Fehler beim Hochladen der Datei.');
+  }
+  return data; // { url, name }
+}
 
 export default function CleanerOnboardingPage() {
   const router = useRouter();
@@ -47,33 +65,18 @@ export default function CleanerOnboardingPage() {
     setLoading(true);
 
     try {
-      const idBlob = await upload(`cleaner-docs/id-${Date.now()}-${idDoc.name}`, idDoc, {
-        access: 'public',
-        handleUploadUrl: '/api/cleaner/upload-token',
-      });
-      const gewerbeBlob = await upload(`cleaner-docs/gewerbe-${Date.now()}-${gewerbeDoc.name}`, gewerbeDoc, {
-        access: 'public',
-        handleUploadUrl: '/api/cleaner/upload-token',
-      });
-      const steuerBlob = await upload(`cleaner-docs/steuer-${Date.now()}-${steuerDoc.name}`, steuerDoc, {
-        access: 'public',
-        handleUploadUrl: '/api/cleaner/upload-token',
-      });
+      const idBlob = await uploadFile(idDoc, 'cleaner-docs/id');
+      const gewerbeBlob = await uploadFile(gewerbeDoc, 'cleaner-docs/gewerbe');
+      const steuerBlob = await uploadFile(steuerDoc, 'cleaner-docs/steuer');
 
       let criminalBlob = null;
       if (criminalDoc) {
-        criminalBlob = await upload(`cleaner-docs/criminal-${Date.now()}-${criminalDoc.name}`, criminalDoc, {
-          access: 'public',
-          handleUploadUrl: '/api/cleaner/upload-token',
-        });
+        criminalBlob = await uploadFile(criminalDoc, 'cleaner-docs/criminal');
       }
 
       let photoUrl = null;
       if (photo) {
-        const photoBlob = await upload(`cleaner-docs/profile-${Date.now()}-${photo.name}`, photo, {
-          access: 'public',
-          handleUploadUrl: '/api/cleaner/upload-token',
-        });
+        const photoBlob = await uploadFile(photo, 'cleaner-docs/profile');
         photoUrl = photoBlob.url;
       }
 
@@ -107,7 +110,7 @@ export default function CleanerOnboardingPage() {
       router.push(data.redirect);
     } catch (err) {
       setLoading(false);
-      setError('Fehler beim Hochladen. Bitte versuche es erneut.');
+      setError(err.message || 'Fehler beim Hochladen. Bitte versuche es erneut.');
     }
   }
 
@@ -151,6 +154,7 @@ export default function CleanerOnboardingPage() {
         .dropzone.has-file{border-style:solid;border-color:var(--purple-600);background:var(--purple-50);}
         .btn-gradient{background:linear-gradient(90deg,var(--purple-700),var(--purple-500));transition:.2s ease;}
         .btn-gradient:hover{filter:brightness(1.05);}
+        .btn-gradient:disabled{opacity:.6;cursor:not-allowed;}
         .icon-circle{
           width:40px;height:40px;border-radius:9999px;background:var(--purple-100);
           display:flex;align-items:center;justify-content:center;flex-shrink:0;
@@ -279,7 +283,7 @@ export default function CleanerOnboardingPage() {
                     <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
                       {idDoc ? `✓ ${idDoc.name}` : 'Datei auswählen oder hierher ziehen'}
                     </p>
-                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 4 MB</p>
                   </label>
                 </div>
 
@@ -291,7 +295,7 @@ export default function CleanerOnboardingPage() {
                     <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
                       {gewerbeDoc ? `✓ ${gewerbeDoc.name}` : 'Datei auswählen oder hierher ziehen'}
                     </p>
-                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 4 MB</p>
                   </label>
                 </div>
 
@@ -303,7 +307,7 @@ export default function CleanerOnboardingPage() {
                     <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
                       {steuerDoc ? `✓ ${steuerDoc.name}` : 'Datei auswählen oder hierher ziehen'}
                     </p>
-                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 4 MB</p>
                   </label>
                 </div>
 
@@ -318,7 +322,7 @@ export default function CleanerOnboardingPage() {
                     <p className="text-sm font-semibold" style={{color: 'var(--purple-700)'}}>
                       {criminalDoc ? `✓ ${criminalDoc.name}` : 'Datei auswählen oder hierher ziehen (optional)'}
                     </p>
-                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 10 MB</p>
+                    <p className="text-xs mt-1" style={{color: 'var(--muted)'}}>JPG, PNG oder PDF, max. 4 MB</p>
                   </label>
                 </div>
 
