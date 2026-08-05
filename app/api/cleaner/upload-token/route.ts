@@ -20,12 +20,12 @@ export async function POST(req: Request) {
           maximumSizeInBytes: 10 * 1024 * 1024,
         };
       },
-      onUploadCompleted: async () => {
-        // rien a faire ici
-      },
+      // Pas de onUploadCompleted : on n'en a pas besoin, et sa présence
+      // bloque/ralentit fortement les uploads en local (localhost n'a pas
+      // d'URL publique pour le callback de Vercel).
     });
     return NextResponse.json(jsonResponse);
-  }  catch (error) {
+  } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 400 });
   }
 }

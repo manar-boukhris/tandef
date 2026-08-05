@@ -267,7 +267,7 @@ export default function KontaktPage() {
       <section className="max-w-6xl mx-auto px-6 pb-16 grid lg:grid-cols-2 gap-10">
         <div className="rounded-2xl overflow-hidden" style={{minHeight: '320px', border: '1px solid #ECE8F5'}}>
           <iframe
-            src="https://www.google.com/maps?q=Hohenzollernring+72,+50672+K%C3%B6ln,+Deutschland&output=embed"
+            src="https://www.google.com/maps?q=Hohenzollernring,+50672+K%C3%B6ln,+Deutschland&output=embed"
             width="100%"
             height="100%"
             style={{border: 0, minHeight: '320px', display: 'block'}}

@@ -283,10 +283,7 @@ export default function BookingServiceTypePage() {
                 </div>
               </div>
 
-              <div className="info-banner mt-6">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" strokeWidth="2" className="mt-0.5 shrink-0"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
-                <p className="text-sm" style={{color: 'var(--ink)'}}>20% auf deine Reinigungsdienste (ohne Wecasa-Gebühr) dank <a href="#" className="underline font-semibold" style={{color: 'var(--purple-700)'}}>Steuererstattung!</a> 🤩</p>
-              </div>
+             
             </div>
           </div>
 
@@ -301,7 +298,7 @@ export default function BookingServiceTypePage() {
 
       </section>
 
-      <a href="tel:+4900000000" className="fixed left-7 bottom-7 w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg z-10">
+      <a href="tel:+4915214440144" className="fixed left-7 bottom-7 w-14 h-14 rounded-full bg-white flex items-center justify-center shadow-lg z-10">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.5 2.1L8 9.7a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.8.5 2.7.6a2 2 0 011.7 2z" /></svg>
       </a>
 

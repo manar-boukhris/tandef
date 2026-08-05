@@ -149,7 +149,7 @@ export default function UeberUnsPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" /></svg>Gegründet in Köln für unsere Region</div>
-            <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>+1.200 zufriedene Kunden</div>
+            <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>+500 zufriedene Kunden</div>
             <div className="trust-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>Zuverlässig & versichert</div>
           </div>
         </div>
