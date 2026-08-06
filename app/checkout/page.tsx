@@ -5,11 +5,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getDraft, clearDraft } from '@/lib/bookingDraft';
 
-const FREQUENCY_RATES: Record<string, number> = {
-  'Wöchentlich': 14.90,
-  'Alle zwei Wochen': 16.90,
-  'Einmalig': 19.90,
-};
+// Le prix vient du service choisi (draft.hourlyRate, défini sur /booking-service-type).
+// La fréquence n'a aucun impact sur le prix.
+const DEFAULT_RATE = 24.90;
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -45,7 +43,7 @@ export default function CheckoutPage() {
     }
   }, []);
 
-  const rate = FREQUENCY_RATES[draft.frequency] || 19.90;
+  const rate = draft.hourlyRate || DEFAULT_RATE;
   const extrasCost = (draft.extras || []).reduce((s: number, id: string) => s + (id === 'ironing' ? 2 : id === 'product' ? 3 : 0), 0);
   const hours = draft.hours || 3;
   const total = ((rate + extrasCost) * hours).toFixed(2).replace('.', ',');

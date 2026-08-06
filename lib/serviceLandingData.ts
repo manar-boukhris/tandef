@@ -21,7 +21,12 @@ export type ServiceLanding = {
     heroImage: string;
   };
   
+
+
+
+  
   export const SERVICES: Record<string, ServiceLanding> = {
+    
     wohnungsreinigung: {
       slug: 'wohnungsreinigung',
       badge: '★ Beliebt',
@@ -41,10 +46,49 @@ export type ServiceLanding = {
       ],
       hint: 'Fensterreinigung, Backofenreinigung und Kühlschrankreinigung sind als Extras buchbar.',
       plans: [
-        { name: 'Starter', desc: 'Für kleinere Wohnungen', price: '24,90 €', unit: '/ Std.', features: ['Grundlegende Reinigung', 'Regelmäßige Reinigung'] },
-        { name: 'Standard', desc: 'Für die meisten Haushalte', price: '27,50 €', unit: '/ Std.', features: ['Gründliche Reinigung',  'Küche & Bad inklusive', 'Flexible Termine'], popular: true },
-        { name: 'Premium', desc: 'Für höchste Ansprüche', price: '29,90 €', unit: '/ Std.', features: ['Tiefenreinigung', 'Extras inklusive', 'Priorisierte Termine'] },
+        {
+          name: 'Standard',
+          desc: 'Für gelegentliche Reinigungen',
+          price: '24,90 €',
+          unit: '/ Std.',
+          features: [
+            'Professionelle Reinigung',
+            'Flexible Buchung',
+            'Kurzfristige Termine (je nach Verfügbarkeit)'
+          ]
+        },
+      
+        {
+          name: 'Komfort',
+          desc: 'Für regelmäßige Reinigungen',
+          price: '27,50 €',
+          unit: '/ Std.',
+          popular: true,
+          features: [
+            'Alles aus Standard',
+            'Lieblings-Reinigungskraft speichern',
+            'Wiederkehrende Buchungen',
+            'Kostenlose Umbuchung bis 24 Std.',
+            'Persönliche Reinigungsnotizen'
+          ]
+        },
+      
+        {
+          name: 'Exklusiv',
+          desc: 'Für maximale Flexibilität',
+          price: '29,90 €',
+          unit: '/ Std.',
+          features: [
+            'Alles aus Komfort',
+            'Individuelle Reinigungs-Checkliste',
+            'Kostenlose Umbuchung bis 12 Std.',
+            'Schlüsselservice (falls verfügbar)',
+            'Priorisierte Terminänderungen'
+          ]
+        }
       ],
+
+
       whyUs: [
         { icon: 'shield', title: 'Geprüfte Profis', desc: 'Alle Reinigungskräfte werden hintergrundgeprüft und regelmäßig geschult.' },
         { icon: 'star', title: 'Zufriedenheitsgarantie', desc: 'Sie sind nicht zufrieden? Wir kommen kostenlos zurück und reinigen erneut.' },
@@ -68,6 +112,11 @@ export type ServiceLanding = {
       ctaSubtitle: 'Buchen Sie jetzt Ihre Wohnungsreinigung in Deutschland in nur wenigen Klicks.',
       ctaButton: 'Jetzt Reinigung buchen',
       heroImage: '/images/hero.png',
+
+
+
+
+      
     },
   
     bueroreinigung: {

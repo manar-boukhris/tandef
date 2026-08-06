@@ -4,6 +4,7 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { ServiceHeroArt } from './ServiceHeroArt';
 import type { ServiceLanding } from '@/lib/serviceLandingData';
+import { Fragment } from "react";
 
 const WHY_ITEMS = [
     { icon: '/images/people.png', title: 'Sichere Zukunft', desc: 'TANDEF wächst stetig. Werden Sie Teil eines Unternehmens mit einer klaren Vision und langfristiger Perspektive.' },
@@ -62,13 +63,92 @@ function StarRow({ count }: { count: number }) {
 export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
-
+  const [comparePlans, setComparePlans] = useState(false);
   useEffect(() => {
     fetch('/api/site/reviews?limit=3')
       .then(res => res.json())
       .then(data => setReviews(Array.isArray(data) ? data : []));
   }, []);
-
+  const comparisonFeatures = [
+    {
+      title: 'Professionelle Reinigung',
+      standard: true,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Küche, Bad, Wohn- & Schlafzimmer',
+      standard: true,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Böden & Oberflächen reinigen',
+      standard: true,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Müll entsorgen',
+      standard: true,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Flexible Terminbuchung',
+      standard: true,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Kurzfristige Termine (je nach Verfügbarkeit)',
+      standard: true,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Wiederkehrende Buchungen',
+      standard: false,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Lieblings-Reinigungskraft wählen',
+      standard: false,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Kostenlose Umbuchung bis 24 Std.',
+      standard: false,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Kostenlose Umbuchung bis 12 Std.',
+      standard: false,
+      komfort: false,
+      exklusiv: true,
+    },
+    {
+      title: 'Persönliche Reinigungsnotizen',
+      standard: false,
+      komfort: true,
+      exklusiv: true,
+    },
+    {
+      title: 'Individuelle Reinigungs-Checkliste',
+      standard: false,
+      komfort: false,
+      exklusiv: true,
+    },
+    {
+      title: 'Priorisierte Terminänderungen',
+      standard: false,
+      komfort: false,
+      exklusiv: true,
+    },
+  ];
   return (
     <>
       <style jsx global>{`
@@ -78,6 +158,117 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
         }
         body{font-family:'Inter',sans-serif;color:var(--ink);}
         h1,h2,h3{font-family:'Poppins',sans-serif;}
+
+.compare-wrapper{
+    border:1px solid #ECE8F5;
+    border-radius:24px;
+    overflow:hidden;
+    background:#fff;
+}
+
+.compare-grid{
+    display:grid;
+    grid-template-columns:2fr repeat(3,1fr);
+}
+
+.compare-cell{
+    padding:18px 22px;
+    border-bottom:1px solid #ECE8F5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.compare-left{
+    justify-content:flex-start;
+    font-weight:500;
+}
+
+.compare-head{
+    flex-direction:column;
+    padding:28px 20px;
+    position:relative;
+}
+
+.compare-title{
+    font-size:30px;
+    font-weight:800;
+    color:#5B21B6;
+}
+
+.compare-unit{
+    color:#666;
+    font-size:15px;
+}
+
+.compare-price{
+    font-size:20px;
+    font-weight:700;
+}
+
+.compare-popular{
+    position:absolute;
+    top:-10px;
+    left:50%;
+    transform:translateX(-50%);
+
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+
+    background:#5B21B6;
+    color:#fff;
+
+    padding:4px 12px;
+    border-radius:999px;
+
+    font-size:11px;
+    font-weight:600;
+    line-height:1;
+    white-space:nowrap;
+
+    box-shadow:0 4px 10px rgba(91,33,182,.18);
+}
+
+.compare-highlight{
+    background:#FBF8FF;
+    border-left:2px solid #7C3AED;
+    border-right:2px solid #7C3AED;
+}
+
+.compare-highlight-top{
+    border-top:2px solid #7C3AED;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
+}
+
+.compare-highlight-bottom{
+    border-bottom:2px solid #7C3AED;
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px;
+}
+
+.tick{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#6D28D9;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.empty{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    border:2px solid #D5D5D5;
+}
+
+
         .hero-card{background:#fff;border-radius:20px;box-shadow:0 20px 50px -25px rgba(76,29,149,.3);overflow:hidden;}
         .badge{background:var(--purple-100);color:var(--purple-700);font-size:.8rem;font-weight:700;padding:.4rem 1rem;border-radius:9999px;display:inline-flex;align-items:center;gap:.3rem;}
         .trust-badge{display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--muted);font-weight:600;}
@@ -102,6 +293,10 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
         .faq-chevron{transition:transform .2s ease;}
         .faq-chevron.open{transform:rotate(180deg);}
         .cta-banner{background:linear-gradient(135deg,var(--purple-100),#FCE7F3);border-radius:24px;}
+
+
+
+
 
         /* Section "Warum TANDEF" — classes manquantes qui causaient les icônes géantes */
         .why-panel{background:var(--purple-50);border-radius:20px;padding:48px 40px;}
@@ -250,9 +445,122 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
               <a href="/address" className={`plan-btn w-full text-center font-semibold py-3 rounded-xl inline-block ${plan.popular ? 'filled' : ''}`}>
                 Auswählen
               </a>
+              
+              <button
+  className="text-sm mt-4 font-semibold"
+  style={{color:'var(--purple-700)'}}
+  onClick={() => setComparePlans(true)}
+>
+  Mehr erfahren
+</button>
             </div>
           ))}
         </div>
+            
+        {comparePlans && (
+
+<section className="mt-16">
+
+<div className="text-center mb-10">
+<h2 className="text-5xl font-extrabold">
+Unsere <span style={{color:"#5B21B6"}}>Preise</span>
+</h2>
+
+<p className="text-gray-500 mt-2">
+Transparente Preise. Keine versteckten Kosten.
+</p>
+</div>
+
+<div className="compare-wrapper">
+
+<div className="compare-grid">
+
+<div className="compare-cell compare-left compare-head">
+Leistung
+</div>
+
+<div className="compare-cell compare-head">
+<div className="font-bold text-2xl">Standard</div>
+
+<div className="compare-title">
+24,90 €
+<span className="compare-unit"> / Std.</span>
+</div>
+</div>
+
+<div className="compare-cell compare-head compare-highlight compare-highlight-top">
+
+<div className="compare-popular">
+⭐ Am beliebtesten
+</div>
+
+<div className="font-bold text-2xl">
+Komfort
+</div>
+
+<div className="compare-title">
+27,50 €
+<span className="compare-unit"> / Std.</span>
+</div>
+
+</div>
+
+<div className="compare-cell compare-head">
+<div className="font-bold text-2xl">
+Exklusiv
+</div>
+
+<div className="compare-title">
+29,90 €
+<span className="compare-unit"> / Std.</span>
+</div>
+</div>
+
+{comparisonFeatures.map((f,index)=>{
+
+const last=index===comparisonFeatures.length-1;
+
+return(
+<>
+
+<div className="compare-cell compare-left" key={f.title}>
+{f.title}
+</div>
+
+<div className="compare-cell">
+{f.standard ? <div className="tick">✓</div> : <div className="empty"/>}
+</div>
+
+<div className={`compare-cell compare-highlight ${last ? "compare-highlight-bottom":""}`}>
+{f.komfort ? <div className="tick">✓</div> : <div className="empty"/>}
+</div>
+
+<div className="compare-cell">
+{f.exklusiv ? <div className="tick">✓</div> : <div className="empty"/>}
+</div>
+
+</>
+)
+
+})}
+
+</div>
+
+</div>
+
+<div className="text-center mt-8">
+<button
+className="font-semibold"
+style={{color:"#5B21B6"}}
+onClick={()=>setComparePlans(false)}
+>
+Vergleich schließen
+</button>
+</div>
+
+</section>
+
+)}
         <p className="flex items-center justify-center gap-2 text-sm mt-8" style={{ color: 'var(--muted)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>
           Versichert & sicher – Für Ihre Sicherheit sind alle unsere Reinigungskräfte versichert.

@@ -8,17 +8,20 @@ import { getDraft, updateDraft } from '@/lib/bookingDraft';
 const OPTIONS = [
   { name: 'Wöchentlich', desc: 'Immer dieselbe Reinigungskraft, gleicher Tag jede Woche.', badge: 'Beliebt' },
   { name: 'Alle zwei Wochen', desc: 'Regelmäßige Reinigung mit flexiblem Rhythmus.' },
-  { name: 'Einmalig', desc: 'Eine einzelne Reinigung ohne Verpflichtung.' },
+  { name: 'Flexibel', desc: 'Du bestimmst den Rhythmus – z. B. monatlich, alle zwei Monate oder nach Bedarf.' },
 ];
 
 export default function BookingFrequencyPage() {
   const router = useRouter();
   const [selected, setSelected] = useState('Wöchentlich');
+  const [note, setNote] = useState('');
+  const [noteError, setNoteError] = useState('');
 
   useEffect(() => {
     document.title = "TANDEF – Wie oft sollen wir kommen?";
     const draft = getDraft();
     if (draft.frequency) setSelected(draft.frequency);
+    if (draft.frequencyNote) setNote(draft.frequencyNote);
 
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
@@ -29,7 +32,12 @@ export default function BookingFrequencyPage() {
   }, []);
 
   function handleNext() {
-    updateDraft({ frequency: selected });
+    if (selected === 'Flexibel' && !note.trim()) {
+      setNoteError('Bitte teile uns kurz mit, welchen Rhythmus du dir wünschst.');
+      return;
+    }
+    setNoteError('');
+    updateDraft({ frequency: selected, frequencyNote: selected === 'Flexibel' ? note.trim() : '' });
     router.push('/booking-hours');
   }
 
@@ -64,6 +72,12 @@ export default function BookingFrequencyPage() {
         .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
         .dropdown-menu a:hover{background:var(--purple-50);}
         .chat-bubble{position:fixed;right:28px;bottom:28px;width:56px;height:56px;border-radius:9999px;background:linear-gradient(135deg,var(--purple-700),var(--purple-500));display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px -8px rgba(76,29,149,.5);}
+        .note-field{
+          background:#fff;border:1.5px solid #ECE8F5;border-radius:14px;padding:1rem;width:100%;
+          font-family:inherit;font-size:.9rem;outline:none;resize:vertical;min-height:90px;transition:.15s ease;
+        }
+        .note-field:focus{border-color:var(--purple-600);}
+        .note-field::placeholder{color:#9C96A8;}
       `}</style>
 
       <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
@@ -103,24 +117,42 @@ export default function BookingFrequencyPage() {
 
         <div className="space-y-4 text-left mb-10">
           {OPTIONS.map(opt => (
-            <div
-              key={opt.name}
-              onClick={() => setSelected(opt.name)}
-              className={`option-card p-6 flex items-center gap-5 ${selected === opt.name ? 'selected' : ''}`}
-            >
-              <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{background: 'var(--purple-100)'}}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <p className="font-bold" style={{color: 'var(--ink)'}}>{opt.name}</p>
-                  {opt.badge && <span className="badge">{opt.badge}</span>}
+            <div key={opt.name}>
+              <div
+                onClick={() => setSelected(opt.name)}
+                className={`option-card p-6 flex items-center gap-5 ${selected === opt.name ? 'selected' : ''}`}
+              >
+                <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style={{background: 'var(--purple-100)'}}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
                 </div>
-                <p className="text-sm" style={{color: 'var(--muted)'}}>{opt.desc}</p>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-1">
+                    <p className="font-bold" style={{color: 'var(--ink)'}}>{opt.name}</p>
+                    {opt.badge && <span className="badge">{opt.badge}</span>}
+                  </div>
+                  <p className="text-sm" style={{color: 'var(--muted)'}}>{opt.desc}</p>
+                </div>
+                <span className="check-dot shrink-0">
+                  {selected === opt.name && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M5 12l5 5 9-9" /></svg>}
+                </span>
               </div>
-              <span className="check-dot shrink-0">
-                {selected === opt.name && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M5 12l5 5 9-9" /></svg>}
-              </span>
+
+              {opt.name === 'Flexibel' && selected === 'Flexibel' && (
+                <div className="mt-3 px-1">
+                  <textarea
+                    className="note-field"
+                    placeholder="z. B. „Ich möchte alle 3 Monate“, „Jeden Tag“, „Nach Bedarf, ich melde mich“..."
+                    value={note}
+                    onChange={(e) => { setNote(e.target.value); setNoteError(''); }}
+                  />
+                  {noteError && (
+                    <p className="text-sm mt-2 font-medium" style={{color: '#C0392B'}}>{noteError}</p>
+                  )}
+                  <p className="text-xs mt-2" style={{color: 'var(--muted)'}}>
+                    Kostenlos & unverbindlich – wir melden uns bei dir, um den passenden Rhythmus zu besprechen.
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>

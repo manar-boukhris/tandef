@@ -1,7 +1,10 @@
 export type BookingDraft = {
     serviceType?: string;
+    hourlyRate?: number; // ⭐ nouveau : prix/h réel choisi sur booking-service-type
     frequency?: string;
+    frequencyNote?: string; // ⭐ nouveau : note libre quand frequency = "Flexibel"
     hours?: number;
+    price?: number; // ⭐ nouveau : prix calculé sur booking-hours
     extras?: string[];
     date?: string;
     time?: string;

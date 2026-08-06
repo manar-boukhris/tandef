@@ -6,17 +6,31 @@ import { useRouter } from 'next/navigation';
 import { getDraft, updateDraft } from '@/lib/bookingDraft';
 
 const ROOM_OPTIONS = ['1 Zimmer', '2 Zimmer', '3 Zimmer', '4+ Zimmer'];
-const RATE = 14.90;
+
+// Le prix par heure vient du service choisi sur /booking-service-type (draft.hourlyRate).
+// La fréquence (Wöchentlich / Alle zwei Wochen / Flexibel) n'a AUCUN impact sur le prix,
+// elle sert uniquement à afficher le bon libellé.
+const DEFAULT_RATE = 24.90;
+
+const FREQUENCY_LABELS = {
+  'Wöchentlich': 'wöchentliche Reinigung',
+  'Alle zwei Wochen': 'Reinigung alle zwei Wochen',
+  'Flexibel': 'flexible Reinigung',
+};
 
 export default function BookingHoursPage() {
   const router = useRouter();
   const [rooms, setRooms] = useState('2 Zimmer');
   const [hours, setHours] = useState(3);
+  const [frequency, setFrequency] = useState('Wöchentlich');
+  const [rate, setRate] = useState(DEFAULT_RATE);
 
   useEffect(() => {
     document.title = "TANDEF – Wie viele Stunden brauchst du?";
     const draft = getDraft();
     if (draft.hours) setHours(draft.hours);
+    if (draft.frequency) setFrequency(draft.frequency);
+    if (draft.hourlyRate) setRate(draft.hourlyRate);
 
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
@@ -26,10 +40,12 @@ export default function BookingHoursPage() {
     }
   }, []);
 
-  const price = (RATE * hours).toFixed(2).replace('.', ',');
+  const frequencyLabel = FREQUENCY_LABELS[frequency] ?? FREQUENCY_LABELS['Wöchentlich'];
+  const price = (rate * hours).toFixed(2).replace('.', ',');
+  const rateDisplay = rate.toFixed(2).replace('.', ',');
 
   function handleNext() {
-    updateDraft({ hours });
+    updateDraft({ hours, price: rate * hours });
     router.push('/booking-extras');
   }
 
@@ -126,7 +142,7 @@ export default function BookingHoursPage() {
             <p className="text-sm" style={{color: 'var(--muted)'}}>Voraussichtlicher Preis</p>
             <p className="text-2xl font-extrabold" style={{color: 'var(--purple-700)'}}>{price} €</p>
           </div>
-          <p className="text-sm text-right" style={{color: 'var(--muted)'}}>14,90 € × {hours} Std.<br />wöchentliche Reinigung</p>
+          <p className="text-sm text-right" style={{color: 'var(--muted)'}}>{rateDisplay} € × {hours} Std.<br />{frequencyLabel}</p>
         </div>
 
         <button onClick={handleNext} className="btn-gradient inline-flex items-center justify-center gap-2 text-white font-semibold px-12 py-4 rounded-full">

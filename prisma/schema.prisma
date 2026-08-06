@@ -124,7 +124,10 @@ model Booking {
   review      Review?   // ⭐ zid hedhi el ligne
   createdAt   DateTime  @default(now())
   paymentMethod String @default("card")
+    frequency     String   @default("Einmalig")   // ⭐  Wöchentlich | Alle zwei Wochen | Flexibel
+  frequencyNote String?  @db.Text                //⭐ note libre si frequency = "Flexibel"
 }
+
 
 model Invoice {
   id        Int      @id @default(autoincrement())

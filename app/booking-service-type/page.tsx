@@ -42,7 +42,10 @@ export default function BookingServiceTypePage() {
   }
 
   function handleNext() {
-    updateDraft({ serviceType: selectedService.name });
+    updateDraft({
+      serviceType: selectedService.name,
+      hourlyRate: parseFloat(selectedService.price.replace(',', '.')),
+    });
     router.push('/booking-frequency');
   }
 
