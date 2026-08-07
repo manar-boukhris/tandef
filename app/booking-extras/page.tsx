@@ -34,12 +34,14 @@ export default function BookingExtrasPage() {
   const router = useRouter();
   const [selected, setSelected] = useState(['ironing']);
   const [hours, setHours] = useState(2);
+  const [hourlyRate, setHourlyRate] = useState(24.90);
 
   useEffect(() => {
     document.title = "TANDEF – Brauchst du sonst noch etwas?";
     const draft = getDraft();
     if (draft.extras) setSelected(draft.extras);
     if (draft.hours) setHours(draft.hours);
+    if (draft.hourlyRate) setHourlyRate(draft.hourlyRate);
 
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
@@ -53,8 +55,10 @@ export default function BookingExtrasPage() {
     setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   }
 
-  const base = 24.90 * hours;
-  const extrasCost = selected.reduce((sum, id) => sum + (EXTRAS.find(e => e.id === id)?.price || 0) * hours, 0);
+  // Base = tarif horaire (venant du draft) * hours
+  const base = hourlyRate * hours;
+  // Extras = frais fixes, PAS multipliés par hours
+  const extrasCost = selected.reduce((sum, id) => sum + (EXTRAS.find(e => e.id === id)?.price || 0), 0);
   const total = (base + extrasCost).toFixed(2).replace('.', ',');
 
   function handleNext() {
@@ -154,7 +158,7 @@ export default function BookingExtrasPage() {
                       <p className="font-bold mb-1" style={{color: 'var(--ink)'}}>{extra.name}</p>
                       <p className="text-sm" style={{color: 'var(--muted)'}}>{extra.desc}</p>
                     </div>
-                    <p className="font-semibold text-sm shrink-0" style={{color: 'var(--purple-700)'}}>+{extra.price.toFixed(2).replace('.', ',')} €/Std.</p>
+                    <p className="font-semibold text-sm shrink-0" style={{color: 'var(--purple-700)'}}>+{extra.price.toFixed(2).replace('.', ',')} €</p>
                     <span className="checkbox-box shrink-0">
                       {isSelected && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M5 12l5 5 9-9" /></svg>}
                     </span>
