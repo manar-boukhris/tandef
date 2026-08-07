@@ -6,7 +6,7 @@ export const transporter = nodemailer.createTransport({
   secure: false, // STARTTLS
   auth: {
     user: process.env.EMAIL_USER,      // support@tandef.de
-    pass: process.env.EMAIL_PASSWORD,  // الباسورد العادي متاع الإيميل (IONOS)
+    pass: process.env.EMAIL_PASSWORD,  
   },
 });
 
