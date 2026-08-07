@@ -128,42 +128,7 @@ export default function AddressPage() {
         .suggestion-item:hover{background:var(--purple-50);}
       `}</style>
 
-      <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-        <a href="/dashboard" className="flex items-center">
-  <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
-</a>
-          <nav className="flex items-center gap-8 text-sm font-medium relative">
-            <a href="/pro-werden" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
-              Pro werden
-            </a>
-            <a href="/magazin" className="flex flex-col items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
-              Magazin
-            </a>
-            <div id="user-menu-wrapper" className="relative">
-              <button id="user-menu-btn" className="flex items-center gap-2 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-                </span>
-                <span className="flex items-center gap-1">Konto
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-                </span>
-              </button>
-              <div id="user-menu" className="dropdown-menu hidden absolute right-0 mt-3 w-64 py-2 z-20">
-                <a href="/dashboard">Mein Kundenbereich</a>
-                <a href="/sessions">Meine Sessions</a>
-                <a href="/invoices">Historie und Rechnungen</a>
-                <a href="/account">Mein Profil</a>
-                <a href="/preferences">Meine Kommunikationspräferenzen</a>
-                <a href="/payment-methods">Zahlungsmethoden</a>
-                <a href="#" className="border-t" style={{borderColor: '#EDE9F5'}}>Abmelden</a>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </header>
+     
 
       <div className="relative max-w-4xl mx-auto px-6 pt-8 flex items-center justify-between">
         <a href="/sessions" className="flex items-center gap-2 font-semibold" style={{color: 'var(--purple-700)'}}>

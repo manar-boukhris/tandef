@@ -61,29 +61,7 @@ export default function BookingPetsPage() {
         .chat-bubble{position:fixed;right:28px;bottom:28px;width:56px;height:56px;border-radius:9999px;background:linear-gradient(135deg,var(--purple-700),var(--purple-500));display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px -8px rgba(76,29,149,.5);}
       `}</style>
 
-      <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-        <a href="/dashboard" className="flex items-center">
-  <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
-</a>
-          <nav className="flex items-center gap-8 text-sm font-medium relative">
-            <a href="/pro-werden" style={{color: 'var(--purple-700)'}}>Pro werden</a>
-            <a href="/magazin" style={{color: 'var(--purple-700)'}}>Magazin</a>
-            <div className="relative">
-              <button id="user-menu-btn" style={{color: 'var(--purple-700)'}}>Konto</button>
-              <div id="user-menu" className="dropdown-menu hidden absolute right-0 mt-3 w-64 py-2 z-20">
-                <a href="/dashboard">Mein Kundenbereich</a>
-                <a href="/sessions">Meine Sessions</a>
-                <a href="/invoices">Historie und Rechnungen</a>
-                <a href="/account">Mein Profil</a>
-                <a href="/preferences">Meine Kommunikationspräferenzen</a>
-                <a href="/payment-methods">Zahlungsmethoden</a>
-                <a href="#" className="border-t" style={{borderColor: '#EDE9F5'}}>Abmelden</a>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </header>
+      
 
       <div className="relative max-w-5xl mx-auto px-6 pt-8 flex items-center gap-4">
         <a href="/booking-recipient" className="text-gray-400 hover:text-gray-600">
