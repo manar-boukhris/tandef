@@ -9,6 +9,11 @@ import { getDraft, clearDraft } from '@/lib/bookingDraft';
 // La fréquence n'a aucun impact sur le prix.
 const DEFAULT_RATE = 24.90;
 
+const EXTRAS: Record<string, { name: string; price: number }> = {
+  ironing: { name: 'Bügeln', price: 2 },
+  product: { name: 'Reinigungsmittel', price: 3 },
+};
+
 export default function CheckoutPage() {
   const router = useRouter();
   const [draft, setDraft] = useState<any>({});
@@ -44,9 +49,11 @@ export default function CheckoutPage() {
   }, []);
 
   const rate = draft.hourlyRate || DEFAULT_RATE;
-  const extrasCost = (draft.extras || []).reduce((s: number, id: string) => s + (id === 'ironing' ? 2 : id === 'product' ? 3 : 0), 0);
+  const selectedExtras = (draft.extras || []).map((id: string) => EXTRAS[id]).filter(Boolean);
+  const extrasCost = selectedExtras.reduce((s: number, e: { price: number }) => s + e.price, 0);
   const hours = draft.hours || 3;
-  const total = ((rate + extrasCost) * hours).toFixed(2).replace('.', ',');
+  const baseCost = rate * hours;
+  const total = (baseCost + extrasCost).toFixed(2).replace('.', ',');
   const dateLabel = draft.date ? new Date(draft.date).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) : '';
 
   async function finalizeBooking(paymentMethod: string) {
@@ -293,7 +300,10 @@ export default function CheckoutPage() {
                 </div>
               </div>
               <div className="border-t pt-4 space-y-2 text-sm" style={{borderColor: '#EFEAF6'}}>
-                <div className="flex justify-between"><span style={{color: 'var(--muted)'}}>{rate.toFixed(2).replace('.', ',')} € × {hours} Std.</span><span>{(rate * hours).toFixed(2).replace('.', ',')} €</span></div>
+                <div className="flex justify-between"><span style={{color: 'var(--muted)'}}>{rate.toFixed(2).replace('.', ',')} € × {hours} Std.</span><span>{baseCost.toFixed(2).replace('.', ',')} €</span></div>
+                {selectedExtras.map((e: { name: string; price: number }) => (
+                  <div key={e.name} className="flex justify-between"><span style={{color: 'var(--muted)'}}>{e.name}</span><span>+{e.price.toFixed(2).replace('.', ',')} €</span></div>
+                ))}
                 <div className="flex justify-between font-bold text-base pt-2" style={{color: 'var(--ink)'}}>
                   <span>Gesamt</span><span style={{color: 'var(--purple-700)'}}>{total} €</span>
                 </div>
