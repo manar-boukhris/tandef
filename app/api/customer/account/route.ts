@@ -20,7 +20,9 @@ export async function GET() {
   return NextResponse.json({
     name: user.name,
     email: user.email,
-    address: user.addresses[0]?.street || '',
+    street: user.addresses[0]?.street || '',
+    zip: user.addresses[0]?.zip || '',
+    city: user.addresses[0]?.city || '',
   });
 }
 
@@ -30,7 +32,7 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: 'Nicht autorisiert.' }, { status: 401 });
   }
 
-  const { name, address } = await req.json();
+  const { name, street, zip, city } = await req.json();
 
   if (name) {
     await prisma.user.update({
@@ -39,13 +41,26 @@ export async function PATCH(req: Request) {
     });
   }
 
-  if (address) {
+  if (street || zip || city) {
     const existing = await prisma.address.findFirst({ where: { userId: session.userId } });
     if (existing) {
-      await prisma.address.update({ where: { id: existing.id }, data: { street: address } });
+      await prisma.address.update({
+        where: { id: existing.id },
+        data: {
+          street: street ?? existing.street,
+          zip: zip ?? existing.zip,
+          city: city ?? existing.city,
+        },
+      });
     } else {
       await prisma.address.create({
-        data: { label: 'Zuhause', street: address, city: '', zip: '', userId: session.userId },
+        data: {
+          label: 'Zuhause',
+          street: street || '',
+          zip: zip || '',
+          city: city || '',
+          userId: session.userId,
+        },
       });
     }
   }

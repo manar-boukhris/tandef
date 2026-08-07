@@ -4,7 +4,7 @@ import { hashPassword, signSession } from '@/lib/auth';
 import { CUSTOMER_SESSION_COOKIE, CLEANER_SESSION_COOKIE } from '@/lib/session';
 
 export async function POST(req: Request) {
-  const { firstName, lastName, email, password, gender, role, phone, address } = await req.json();
+  const { firstName, lastName, email, password, gender, role, phone, street, zip, city } = await req.json();
 
   if (!email || !password || !firstName || !lastName) {
     return NextResponse.json({ error: 'Alle Felder sind erforderlich.' }, { status: 400 });
@@ -29,10 +29,16 @@ export async function POST(req: Request) {
     },
   });
 
-  if (address) {
+  if (street || zip || city) {
     // ⭐ jdid
     await prisma.address.create({
-      data: { label: 'Zuhause', street: address, city: '', zip: '', userId: user.id },
+      data: {
+        label: 'Zuhause',
+        street: street || '',
+        zip: zip || '',
+        city: city || '',
+        userId: user.id,
+      },
     });
   }
 

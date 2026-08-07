@@ -8,7 +8,9 @@ export default function AccountPage() {
   const logout = useLogout('customer');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
+  const [street, setStreet] = useState('');
+  const [zip, setZip] = useState('');
+  const [city, setCity] = useState('');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -20,7 +22,9 @@ export default function AccountPage() {
       .then(data => {
         setName(data.name || '');
         setEmail(data.email || '');
-        setAddress(data.address || '');
+        setStreet(data.street || '');
+        setZip(data.zip || '');
+        setCity(data.city || '');
       });
 
     const menuBtn = document.getElementById('user-menu-btn');
@@ -36,7 +40,7 @@ export default function AccountPage() {
     await fetch('/api/customer/account', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, address }),
+      body: JSON.stringify({ name, street, zip, city }),
     });
     setSaving(false);
     setSaved(true);
@@ -170,16 +174,21 @@ export default function AccountPage() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>
             </div>
             <p className="w-32 font-semibold shrink-0" style={{color: 'var(--ink)'}}>Passwort</p>
-            <input type="password" value="••••••••" readOnly className="field-input px-4 py-3" style={{width: '180px'}} />
-            <a href="#" className="text-sm font-semibold whitespace-nowrap" style={{color: 'var(--purple-700)'}}>Mein Passwort ändern</a>
+            <input type="password" value="••••••••" readOnly className="field-input flex-1 px-4 py-3 opacity-60" />
           </div>
 
-          <div className="flex items-center gap-6 mb-8">
+          <div className="flex items-start gap-6 mb-8">
             <div className="field-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
             </div>
-            <p className="w-32 font-semibold shrink-0" style={{color: 'var(--ink)'}}>Adresse</p>
-            <input type="text" placeholder="–" value={address} onChange={(e) => setAddress(e.target.value)} className="field-input flex-1 px-4 py-3" />
+            <p className="w-32 font-semibold shrink-0 mt-3" style={{color: 'var(--ink)'}}>Adresse</p>
+            <div className="flex-1 space-y-3">
+              <input type="text" placeholder="Straße und Hausnummer" value={street} onChange={(e) => setStreet(e.target.value)} className="field-input w-full px-4 py-3" />
+              <div className="flex gap-3">
+                <input type="text" placeholder="PLZ" value={zip} onChange={(e) => setZip(e.target.value)} className="field-input px-4 py-3 w-2/5" />
+                <input type="text" placeholder="Stadt" value={city} onChange={(e) => setCity(e.target.value)} className="field-input px-4 py-3 flex-1" />
+              </div>
+            </div>
           </div>
 
           <div className="text-center">

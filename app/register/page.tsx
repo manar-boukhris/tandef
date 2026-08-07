@@ -17,7 +17,9 @@ function RegisterForm() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
+  const [street, setStreet] = useState('');
+  const [zip, setZip] = useState('');
+  const [city, setCity] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +31,7 @@ function RegisterForm() {
     const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, lastName, email, password, gender, role, phone, address }),
+      body: JSON.stringify({ firstName, lastName, email, password, gender, role, phone, street, zip, city }),
     });
     const data = await res.json();
     setLoading(false);
@@ -315,7 +317,15 @@ function RegisterForm() {
               </div>
               <div className="field flex items-center gap-3 px-4 py-3">
                 <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
-                <input type="text" placeholder="Adresse" value={address} onChange={(e) => setAddress(e.target.value)} />
+                <input type="text" placeholder="Straße und Hausnummer" value={street} onChange={(e) => setStreet(e.target.value)} />
+              </div>
+              <div className="flex gap-4">
+                <div className="field flex items-center gap-3 px-4 py-3 w-2/5">
+                  <input type="text" placeholder="PLZ" value={zip} onChange={(e) => setZip(e.target.value)} />
+                </div>
+                <div className="field flex items-center gap-3 px-4 py-3 flex-1">
+                  <input type="text" placeholder="Stadt" value={city} onChange={(e) => setCity(e.target.value)} />
+                </div>
               </div>
               <div className="field flex items-center gap-3 px-4 py-3 cursor-pointer">
                 <svg className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
