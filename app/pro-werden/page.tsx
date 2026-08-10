@@ -125,7 +125,7 @@ export default function ProWerdenPage() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium relative" style={{color: 'var(--purple-700)'}}>
             <a href="/" className="flex flex-col items-center gap-1 hover:opacity-70">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
-              Für Kunden
+              Pro werden 
             </a>
             <a href="/magazin" className="flex flex-col items-center gap-1 hover:opacity-70">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
@@ -175,7 +175,7 @@ export default function ProWerdenPage() {
           <nav className="md:hidden border-t px-6 py-4 flex flex-col gap-1 text-sm font-medium" style={{borderColor: '#EDE9F5', color: 'var(--ink)'}}>
             <a href="/" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>
-              Für Kunden
+              Pro werden
             </a>
             <a href="/magazin" className="flex items-center gap-2.5 py-3" onClick={() => setMobileMenuOpen(false)}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
@@ -445,7 +445,7 @@ export default function ProWerdenPage() {
                 <img src="/images/person.png" alt="Wer sind wir?" />
               </div>
               <p className="font-bold mb-2" style={{color: 'var(--purple-700)'}}>Wer sind wir?</p>
-              <p className="text-sm" style={{color: 'var(--muted)'}}>2016 gegründet, ist TANDEF die führende Plattform für Reinigungsprofis. Mehr als 10.000 unabhängige Profis vertrauen auf uns.</p>
+              <p className="text-sm" style={{color: 'var(--muted)'}}>TANDEF ist eine moderne Plattform, die Kunden mit zuverlässigen und geprüften Reinigungskräften verbindet. Unser Ziel ist es, die Buchung professioneller Reinigungsdienstleistungen einfach, transparent und zuverlässig zu gestalten – für Privatpersonen und Unternehmen in ganz Deutschland.</p>
             </div>
 
             <div>

@@ -1,4 +1,8 @@
 export type BookingDraft = {
+    bookingType?: string;   // ⭐ 'wohnung' | 'firmen' | 'umzug'
+    packageName?: string;   // ⭐ 'Basic' | 'Standard' | 'Premium' | '1-Zimmer' | '2-3-Zimmer' | '4plus-Zimmer'
+    packageRate?: number;   // ⭐ prix/h (Wohnung/Firmen) ou Festpreis total (Umzug)
+    isFixedPrice?: boolean; // ⭐ true pour Umzug (Festpreis), false pour les autres (€/Std.)
     serviceType?: string;
     hourlyRate?: number; // ⭐ nouveau : prix/h réel choisi sur booking-service-type
     frequency?: string;

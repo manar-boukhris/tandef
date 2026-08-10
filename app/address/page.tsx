@@ -75,7 +75,7 @@ export default function AddressPage() {
   function handleNext() {
     if (!query.trim()) return;
     updateDraft({ address: query });
-    router.push('/booking-service-type');
+    router.push('/booking-type');
   }
 
   return (

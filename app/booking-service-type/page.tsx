@@ -5,17 +5,19 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getDraft, updateDraft } from '@/lib/bookingDraft';
 
-const SERVICES = [
-  { name: 'Regelmäßige Reinigung', price: '24,90', oldPrice: '26,90', icon: '/images/broom.png', featured: true, desc: 'Wiederkehrende Reinigung mit deinem persönlichen Pro – wöchentlich oder alle zwei Wochen.' },
-  { name: 'Einmalige Reinigung', price: '26,90', oldPrice: '', icon: '/images/sparkle.png', desc: 'Eine einzelne Reinigung ohne Verpflichtung – ideal zum Ausprobieren.' },
-  { name: 'Grundreinigung', price: '29,90', oldPrice: '', icon: '/images/sponge.png', desc: 'Tiefenreinigung bis ins Detail – auch Fenster, Backofen und schwer erreichbare Stellen.' },
-  { name: 'Reinigung der Ferienwohnung', price: '26,90', oldPrice: '', icon: '/images/house.png', desc: 'Schnelle Reinigung zwischen zwei Gästen – perfekt für Airbnb & Ferienwohnungen.' },
-];
+const TYPE_LABELS = {
+  wohnung: 'Wohnungsreinigung',
+  firmen: 'Firmenreinigung',
+  umzug: 'Umzugsreinigung',
+};
 
 export default function BookingServiceTypePage() {
   const router = useRouter();
-  const [selected, setSelected] = useState(SERVICES[0].name);
   const [address, setAddress] = useState('');
+  const [bookingType, setBookingType] = useState('wohnung');
+  const [packageName, setPackageName] = useState('Basic');
+  const [packageRate, setPackageRate] = useState(24.90);
+  const [selected, setSelected] = useState('Regelmäßige Reinigung');
   const [showDetails, setShowDetails] = useState(true);
   const [showLoc, setShowLoc] = useState(false);
   const [hoveredService, setHoveredService] = useState(null);
@@ -24,8 +26,14 @@ export default function BookingServiceTypePage() {
     document.title = "TANDEF – Wähle deine Reinigungs-Session aus";
 
     const draft = getDraft();
-    if (draft.serviceType) setSelected(draft.serviceType);
     if (draft.address) setAddress(draft.address);
+    const type = draft.bookingType || 'wohnung';
+    setBookingType(type);
+    setPackageName(draft.packageName || 'Basic');
+    // Le prix du pack (défini sur /booking-package) sert de base : c'est le tarif "Regelmäßige Reinigung".
+    const rate = draft.packageRate || 24.90;
+    setPackageRate(rate);
+    if (draft.serviceType) setSelected(draft.serviceType);
 
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
@@ -34,6 +42,14 @@ export default function BookingServiceTypePage() {
       document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.add('hidden'); });
     }
   }, []);
+
+  // Regelmäßige Reinigung = prix du pack tel quel.
+  // Einmalige Reinigung et Ferienwohnung = prix du pack + 2€/h.
+  const SERVICES = [
+    { name: 'Regelmäßige Reinigung', price: packageRate, oldPrice: '', icon: '/images/broom.png', featured: true, desc: 'Wiederkehrende Reinigung mit deinem persönlichen Pro – wöchentlich oder alle zwei Wochen.' },
+    { name: 'Einmalige Reinigung', price: packageRate + 2, oldPrice: '', icon: '/images/sparkle.png', desc: 'Eine einzelne Reinigung ohne Verpflichtung – ideal zum Ausprobieren.' },
+    { name: 'Reinigung der Ferienwohnung', price: packageRate + 2, oldPrice: '', icon: '/images/house.png', desc: 'Schnelle Reinigung zwischen zwei Gästen – perfekt für Airbnb & Ferienwohnungen.' },
+  ];
 
   const selectedService = SERVICES.find(s => s.name === selected) || SERVICES[0];
 
@@ -44,7 +60,7 @@ export default function BookingServiceTypePage() {
   function handleNext() {
     updateDraft({
       serviceType: selectedService.name,
-      hourlyRate: parseFloat(selectedService.price.replace(',', '.')),
+      hourlyRate: selectedService.price,
     });
     router.push('/booking-frequency');
   }
@@ -86,7 +102,7 @@ export default function BookingServiceTypePage() {
         .btn-gradient{background:linear-gradient(90deg,var(--purple-700),var(--purple-500));transition:.2s ease;}
         .btn-gradient:hover{filter:brightness(1.05);}
         .progress-track{background:#E7E4EF;border-radius:9999px;height:6px;}
-        .progress-fill{background:var(--purple-600);border-radius:9999px;height:6px;width:11%;}
+        .progress-fill{background:var(--purple-600);border-radius:9999px;height:6px;width:44%;}
         .dropdown-menu{background:#fff;border-radius:14px;box-shadow:0 20px 45px -15px rgba(76,29,149,.3);}
         .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
         .dropdown-menu a:hover{background:var(--purple-50);}
@@ -120,10 +136,8 @@ export default function BookingServiceTypePage() {
         }
       `}</style>
 
-      
-
       <div className="relative max-w-5xl mx-auto px-6 pt-8 flex items-center gap-4">
-        <a href="/address" className="text-gray-400 hover:text-gray-600">
+        <a href="/booking-package" className="text-gray-400 hover:text-gray-600">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
         </a>
         <div className="progress-track flex-1"><div className="progress-fill"></div></div>
@@ -132,7 +146,7 @@ export default function BookingServiceTypePage() {
       <section className="relative max-w-5xl mx-auto px-6 pt-6 pb-24">
 
         <div className="flex items-center justify-between mb-8">
-          <a href="/address" className="flex items-center gap-2 font-semibold hover:opacity-70" style={{color: 'var(--purple-700)'}}>
+          <a href="/booking-package" className="flex items-center gap-2 font-semibold hover:opacity-70" style={{color: 'var(--purple-700)'}}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
             Zurück
           </a>
@@ -142,10 +156,11 @@ export default function BookingServiceTypePage() {
         <div className="grid lg:grid-cols-5 gap-8 items-start">
 
           <div className="lg:col-span-3">
-            <h1 className="text-3xl md:text-4xl font-extrabold mb-6 flex items-center gap-2" style={{color: 'var(--ink)'}}>
+            <h1 className="text-3xl md:text-4xl font-extrabold mb-2 flex items-center gap-2" style={{color: 'var(--ink)'}}>
               Wähle deine Reinigungs-Session aus
               <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--purple-500)"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6z" /></svg>
             </h1>
+            <p className="mb-6 text-sm" style={{color: 'var(--muted)'}}>{TYPE_LABELS[bookingType]} · Pack {packageName}</p>
 
             <div className="space-y-4">
               {SERVICES.map(service => {
@@ -168,7 +183,7 @@ export default function BookingServiceTypePage() {
                               {service.featured && <span className="badge shrink-0">Beliebt</span>}
                             </div>
                             <p className="font-bold" style={{color: 'var(--purple-700)'}}>
-                              {service.price} €/Std.{' '}
+                              {service.price.toFixed(2).replace('.', ',')} €/Std.{' '}
                               {service.oldPrice && <span className="font-normal line-through" style={{color: 'var(--muted)'}}>{service.oldPrice} €/Std.</span>}
                             </p>
                           </div>
@@ -200,7 +215,7 @@ export default function BookingServiceTypePage() {
                           <div className="service-emoji-sm"><img src={service.icon} alt={service.name} /></div>
                           <div className="flex-1">
                             <p className="font-bold" style={{color: 'var(--ink)'}}>{service.name}</p>
-                            <p className="text-sm" style={{color: 'var(--muted)'}}>{service.price} €/Std.</p>
+                            <p className="text-sm" style={{color: 'var(--muted)'}}>{service.price.toFixed(2).replace('.', ',')} €/Std.</p>
                           </div>
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2" className="shrink-0"><path d="M9 18l6-6-6-6" /></svg>
                         </div>
@@ -237,8 +252,11 @@ export default function BookingServiceTypePage() {
               {showDetails && (
                 <div className="pl-14 pb-4 space-y-1 text-sm">
                   <div className="flex justify-between">
+                    <span style={{color: 'var(--muted)'}}>{TYPE_LABELS[bookingType]} · {packageName}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span style={{color: 'var(--muted)'}}>{selectedService.name}</span>
-                    <span style={{color: 'var(--ink)'}}>{selectedService.price} €/Std.</span>
+                    <span style={{color: 'var(--ink)'}}>{selectedService.price.toFixed(2).replace('.', ',')} €/Std.</span>
                   </div>
                 </div>
               )}
@@ -246,12 +264,11 @@ export default function BookingServiceTypePage() {
               <div className="flex justify-between items-center pt-4 border-t mt-2" style={{borderColor: '#EFEAF6'}}>
                 <span className="font-bold" style={{color: 'var(--ink)'}}>Gesamt</span>
                 <div className="text-right">
-                  <p className="font-extrabold text-lg" style={{color: 'var(--purple-700)'}}>{selectedService.price} €/Std.</p>
+                  <p className="font-extrabold text-lg" style={{color: 'var(--purple-700)'}}>{selectedService.price.toFixed(2).replace('.', ',')} €/Std.</p>
                   <p className="text-xs" style={{color: 'var(--muted)'}}>Servicegebühren inklusive</p>
                 </div>
               </div>
 
-             
             </div>
           </div>
 

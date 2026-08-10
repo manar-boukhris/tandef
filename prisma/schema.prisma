@@ -126,6 +126,8 @@ model Booking {
   paymentMethod String @default("card")
     frequency     String   @default("Einmalig")   // ⭐  Wöchentlich | Alle zwei Wochen | Flexibel
   frequencyNote String?  @db.Text                //⭐ note libre si frequency = "Flexibel"
+  bookingType   String  @default("wohnung")  // wohnung | firmen | umzug
+packageName   String  @default("Basic")    // Basic | Standard | Premium | 1-Zimmer | 2-3-Zimmer | 4plus-Zimmer
 }
 
 

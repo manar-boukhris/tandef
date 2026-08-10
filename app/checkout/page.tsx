@@ -49,10 +49,12 @@ export default function CheckoutPage() {
   }, []);
 
   const rate = draft.hourlyRate || DEFAULT_RATE;
+  const isFixedPrice = draft.isFixedPrice || false;
   const selectedExtras = (draft.extras || []).map((id: string) => EXTRAS[id]).filter(Boolean);
-  const extrasCost = selectedExtras.reduce((s: number, e: { price: number }) => s + e.price, 0);
   const hours = draft.hours || 3;
-  const baseCost = rate * hours;
+  const baseCost = isFixedPrice ? rate : rate * hours;
+  // Extras × hours (sauf pour Umzug qui est Festpreis, pas d'extras)
+  const extrasCost = selectedExtras.reduce((s: number, e: { price: number }) => s + e.price * hours, 0);
   const total = (baseCost + extrasCost).toFixed(2).replace('.', ',');
   const dateLabel = draft.date ? new Date(draft.date).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) : '';
 
@@ -263,23 +265,53 @@ export default function CheckoutPage() {
             <div className="panel p-7 sticky top-6">
               <h3 className="font-bold text-lg mb-6" style={{color: 'var(--ink)'}}>Deine Buchung</h3>
               <div className="space-y-4 text-sm mb-6">
+                {/* Typ + Pack + Service */}
+                <div className="flex items-start gap-3">
+                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                  <div>
+                    <p className="font-semibold" style={{color: 'var(--ink)'}}>
+                      {draft.bookingType === 'firmen' ? 'Firmenreinigung' : draft.bookingType === 'umzug' ? 'Umzugsreinigung' : 'Wohnungsreinigung'}
+                      {draft.packageName ? ` · ${draft.packageName === '1-Zimmer' ? '1-Zimmer Wohnung' : draft.packageName === '2-3-Zimmer' ? '2–3 Zimmer Wohnung' : draft.packageName === '4plus-Zimmer' ? '4+ Zimmer Wohnung' : draft.packageName}` : ''}
+                    </p>
+                    {draft.serviceType && <p style={{color: 'var(--muted)'}}>{draft.serviceType}</p>}
+                  </div>
+                </div>
+                {/* Adresse */}
                 <div className="flex items-start gap-3">
                   <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /></svg>
                   <p style={{color: 'var(--muted)'}}>{draft.address || '–'}</p>
                 </div>
+                {/* Date + Heure */}
                 <div className="flex items-start gap-3">
                   <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /></svg>
                   <p style={{color: 'var(--muted)'}}>{dateLabel} · {draft.time || '–'} Uhr</p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="12" r="9" /></svg>
-                  <p style={{color: 'var(--muted)'}}>{hours} Stunden · {draft.frequency || '–'}</p>
-                </div>
+                {/* Heures + Fréquence (seulement si pas Festpreis) */}
+                {!isFixedPrice && (
+                  <div className="flex items-start gap-3">
+                    <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>
+                    <p style={{color: 'var(--muted)'}}>{hours} Stunden · {draft.frequency || '–'}</p>
+                  </div>
+                )}
               </div>
+              {/* Détail prix */}
               <div className="border-t pt-4 space-y-2 text-sm" style={{borderColor: '#EFEAF6'}}>
-                <div className="flex justify-between"><span style={{color: 'var(--muted)'}}>{rate.toFixed(2).replace('.', ',')} € × {hours} Std.</span><span>{baseCost.toFixed(2).replace('.', ',')} €</span></div>
+                {isFixedPrice ? (
+                  <div className="flex justify-between">
+                    <span style={{color: 'var(--muted)'}}>Festpreis</span>
+                    <span>{baseCost.toFixed(2).replace('.', ',')} €</span>
+                  </div>
+                ) : (
+                  <div className="flex justify-between">
+                    <span style={{color: 'var(--muted)'}}>{rate.toFixed(2).replace('.', ',')} € × {hours} Std.</span>
+                    <span>{baseCost.toFixed(2).replace('.', ',')} €</span>
+                  </div>
+                )}
                 {selectedExtras.map((e: { name: string; price: number }) => (
-                  <div key={e.name} className="flex justify-between"><span style={{color: 'var(--muted)'}}>{e.name}</span><span>+{e.price.toFixed(2).replace('.', ',')} €</span></div>
+                  <div key={e.name} className="flex justify-between">
+                    <span style={{color: 'var(--muted)'}}>{e.name} ({e.price.toFixed(2).replace('.', ',')} € × {hours} Std.)</span>
+                    <span>+{(e.price * hours).toFixed(2).replace('.', ',')} €</span>
+                  </div>
                 ))}
                 <div className="flex justify-between font-bold text-base pt-2" style={{color: 'var(--ink)'}}>
                   <span>Gesamt</span><span style={{color: 'var(--purple-700)'}}>{total} €</span>

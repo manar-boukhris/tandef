@@ -47,7 +47,7 @@ export type ServiceLanding = {
       hint: 'Fensterreinigung, Backofenreinigung und Kühlschrankreinigung sind als Extras buchbar.',
       plans: [
         {
-          name: 'Standard',
+          name: 'Basic',
           desc: 'Für gelegentliche Reinigungen',
           price: '24,90 €',
           unit: '/ Std.',
@@ -59,9 +59,9 @@ export type ServiceLanding = {
         },
       
         {
-          name: 'Komfort',
+          name: 'Standard',
           desc: 'Für regelmäßige Reinigungen',
-          price: '27,50 €',
+          price: '27,90 €',
           unit: '/ Std.',
           popular: true,
           features: [
@@ -74,7 +74,7 @@ export type ServiceLanding = {
         },
       
         {
-          name: 'Exklusiv',
+          name: 'Premium',
           desc: 'Für maximale Flexibilität',
           price: '29,90 €',
           unit: '/ Std.',
