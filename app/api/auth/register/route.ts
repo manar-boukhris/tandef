@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     await prisma.cleaner.create({ data: { userId: user.id, status: 'pending' } });
 
     // ⭐ Email an Reinigungskraft mit Link zu /cleaner-login
-    const cleanerLoginUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/cleaner-login`;
+    const cleanerLoginUrl = `${process.env.NEXT_PUBLIC_BASE_URL}cleaner-login`;
     await sendMail({
       to: email,
       subject: 'TANDEF – Willkommen als Reinigungskraft!',

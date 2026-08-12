@@ -26,7 +26,7 @@ function FirmenIcon() {
 
 function UmzugIcon() {
   return (
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#15803D" strokeWidth="1.6">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.6">
       <path d="M1 3h15v13H1z"/>
       <path d="M16 8h4l3 3v5h-7V8z"/>
       <circle cx="5.5" cy="18.5" r="2.5"/>
@@ -38,7 +38,7 @@ function UmzugIcon() {
 const TYPES = [
   { id: 'wohnung', name: 'Wohnungsreinigung', desc: 'Reinigung für deine Wohnung oder dein Haus.',    iconBg: '#EDE9FE', Icon: WohnungIcon },
   { id: 'firmen',  name: 'Firmenreinigung',   desc: 'Reinigung für Büros und Geschäftsräume.',        iconBg: '#EDE9FE', Icon: FirmenIcon  },
-  { id: 'umzug',   name: 'Umzugsreinigung',   desc: 'Endreinigung für eine reibungslose Übergabe.',  iconBg: '#DCFCE7', Icon: UmzugIcon   },
+  { id: 'umzug',   name: 'Umzugsreinigung',   desc: 'Endreinigung für eine reibungslose Übergabe.', iconBg: '#EDE9FE', Icon: UmzugIcon   },
 ];
 
 export default function BookingTypePage() {

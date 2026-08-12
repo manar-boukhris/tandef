@@ -53,11 +53,13 @@ export type ServiceLanding = {
           unit: '/ Std.',
           features: [
             'Professionelle Reinigung',
-            'Flexible Buchung',
-            'Kurzfristige Termine (je nach Verfügbarkeit)'
+            'Küche, Bad, Wohn- & Schlafzimmer',
+            'Böden & Oberflächen reinigen',
+            'Müll entsorgen',
+            'Flexible Terminbuchung',
+            'Kurzfristige Termine (je nach Verfügbarkeit)',
           ]
         },
-      
         {
           name: 'Standard',
           desc: 'Für regelmäßige Reinigungen',
@@ -65,25 +67,24 @@ export type ServiceLanding = {
           unit: '/ Std.',
           popular: true,
           features: [
-            'Alles aus Standard',
-            'Lieblings-Reinigungskraft speichern',
+            'Alles aus Basic',
             'Wiederkehrende Buchungen',
+            'Lieblings-Reinigungskraft wählen',
             'Kostenlose Umbuchung bis 24 Std.',
-            'Persönliche Reinigungsnotizen'
+            'Persönliche Reinigungsnotizen',
           ]
         },
-      
         {
           name: 'Premium',
           desc: 'Für maximale Flexibilität',
           price: '29,90 €',
           unit: '/ Std.',
           features: [
-            'Alles aus Komfort',
-            'Individuelle Reinigungs-Checkliste',
+            'Alles aus Standard',
             'Kostenlose Umbuchung bis 12 Std.',
+            'Individuelle Reinigungs-Checkliste',
+            'Priorisierte Terminänderungen',
             'Schlüsselservice (falls verfügbar)',
-            'Priorisierte Terminänderungen'
           ]
         }
       ],
@@ -138,9 +139,48 @@ export type ServiceLanding = {
       ],
       hint: 'Leistungen können je nach Bedarf individuell angepasst werden.',
       plans: [
-        { name: 'Basic', desc: 'Für kleine Büros & Start-ups', price: '34,90 €', unit: '/ Std.', features: ['Reinigung von Arbeitsbereichen', 'Böden saugen & wischen', 'Sanitärreinigung'] },
-        { name: 'Standard', desc: 'Für mittelgroße Büros', price: '39,90 €', unit: '/ Std.', features: ['Alle Leistungen aus Basic', 'Küchenreinigung', 'Papierkörbe leeren', 'Oberflächen desinfizieren'], popular: true },
-        { name: 'Premium', desc: 'Für große Büros & Unternehmen', price: '44,90 €', unit: '/ Std.', features: ['Alle Leistungen aus Standard', 'Glas- & Türreinigung', 'Desinfektion hochfrequenter Flächen', 'Individuelle Reinigungspläne'] },
+        {
+          name: 'Basic',
+          desc: 'Für kleine Büros & Start-ups',
+          price: '34,90 €',
+          unit: '/ Std.',
+          features: [
+            'Reinigung von Arbeitsbereichen',
+            'Böden saugen & wischen',
+            'Sanitärreinigung',
+            'Flexible Terminbuchung',
+            'Kurzfristige Termine (je nach Verfügbarkeit)',
+          ]
+        },
+        {
+          name: 'Standard',
+          desc: 'Für mittelgroße Büros',
+          price: '39,90 €',
+          unit: '/ Std.',
+          popular: true,
+          features: [
+            'Alles aus Basic',
+            'Küchenreinigung',
+            'Papierkörbe leeren',
+            'Oberflächen desinfizieren',
+            'Wiederkehrende Buchungen',
+            'Kostenlose Umbuchung bis 24 Std.',
+          ]
+        },
+        {
+          name: 'Premium',
+          desc: 'Für große Büros & Unternehmen',
+          price: '44,90 €',
+          unit: '/ Std.',
+          features: [
+            'Alles aus Standard',
+            'Glas- & Türreinigung',
+            'Desinfektion hochfrequenter Flächen',
+            'Individuelle Reinigungspläne',
+            'Kostenlose Umbuchung bis 12 Std.',
+            'Priorisierter Support',
+          ]
+        },
       ],
       whyUs: [
         { icon: 'shield', title: 'Geschulte & geprüfte Profis', desc: 'Unsere Reinigungskräfte sind hintergrundgeprüft und geschult.' },
@@ -187,9 +227,46 @@ export type ServiceLanding = {
       ],
       hint: 'Die Grundreinigung eignet sich ideal für die erste Reinigung oder nach längerer Zeit.',
       plans: [
-        { name: 'Basic', desc: 'Für kleinere Wohnungen', price: '39,90 €', unit: '/ Std.', features: ['Gründliche Reinigung aller Räume', 'Küche & Bad Grundreinigung', 'Böden saugen & wischen'] },
-        { name: 'Standard', desc: 'Für die meisten Haushalte', price: '44,90 €', unit: '/ Std.', features: ['Alles aus Basic', 'Fenster- & Rahmenreinigung', 'Entkalkung im Bad', 'Schränke außen reinigen'], popular: true },
-        { name: 'Premium', desc: 'Für höchste Ansprüche', price: '54,90 €', unit: '/ Std.', features: ['Alles aus Standard', 'Backofen & Kühlschrank innen', 'Schränke & Schubladen innen', 'Extras nach Wahl'] },
+        {
+          name: 'Basic',
+          desc: 'Für kleinere Wohnungen',
+          price: '39,90 €',
+          unit: '/ Std.',
+          features: [
+            'Gründliche Reinigung aller Räume',
+            'Küche & Bad Grundreinigung',
+            'Böden saugen & wischen',
+            'Oberflächen & Möbel abstauben',
+            'Müll entsorgen',
+          ]
+        },
+        {
+          name: 'Standard',
+          desc: 'Für die meisten Haushalte',
+          price: '44,90 €',
+          unit: '/ Std.',
+          popular: true,
+          features: [
+            'Alles aus Basic',
+            'Fenster- & Rahmenreinigung',
+            'Entkalkung im Bad',
+            'Schränke außen reinigen',
+            'Heizkörper & Fußleisten reinigen',
+          ]
+        },
+        {
+          name: 'Premium',
+          desc: 'Für höchste Ansprüche',
+          price: '54,90 €',
+          unit: '/ Std.',
+          features: [
+            'Alles aus Standard',
+            'Backofen & Kühlschrank innen',
+            'Schränke & Schubladen innen',
+            'Jalousien & Rollläden reinigen',
+            'Extras nach Wahl',
+          ]
+        },
       ],
       whyUs: [
         { icon: 'shield', title: 'Geprüfte Profis', desc: 'Alle Reinigungskräfte werden hintergrundgeprüft und geschult.' },
@@ -237,9 +314,49 @@ export type ServiceLanding = {
       ],
       hint: 'Die Endreinigung erfolgt nach den gängigen Anforderungen der Vermieter und Hausverwaltungen.',
       plans: [
-        { name: '1-Zimmer Wohnung', desc: 'bis 50 m²', price: '199 €', unit: 'Festpreis', features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
-        { name: '2–3 Zimmer Wohnung', desc: '51 – 80 m²', price: '249 €', unit: 'Festpreis', features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'], popular: true },
-        { name: '4+ Zimmer Wohnung', desc: 'ab 81 m²', price: '299 €', unit: 'Festpreis', features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
+        {
+          name: '1-Zimmer Wohnung',
+          desc: 'bis 50 m²',
+          price: '199 €',
+          unit: 'Festpreis',
+          features: [
+            'Gründliche Endreinigung aller Räume',
+            'Küche & Bad inklusive',
+            'Fenster & Rahmen inklusive',
+            'Böden saugen & wischen',
+            'Türen & Lichtschalter reinigen',
+          ]
+        },
+        {
+          name: '2–3 Zimmer Wohnung',
+          desc: '51 – 80 m²',
+          price: '249 €',
+          unit: 'Festpreis',
+          popular: true,
+          features: [
+            'Gründliche Endreinigung aller Räume',
+            'Küche & Bad inklusive',
+            'Fenster & Rahmen inklusive',
+            'Böden saugen & wischen',
+            'Türen & Lichtschalter reinigen',
+            'Schränke innen & außen reinigen',
+          ]
+        },
+        {
+          name: '4+ Zimmer Wohnung',
+          desc: 'ab 81 m²',
+          price: '299 €',
+          unit: 'Festpreis',
+          features: [
+            'Gründliche Endreinigung aller Räume',
+            'Küche & Bad inklusive',
+            'Fenster & Rahmen inklusive',
+            'Böden saugen & wischen',
+            'Türen & Lichtschalter reinigen',
+            'Schränke innen & außen reinigen',
+            'Balkon/Terrasse auf Wunsch',
+          ]
+        },
       ],
       whyUs: [
         { icon: 'check', title: 'Abnahmegarantie', desc: 'Wir garantieren die Abnahme Ihrer Wohnung durch den Vermieter.' },

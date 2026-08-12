@@ -63,7 +63,7 @@ function StarRow({ count }: { count: number }) {
 export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
-  const [comparePlans, setComparePlans] = useState(false);
+  const [openPlan, setOpenPlan] = useState<string | null>(null);
   useEffect(() => {
     fetch('/api/site/reviews?limit=3')
       .then(res => res.json())
@@ -447,120 +447,33 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
               </a>
               
               <button
-  className="text-sm mt-4 font-semibold"
-  style={{color:'var(--purple-700)'}}
-  onClick={() => setComparePlans(true)}
->
-  Mehr erfahren
-</button>
+                className="text-sm mt-4 font-semibold flex items-center gap-1"
+                style={{color:'var(--purple-700)'}}
+                onClick={() => setOpenPlan(openPlan === plan.name ? null : plan.name)}
+              >
+                {openPlan === plan.name ? 'Weniger anzeigen' : 'Mehr erfahren'}
+                <svg
+                  width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2"
+                  style={{transition:'.2s',transform: openPlan === plan.name ? 'rotate(180deg)' : 'rotate(0deg)'}}
+                >
+                  <path d="M6 9l6 6 6-6"/>
+                </svg>
+              </button>
+              {openPlan === plan.name && (
+                <ul className="mt-4 space-y-2 text-sm border-t pt-4" style={{borderColor:'#ECE8F5'}}>
+                  {plan.features.map(f => (
+                    <li key={f} className="flex items-start gap-2" style={{color:'var(--ink)'}}>
+                      <svg className="mt-0.5 shrink-0" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" strokeWidth="2"><path d="M5 12l5 5 9-9"/></svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>
-            
-        {comparePlans && (
 
-<section className="mt-16">
-
-<div className="text-center mb-10">
-<h2 className="text-5xl font-extrabold">
-Unsere <span style={{color:"#5B21B6"}}>Preise</span>
-</h2>
-
-<p className="text-gray-500 mt-2">
-Transparente Preise. Keine versteckten Kosten.
-</p>
-</div>
-
-<div className="compare-wrapper">
-
-<div className="compare-grid">
-
-<div className="compare-cell compare-left compare-head">
-Leistung
-</div>
-
-<div className="compare-cell compare-head">
-<div className="font-bold text-2xl">Standard</div>
-
-<div className="compare-title">
-24,90 €
-<span className="compare-unit"> / Std.</span>
-</div>
-</div>
-
-<div className="compare-cell compare-head compare-highlight compare-highlight-top">
-
-<div className="compare-popular">
-⭐ Am beliebtesten
-</div>
-
-<div className="font-bold text-2xl">
-Komfort
-</div>
-
-<div className="compare-title">
-27,50 €
-<span className="compare-unit"> / Std.</span>
-</div>
-
-</div>
-
-<div className="compare-cell compare-head">
-<div className="font-bold text-2xl">
-Exklusiv
-</div>
-
-<div className="compare-title">
-29,90 €
-<span className="compare-unit"> / Std.</span>
-</div>
-</div>
-
-{comparisonFeatures.map((f,index)=>{
-
-const last=index===comparisonFeatures.length-1;
-
-return(
-<>
-
-<div className="compare-cell compare-left" key={f.title}>
-{f.title}
-</div>
-
-<div className="compare-cell">
-{f.standard ? <div className="tick">✓</div> : <div className="empty"/>}
-</div>
-
-<div className={`compare-cell compare-highlight ${last ? "compare-highlight-bottom":""}`}>
-{f.komfort ? <div className="tick">✓</div> : <div className="empty"/>}
-</div>
-
-<div className="compare-cell">
-{f.exklusiv ? <div className="tick">✓</div> : <div className="empty"/>}
-</div>
-
-</>
-)
-
-})}
-
-</div>
-
-</div>
-
-<div className="text-center mt-8">
-<button
-className="font-semibold"
-style={{color:"#5B21B6"}}
-onClick={()=>setComparePlans(false)}
->
-Vergleich schließen
-</button>
-</div>
-
-</section>
-
-)}
         <p className="flex items-center justify-center gap-2 text-sm mt-8" style={{ color: 'var(--muted)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 018 0v3" /></svg>
           Versichert & sicher – Für Ihre Sicherheit sind alle unsere Reinigungskräfte versichert.
