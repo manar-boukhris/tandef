@@ -19,17 +19,26 @@ export async function POST() {
 
     let stripeAccountId = cleaner.stripeAccountId;
 
+    // تحقق إذا الـ account موجود في Stripe — إذا لا، نخلق جديد
+    if (stripeAccountId) {
+      try {
+        await stripe.accounts.retrieve(stripeAccountId);
+      } catch {
+        // Account ما موجودش في Stripe (Sandbox/Live mismatch) — نمسحو ونخلق جديد
+        stripeAccountId = null;
+        await prisma.cleaner.update({
+          where: { id: cleaner.id },
+          data: { stripeAccountId: null, stripeOnboarded: false },
+        });
+      }
+    }
+
     if (!stripeAccountId) {
-      // ⭐ Accounts v2 — correct syntax
       const account = await (stripe as any).v2.core.accounts.create({
         display_name: cleaner.user.name || 'Reinigungskraft',
         contact_email: cleaner.user.email,
-        identity: {
-          country: 'DE',
-        },
-        configuration: {
-          recipient: {},
-        },
+        identity: { country: 'DE' },
+        configuration: { recipient: {} },
       });
       stripeAccountId = account.id;
       await prisma.cleaner.update({
