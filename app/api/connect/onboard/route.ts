@@ -19,12 +19,12 @@ export async function POST() {
 
     let stripeAccountId = cleaner.stripeAccountId;
 
-    // تحقق إذا الـ account موجود في Stripe — إذا لا، نخلق جديد
+    // Si account existe en DB, vérifier qu'il existe bien chez Stripe
     if (stripeAccountId) {
       try {
         await stripe.accounts.retrieve(stripeAccountId);
       } catch {
-        // Account ما موجودش في Stripe (Sandbox/Live mismatch) — نمسحو ونخلق جديد
+        // Account invalide → reset
         stripeAccountId = null;
         await prisma.cleaner.update({
           where: { id: cleaner.id },
@@ -33,12 +33,14 @@ export async function POST() {
       }
     }
 
+    // Créer un nouveau compte si nécessaire
     if (!stripeAccountId) {
-      const account = await (stripe as any).v2.core.accounts.create({
-        display_name: cleaner.user.name || 'Reinigungskraft',
-        contact_email: cleaner.user.email,
-        identity: { country: 'DE' },
-        configuration: { recipient: {} },
+      const account = await stripe.accounts.create({
+        type: 'express',
+        country: 'DE',
+        email: cleaner.user.email,
+        capabilities: { transfers: { requested: true } },
+        business_type: 'individual',
       });
       stripeAccountId = account.id;
       await prisma.cleaner.update({
