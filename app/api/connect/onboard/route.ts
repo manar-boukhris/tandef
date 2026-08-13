@@ -42,7 +42,7 @@ export async function POST() {
 
     // Créer le lien d'onboarding
     const accountLink = await stripe.accountLinks.create({
-      account: stripeAccountId,
+      account: stripeAccountId!,
       refresh_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cleaner-dashboard?stripe=refresh`,
       return_url:  `${process.env.NEXT_PUBLIC_BASE_URL}/cleaner-dashboard?stripe=success`,
       type: 'account_onboarding',
