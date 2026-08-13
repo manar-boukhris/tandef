@@ -20,12 +20,18 @@ export async function POST() {
     let stripeAccountId = cleaner.stripeAccountId;
 
     if (!stripeAccountId) {
-      const account = await stripe.accounts.create({
-        type: 'express',
+      // ⭐ Accounts v2 (nouveau système Stripe)
+      const account = await (stripe as any).v2.core.accounts.create({
+        display_name: cleaner.user.name || 'Reinigungskraft',
+        contact_email: cleaner.user.email,
         country: 'DE',
-        email: cleaner.user.email,
-        capabilities: { transfers: { requested: true } },
-        business_type: 'individual',
+        configuration: {
+          recipient: {
+            capabilities: {
+              bank_transfers: { requested: true },
+            },
+          },
+        },
       });
       stripeAccountId = account.id;
       await prisma.cleaner.update({
@@ -34,6 +40,7 @@ export async function POST() {
       });
     }
 
+    // Créer le lien d'onboarding
     const accountLink = await stripe.accountLinks.create({
       account: stripeAccountId,
       refresh_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cleaner-dashboard?stripe=refresh`,
@@ -45,9 +52,9 @@ export async function POST() {
 
   } catch (err: any) {
     console.error('STRIPE ONBOARD ERROR:', err?.message || err);
-    return NextResponse.json({ 
-      error: 'Internal error', 
-      detail: err?.message || String(err) 
+    return NextResponse.json({
+      error: 'Internal error',
+      detail: err?.message || String(err),
     }, { status: 500 });
   }
 }
