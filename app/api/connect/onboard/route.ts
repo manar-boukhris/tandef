@@ -20,17 +20,15 @@ export async function POST() {
     let stripeAccountId = cleaner.stripeAccountId;
 
     if (!stripeAccountId) {
-      // ⭐ Accounts v2 (nouveau système Stripe)
+      // ⭐ Accounts v2 — correct syntax
       const account = await (stripe as any).v2.core.accounts.create({
         display_name: cleaner.user.name || 'Reinigungskraft',
         contact_email: cleaner.user.email,
-        country: 'DE',
+        identity: {
+          country: 'DE',
+        },
         configuration: {
-          recipient: {
-            capabilities: {
-              bank_transfers: { requested: true },
-            },
-          },
+          recipient: {},
         },
       });
       stripeAccountId = account.id;
@@ -40,7 +38,6 @@ export async function POST() {
       });
     }
 
-    // Créer le lien d'onboarding
     const accountLink = await stripe.accountLinks.create({
       account: stripeAccountId!,
       refresh_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cleaner-dashboard?stripe=refresh`,
