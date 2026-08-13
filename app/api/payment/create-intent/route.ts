@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { getCustomerSession } from '@/lib/session';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-07-29.dahlia' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
 const PLATFORM_FEE_PERCENT = 0.20; // TANDEF prend 20% de commission
 

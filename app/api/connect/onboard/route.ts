@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { getCleanerSession } from '@/lib/session';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-07-29.dahlia' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
 export async function POST() {
   const session = await getCleanerSession();
