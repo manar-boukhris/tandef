@@ -26,21 +26,16 @@ export async function GET() {
 
   const now = new Date();
 
-  // Prochaine session (upcoming, date future la plus proche)
   const nextBooking = cleaner.bookings.find(b => b.status === 'upcoming' && new Date(b.date) >= now) || null;
-
-  // Sessions abgeschlossen
   const completedCount = cleaner.bookings.filter(b => b.status === 'completed').length;
 
-  // Guthaben: somme du prix des bookings completed
   const guthaben = cleaner.bookings
     .filter(b => b.status === 'completed')
     .reduce((sum, b) => sum + b.price, 0);
 
-  // Disponibilité cette semaine
   const startOfWeek = new Date(now);
   startOfWeek.setHours(0, 0, 0, 0);
-  startOfWeek.setDate(now.getDate() - now.getDay() + 1); // lundi
+  startOfWeek.setDate(now.getDate() - now.getDay() + 1);
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 7);
 
@@ -51,19 +46,20 @@ export async function GET() {
       date: { gte: startOfWeek, lt: endOfWeek },
     },
   });
-  const availableHoursThisWeek = availableDaysThisWeek * 8; // approximation: 8h/jour dispo
+  const availableHoursThisWeek = availableDaysThisWeek * 8;
 
   return NextResponse.json({
-    name: cleaner.user.name,
-    rating: cleaner.rating,
+    name:             cleaner.user.name,
+    stripeOnboarded:  cleaner.stripeOnboarded || false, // ⭐ jdid
+    rating:           cleaner.rating,
     completedCount,
     guthaben,
     availableHoursThisWeek,
     nextBooking: nextBooking ? {
-      serviceType: nextBooking.serviceType,
-      date: nextBooking.date,
-      hours: nextBooking.hours,
-      address: nextBooking.address,
+      serviceType:  nextBooking.serviceType,
+      date:         nextBooking.date,
+      hours:        nextBooking.hours,
+      address:      nextBooking.address,
       customerName: nextBooking.user.name,
     } : null,
   });

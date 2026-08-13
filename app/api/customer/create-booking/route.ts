@@ -1,11 +1,16 @@
+// app/api/customer/create-booking/route.ts
 import { NextResponse } from 'next/server';
+import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { getCustomerSession } from '@/lib/session';
 
-const FREQUENCY_RATES: Record<string, number> = {
-  'Wöchentlich': 14.90,
-  'Alle zwei Wochen': 16.90,
-  'Einmalig': 19.90,
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
+
+const PLATFORM_FEE_PERCENT = 0.20; // TANDEF prend 20%
+
+const EXTRAS: Record<string, number> = {
+  ironing: 2,
+  product: 3,
 };
 
 export async function POST(req: Request) {
@@ -16,50 +21,90 @@ export async function POST(req: Request) {
 
   const draft = await req.json();
   const {
-    serviceType, frequency, hours, extras, date, time,
+    serviceType, frequency, frequencyNote,
+    hours, extras, date, time,
     address, cleanerId, paymentMethod,
+    bookingType, packageName,
+    hourlyRate, isFixedPrice,
   } = draft;
 
-  if (!serviceType || !hours || !date || !time || !address) {
+  if (!serviceType || !date || !time || !address) {
     return NextResponse.json({ error: 'Buchungsdaten unvollständig.' }, { status: 400 });
   }
 
-  let finalCleanerId = cleanerId || null;
+  // ── 1. Trouver le cleaner ────────────────────────────────────────────────
+  let finalCleanerId: number | null = cleanerId || null;
   if (!finalCleanerId) {
     const anyCleaner = await prisma.cleaner.findFirst({ where: { status: 'active' } });
     finalCleanerId = anyCleaner?.id || null;
   }
 
-  const rate = FREQUENCY_RATES[frequency] || 19.90;
-  const extrasCost = (extras || []).reduce((sum: number, id: string) => sum + (id === 'ironing' ? 2 : id === 'product' ? 3 : 0), 0);
-  const price = Math.round((rate + extrasCost) * hours * 100) / 100;
+  let cleanerStripeAccountId: string | null = null;
+  let cleanerOnboarded = false;
+  if (finalCleanerId) {
+    const cleaner = await prisma.cleaner.findUnique({ where: { id: finalCleanerId } });
+    cleanerStripeAccountId = cleaner?.stripeAccountId || null;
+    cleanerOnboarded       = cleaner?.stripeOnboarded || false;
+  }
 
-  const [hh, mm] = time.split(':').map(Number);
-  const bookingDate = new Date(date);
+  // ── 2. Calculer le prix ──────────────────────────────────────────────────
+  const rate       = hourlyRate || 24.90;
+  const isFixed    = isFixedPrice || false;
+  const nbHours    = isFixed ? 1 : (hours || 3);
+  const extrasCost = (extras || []).reduce(
+    (sum: number, id: string) => sum + (EXTRAS[id] || 0) * (isFixed ? 1 : nbHours),
+    0
+  );
+  const baseCost   = isFixed ? rate : rate * nbHours;
+  const totalPrice = parseFloat((baseCost + extrasCost).toFixed(2));
+  const amountCents = Math.round(totalPrice * 100);
+
+  // ── 3. Parser la date + heure ────────────────────────────────────────────
+  const [hh, mm] = (time as string).split(':').map(Number);
+  const bookingDate = new Date(date as string);
   bookingDate.setHours(hh, mm, 0, 0);
 
+  // ── 4. Créer le booking en base (status: pending) ────────────────────────
   const booking = await prisma.booking.create({
     data: {
-      userId: session.userId,
-      cleanerId: finalCleanerId,
-      status: 'upcoming',
-      offerStatus: finalCleanerId ? 'pending' : 'none',
+      userId:        session.userId,
+      cleanerId:     finalCleanerId || undefined,
+      status:        'pending',
+      offerStatus:   finalCleanerId ? 'pending' : 'none',
+      bookingType:   bookingType   || 'wohnung',
+      packageName:   packageName   || 'Basic',
       serviceType,
-      date: bookingDate,
-      hours,
-      price,
+      date:          bookingDate,
+      hours:         isFixed ? 1 : nbHours,
+      price:         totalPrice,
       address,
       paymentMethod: paymentMethod || 'card',
+      frequency:     frequency     || 'Einmalig',
+      frequencyNote: frequencyNote || null,
     },
   });
 
-  await prisma.invoice.create({
-    data: {
-      bookingId: booking.id,
-      amount: price,
-      status: 'pending',
+  // ── 5. Créer le PaymentIntent Stripe ─────────────────────────────────────
+  const intentData: Stripe.PaymentIntentCreateParams = {
+    amount:   amountCents,
+    currency: 'eur',
+    metadata: {
+      bookingId:  String(booking.id),
+      customerId: String(session.userId),
     },
-  });
+  };
 
-  return NextResponse.json({ ok: true, bookingId: booking.id });
+  // Split automatique si le cleaner a un compte Stripe actif
+  if (cleanerStripeAccountId && cleanerOnboarded) {
+    intentData.application_fee_amount = Math.round(amountCents * PLATFORM_FEE_PERCENT);
+    intentData.transfer_data          = { destination: cleanerStripeAccountId };
+  }
+
+  const paymentIntent = await stripe.paymentIntents.create(intentData);
+
+  return NextResponse.json({
+    ok:           true,
+    clientSecret: paymentIntent.client_secret,
+    bookingId:    booking.id,
+  });
 }

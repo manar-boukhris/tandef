@@ -3,10 +3,13 @@
 
 import { useEffect, useState } from 'react';
 import { useLogout } from '@/lib/useLogout';
+import { StripeConnectButton } from '@/components/StripeConnectButton';
+
 export default function CleanerDashboardPage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const logout = useLogout('cleaner');
+
   useEffect(() => {
     document.title = "TANDEF – Mein Cleaner-Bereich";
 
@@ -16,7 +19,7 @@ export default function CleanerDashboardPage() {
         setData(json);
         setLoading(false);
       });
-      
+
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
     if (menuBtn && menu) {
@@ -26,6 +29,7 @@ export default function CleanerDashboardPage() {
   }, []);
 
   const firstName = data?.name?.split(' ')[0] || '';
+  const stripeOnboarded = data?.stripeOnboarded || false;
 
   const nextSessionText = data?.nextBooking
     ? `${new Date(data.nextBooking.date).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: 'long' })} um ${new Date(data.nextBooking.date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })} · ${data.nextBooking.serviceType} bei ${data.nextBooking.customerName} in ${data.nextBooking.address}`
@@ -35,48 +39,38 @@ export default function CleanerDashboardPage() {
     <>
       <style jsx global>{`
         :root{
-            --purple-900:#3B0A73;--purple-700:#5B21B6;--purple-600:#6D28D9;--purple-500:#7C3AED;
-            --purple-100:#EDE9FE;--purple-50:#F5F3FF;--ink:#1F1339;--muted:#6B6478;
-          }
-          
-          body{
-  font-family:'Inter',sans-serif;
-  color:var(--ink);
-  background-color:#F6F4FC;
-  background-image:url('/images/sessions-bg.png');
-  background-size:cover;
-  background-position:top center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  min-height:100vh;
-}
-h1,h2,h3{font-family:'Poppins',sans-serif;}
-
-
-          h1,h2,h3{font-family:'Poppins',sans-serif;}
-          
-          .tile{background:#fff;border-radius:20px;box-shadow:0 20px 50px -30px rgba(76,29,149,.2);transition:.2s ease;}
-          .tile:hover{transform:translateY(-4px);box-shadow:0 25px 55px -25px rgba(76,29,149,.35);}
-          .icon-circle{width:52px;height:52px;border-radius:9999px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-          .btn-gradient{background:linear-gradient(90deg,var(--purple-700),var(--purple-500));transition:.2s ease;}
-          .btn-gradient:hover{filter:brightness(1.05);}
-          .dropdown-menu{background:#fff;border-radius:14px;box-shadow:0 20px 45px -15px rgba(76,29,149,.3);}
-          .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
-          .dropdown-menu a:hover{background:var(--purple-50);}
-          .chat-bubble{
-            position:fixed;right:28px;bottom:28px;width:56px;height:56px;border-radius:9999px;
-            background:linear-gradient(135deg,var(--purple-700),var(--purple-500));
-            display:flex;align-items:center;justify-content:center;
-            box-shadow:0 12px 30px -8px rgba(76,29,149,.5);
-          }
-          .stat-pill{background:var(--purple-50);border-radius:14px;}
+          --purple-900:#3B0A73;--purple-700:#5B21B6;--purple-600:#6D28D9;--purple-500:#7C3AED;
+          --purple-100:#EDE9FE;--purple-50:#F5F3FF;--ink:#1F1339;--muted:#6B6478;
+        }
+        body{
+          font-family:'Inter',sans-serif;color:var(--ink);
+          background-color:#F6F4FC;background-image:url('/images/sessions-bg.png');
+          background-size:cover;background-position:top center;background-repeat:no-repeat;
+          background-attachment:fixed;min-height:100vh;
+        }
+        h1,h2,h3{font-family:'Poppins',sans-serif;}
+        .tile{background:#fff;border-radius:20px;box-shadow:0 20px 50px -30px rgba(76,29,149,.2);transition:.2s ease;}
+        .tile:hover{transform:translateY(-4px);box-shadow:0 25px 55px -25px rgba(76,29,149,.35);}
+        .icon-circle{width:52px;height:52px;border-radius:9999px;background:var(--purple-100);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .btn-gradient{background:linear-gradient(90deg,var(--purple-700),var(--purple-500));transition:.2s ease;}
+        .btn-gradient:hover{filter:brightness(1.05);}
+        .dropdown-menu{background:#fff;border-radius:14px;box-shadow:0 20px 45px -15px rgba(76,29,149,.3);}
+        .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
+        .dropdown-menu a:hover{background:var(--purple-50);}
+        .chat-bubble{
+          position:fixed;right:28px;bottom:28px;width:56px;height:56px;border-radius:9999px;
+          background:linear-gradient(135deg,var(--purple-700),var(--purple-500));
+          display:flex;align-items:center;justify-content:center;
+          box-shadow:0 12px 30px -8px rgba(76,29,149,.5);
+        }
+        .stat-pill{background:var(--purple-50);border-radius:14px;}
       `}</style>
+
       <header className="relative bg-white border-b" style={{borderColor: '#EDE9F5'}}>
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-        <a href="/cleaner-dashboard" className="flex items-center">
-  <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
-</a>
-          
+          <a href="/cleaner-dashboard" className="flex items-center">
+            <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto" />
+          </a>
           <nav className="flex items-center gap-8 text-sm font-medium relative">
             <span className="rounded-full px-3 py-1 text-xs font-bold" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>Reinigungskraft</span>
             <div className="relative">
@@ -84,7 +78,8 @@ h1,h2,h3{font-family:'Poppins',sans-serif;}
                 <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
                 </span>
-                <span className="flex items-center gap-1">{data?.name || '...'}
+                <span className="flex items-center gap-1">
+                  {data?.name || '...'}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
                 </span>
               </button>
@@ -193,6 +188,20 @@ h1,h2,h3{font-family:'Poppins',sans-serif;}
           <p className="font-bold mb-1" style={{color: 'var(--ink)'}}>Kommunikationspräferenzen</p>
           <p className="text-sm" style={{color: 'var(--muted)'}}>Benachrichtigungen verwalten.</p>
         </a>
+
+        {/* ⭐ Stripe Connect tile */}
+        <div className="tile p-7">
+          <div className="icon-circle mb-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          </div>
+          <p className="font-bold mb-2" style={{color: 'var(--ink)'}}>Bankkonto (Auszahlung)</p>
+          <p className="text-sm mb-4" style={{color: 'var(--muted)'}}>
+            {stripeOnboarded
+              ? 'Dein Bankkonto ist verbunden. Auszahlungen werden automatisch überwiesen.'
+              : 'Verbinde dein Bankkonto, um Auszahlungen zu erhalten.'}
+          </p>
+          {!loading && <StripeConnectButton isOnboarded={stripeOnboarded} />}
+        </div>
 
       </section>
 

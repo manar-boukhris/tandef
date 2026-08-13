@@ -1,161 +1,141 @@
+// app/checkout/page.tsx
 // @ts-nocheck
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { loadStripe } from '@stripe/stripe-js';
+import {
+  Elements,
+  PaymentElement,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
 import { getDraft, clearDraft } from '@/lib/bookingDraft';
 
-// Le prix vient du service choisi (draft.hourlyRate, défini sur /booking-service-type).
-// La fréquence n'a aucun impact sur le prix.
-const DEFAULT_RATE = 24.90;
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const EXTRAS: Record<string, { name: string; price: number }> = {
   ironing: { name: 'Bügeln', price: 2 },
   product: { name: 'Reinigungsmittel', price: 3 },
 };
 
+// ─── Stripe Payment Form ──────────────────────────────────────────────────────
+function StripeForm({ bookingId }: { bookingId: number }) {
+  const stripe   = useStripe();
+  const elements = useElements();
+  const router   = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error,   setError]   = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    setLoading(true);
+    setError('');
+
+    const { error: stripeError } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${window.location.origin}/confirmation?bookingId=${bookingId}`,
+      },
+    });
+
+    if (stripeError) {
+      setError(stripeError.message || 'Zahlung fehlgeschlagen.');
+      setLoading(false);
+    }
+    // Si succès → Stripe redirige vers return_url automatiquement
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <PaymentElement
+        options={{
+          layout: 'tabs',
+          defaultValues: { billingDetails: { address: { country: 'DE' } } },
+        }}
+      />
+      {error && <p className="text-sm font-medium" style={{color: '#C0392B'}}>{error}</p>}
+      <button
+        type="submit"
+        disabled={!stripe || loading}
+        className="btn-gradient w-full text-white font-semibold py-4 rounded-full inline-flex items-center justify-center gap-2"
+        style={{opacity: loading ? 0.7 : 1}}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        {loading ? 'Wird verarbeitet...' : 'Jetzt bezahlen'}
+      </button>
+      <div className="flex items-center justify-center gap-2">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <p className="text-xs" style={{color: 'var(--muted)'}}>Gesichert durch Stripe · SSL-verschlüsselt</p>
+      </div>
+    </form>
+  );
+}
+
+// ─── Main Checkout Page ───────────────────────────────────────────────────────
 export default function CheckoutPage() {
   const router = useRouter();
-  const [draft, setDraft] = useState<any>({});
-  const [payMethod, setPayMethod] = useState<'card' | 'apple_pay' | 'klarna'>('card');
-  const [savedCards, setSavedCards] = useState<any[]>([]);
-  const [selectedCardId, setSelectedCardId] = useState<number | 'new' | null>(null);
-  const [cardNumber, setCardNumber] = useState('');
-  const [cardExpMonth, setCardExpMonth] = useState('');
-  const [cardExpYear, setCardExpYear] = useState('');
-  const [cardName, setCardName] = useState('');
-  const [saveCard, setSaveCard] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [draft,        setDraft]        = useState<any>({});
+  const [clientSecret, setClientSecret] = useState('');
+  const [bookingId,    setBookingId]    = useState<number | null>(null);
+  const [loading,      setLoading]      = useState(true);
+  const [error,        setError]        = useState('');
 
   useEffect(() => {
     document.title = "TANDEF – Zahlung";
-    setDraft(getDraft());
+    const d = getDraft();
+    setDraft(d);
 
-    fetch('/api/customer/payment-methods')
-      .then(res => res.json())
+    // Créer le booking + PaymentIntent dès l'arrivée sur la page
+    fetch('/api/customer/create-booking', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(d),
+    })
+      .then(r => r.json())
       .then(data => {
-        const cards = Array.isArray(data) ? data : [];
-        setSavedCards(cards);
-        setSelectedCardId(cards.length > 0 ? cards[0].id : 'new');
+        if (data.clientSecret) {
+          setClientSecret(data.clientSecret);
+          setBookingId(data.bookingId);
+        } else {
+          setError(data.error || 'Fehler beim Laden der Zahlung.');
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Verbindungsfehler. Bitte versuche es erneut.');
+        setLoading(false);
       });
 
     const menuBtn = document.getElementById('user-menu-btn');
-    const menu = document.getElementById('user-menu');
+    const menu    = document.getElementById('user-menu');
     if (menuBtn && menu) {
       menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('hidden'); });
       document.addEventListener('click', (e) => { if (!menu.contains(e.target)) menu.classList.add('hidden'); });
     }
   }, []);
 
-  const rate = draft.hourlyRate || DEFAULT_RATE;
-  const isFixedPrice = draft.isFixedPrice || false;
+  // Calcul du prix (identique à avant)
+  const rate           = draft.hourlyRate || 24.90;
+  const isFixedPrice   = draft.isFixedPrice || false;
+  const hours          = draft.hours || 3;
   const selectedExtras = (draft.extras || []).map((id: string) => EXTRAS[id]).filter(Boolean);
-  const hours = draft.hours || 3;
-  const baseCost = isFixedPrice ? rate : rate * hours;
-  // Extras × hours (sauf pour Umzug qui est Festpreis, pas d'extras)
-  const extrasCost = selectedExtras.reduce((s: number, e: { price: number }) => s + e.price * hours, 0);
-  const total = (baseCost + extrasCost).toFixed(2).replace('.', ',');
-  const dateLabel = draft.date ? new Date(draft.date).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) : '';
-
-  async function finalizeBooking(paymentMethod: string) {
-    const res = await fetch('/api/customer/create-booking', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...draft, paymentMethod }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error || 'Ein Fehler ist aufgetreten.');
-      return false;
-    }
-    clearDraft();
-    router.push('/confirmation');
-    return true;
-  }
-
-  async function handleCardConfirm() {
-    setError('');
-
-    if (selectedCardId === 'new') {
-      if (!cardNumber || !cardExpMonth || !cardExpYear || !cardName) {
-        setError('Bitte fülle alle Kartenfelder aus.');
-        return;
-      }
-      setLoading(true);
-
-      if (saveCard) {
-        const last4 = cardNumber.replace(/\s/g, '').slice(-4);
-        await fetch('/api/customer/payment-methods', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ brand: 'Karte', last4, expMonth: cardExpMonth, expYear: cardExpYear }),
-        });
-      }
-    } else {
-      setLoading(true);
-    }
-
-    await finalizeBooking('card');
-    setLoading(false);
-  }
-
-  async function handleApplePay() {
-    setError('');
-    // ⚠️ Apple Pay ye7taj domaine réel HTTPS + Apple Merchant Certificate.
-    // Ma yekhdemch fi localhost. Ki el domaine w certificate ykounou jahzin,
-    // hnaya nzidou ApplePaySession w validateMerchant flow réel.
-    if (typeof window !== 'undefined' && !(window as any).ApplePaySession) {
-      setError('Apple Pay ist auf diesem Gerät/Browser nicht verfügbar. (Erfordert Safari auf iOS/macOS + konfigurierte Domain)');
-      return;
-    }
-    setError('Apple Pay ist noch nicht vollständig konfiguriert (Merchant-Zertifikat erforderlich).');
-  }
-
-  async function handleKlarna() {
-    setError('');
-    setLoading(true);
-    const res = await fetch('/api/payments/klarna', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(draft),
-    });
-    setLoading(false);
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error || 'Klarna ist aktuell nicht verfügbar.');
-      return;
-    }
-    // Ki Klarna tkoun configurée, hnaya el redirect l Klarna checkout session
-  }
+  const baseCost       = isFixedPrice ? rate : rate * hours;
+  const extrasCost     = selectedExtras.reduce((s: number, e: { price: number }) => s + e.price * hours, 0);
+  const total          = (baseCost + extrasCost).toFixed(2).replace('.', ',');
+  const dateLabel      = draft.date
+    ? new Date(draft.date).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })
+    : '';
 
   return (
     <>
       <style jsx global>{`
         :root{--purple-900:#3B0A73;--purple-700:#5B21B6;--purple-600:#6D28D9;--purple-500:#7C3AED;--purple-100:#EDE9FE;--purple-50:#F5F3FF;--ink:#1F1339;--muted:#6B6478;}
-                          body{
-  font-family:'Inter',sans-serif;
-  color:var(--ink);
-  background-color:#F6F4FC;
-  background-image:url('/images/sessions-bg.png');
-  background-size:cover;
-  background-position:top center;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  min-height:100vh;
-}
+        body{font-family:'Inter',sans-serif;color:var(--ink);background-color:#F6F4FC;background-image:url('/images/sessions-bg.png');background-size:cover;background-position:top center;background-repeat:no-repeat;background-attachment:fixed;min-height:100vh;}
         h1,h2,h3{font-family:'Poppins',sans-serif;}
-        .page-bg{background-color:#F6F4FC;background-image:url('/images/sessions-bg.png');background-size:cover;background-position:top center;background-repeat:no-repeat;background-attachment:fixed;min-height:100vh;}
         .panel{background:#fff;border-radius:20px;box-shadow:0 20px 50px -30px rgba(76,29,149,.25);}
-        .pay-option{border:2px solid #ECE8F5;border-radius:14px;transition:.15s ease;cursor:pointer;background:#fff;}
-        .pay-option:hover{border-color:#C9B8EC;}
-        .pay-option.selected{border-color:var(--purple-600);background:var(--purple-50);}
-        .pay-option.selected .check-dot{background:var(--purple-600);border-color:var(--purple-600);}
-        .check-dot{width:20px;height:20px;border-radius:9999px;border:2px solid #D6CFE6;display:flex;align-items:center;justify-content:center;transition:.15s ease;}
-        .field{background:#F7F6FA;border:1px solid #ECE9F3;border-radius:12px;transition:.15s ease;}
-        .field:focus-within{border-color:var(--purple-600);background:#fff;}
-        .field input{background:transparent;outline:none;width:100%;}
-        .field input::placeholder{color:#9C96A8;}
         .btn-gradient{background:linear-gradient(90deg,var(--purple-700),var(--purple-500));transition:.2s ease;}
         .btn-gradient:hover{filter:brightness(1.05);}
         .progress-track{background:#E7E4EF;border-radius:9999px;height:6px;}
@@ -164,15 +144,10 @@ export default function CheckoutPage() {
         .dropdown-menu a{display:block;padding:.7rem 1.25rem;color:var(--ink);font-size:.9rem;}
         .dropdown-menu a:hover{background:var(--purple-50);}
         .chat-bubble{position:fixed;right:28px;bottom:28px;width:56px;height:56px;border-radius:9999px;background:linear-gradient(135deg,var(--purple-700),var(--purple-500));display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px -8px rgba(76,29,149,.5);}
-        .saved-card-row{border:1.5px solid #ECE8F5;border-radius:12px;transition:.15s ease;cursor:pointer;}
-        .saved-card-row.selected{border-color:var(--purple-600);background:var(--purple-50);}
-        .apple-pay-btn{background:#000;color:#fff;font-weight:600;transition:.2s ease;}
-        .apple-pay-btn:hover{background:#1a1a1a;}
-        .klarna-btn{background:#FFB3C7;color:#17120F;font-weight:700;transition:.2s ease;}
-        .klarna-btn:hover{filter:brightness(0.97);}
+        /* Stripe Elements custom style */
+        .StripeElement{padding:0;}
       `}</style>
 
-     
       <div className="relative max-w-5xl mx-auto px-6 pt-8 flex items-center gap-4">
         <a href="/booking-cleaner" className="text-gray-400 hover:text-gray-600">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
@@ -184,90 +159,54 @@ export default function CheckoutPage() {
         <h1 className="text-3xl md:text-4xl font-extrabold mb-3 text-center" style={{color: 'var(--purple-700)'}}>Fast geschafft!</h1>
         <p className="mb-10 text-center" style={{color: 'var(--muted)'}}>Wähle deine Zahlungsmethode und bestätige die Buchung.</p>
 
-        {error && <p className="text-center text-sm mb-6" style={{color: '#C0392B'}}>{error}</p>}
-
         <div className="grid lg:grid-cols-5 gap-8">
 
-          <div className="lg:col-span-3 space-y-4">
-
-            {/* Apple Pay */}
-            <button
-              onClick={handleApplePay}
-              className="apple-pay-btn w-full py-4 rounded-xl flex items-center justify-center gap-2"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M16.5 2c-1.2.1-2.6.8-3.4 1.7-.7.8-1.3 2-1.1 3.1 1.3.1 2.6-.7 3.4-1.6.8-.9 1.3-2.1 1.1-3.2zM19.7 8.4c-1.9-.1-3.5 1.1-4.4 1.1-.9 0-2.3-1-3.8-1-1.9 0-3.7 1.1-4.7 2.9-2 3.5-.5 8.6 1.4 11.4.9 1.4 2 2.9 3.5 2.9 1.4-.1 1.9-.9 3.6-.9s2.1.9 3.6.9c1.5 0 2.5-1.4 3.4-2.7.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.6-3.9 0-2.5 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.4-2.1z" /></svg>
-              Mit Apple Pay bezahlen
-            </button>
-
-            {/* Klarna */}
-            <button
-              onClick={handleKlarna}
-              disabled={loading}
-              className="klarna-btn w-full py-4 rounded-xl flex items-center justify-center gap-2"
-            >
-              Mit <strong>Klarna.</strong> bezahlen — später buchen, jetzt reservieren
-            </button>
-
-            <div className="flex items-center gap-4 my-2">
-              <span className="flex-1 h-px" style={{background: '#EDE9F5'}}></span>
-              <span className="text-sm" style={{color: 'var(--muted)'}}>Oder mit Karte</span>
-              <span className="flex-1 h-px" style={{background: '#EDE9F5'}}></span>
+          {/* ─── Left: Stripe Payment Form ─── */}
+          <div className="lg:col-span-3">
+            <div className="panel p-7">
+              {loading ? (
+                <div className="text-center py-12" style={{color: 'var(--muted)'}}>
+                  <svg className="animate-spin mx-auto mb-4" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" strokeWidth="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+                  Zahlung wird vorbereitet...
+                </div>
+              ) : error ? (
+                <div className="text-center py-8">
+                  <p className="text-sm font-medium mb-4" style={{color: '#C0392B'}}>{error}</p>
+                  <button onClick={() => window.location.reload()} className="btn-gradient text-white font-semibold px-6 py-3 rounded-full text-sm">
+                    Erneut versuchen
+                  </button>
+                </div>
+              ) : clientSecret && bookingId ? (
+                <Elements
+                  stripe={stripePromise}
+                  options={{
+                    clientSecret,
+                    locale: 'de',
+                    appearance: {
+                      theme: 'stripe',
+                      variables: {
+                        colorPrimary: '#5B21B6',
+                        colorBackground: '#ffffff',
+                        colorText: '#1F1339',
+                        fontFamily: 'Inter, sans-serif',
+                        borderRadius: '12px',
+                      },
+                    },
+                  }}
+                >
+                  <StripeForm bookingId={bookingId} />
+                </Elements>
+              ) : null}
             </div>
-
-            {savedCards.map(card => (
-              <div
-                key={card.id}
-                onClick={() => setSelectedCardId(card.id)}
-                className={`saved-card-row p-4 flex items-center gap-4 ${selectedCardId === card.id ? 'selected' : ''}`}
-              >
-                <div className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style={{background: 'var(--purple-100)'}}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm" style={{color: 'var(--ink)'}}>{card.brand} •••• {card.last4}</p>
-                  <p className="text-xs" style={{color: 'var(--muted)'}}>Gültig bis {String(card.expMonth).padStart(2, '0')}/{String(card.expYear).slice(-2)}</p>
-                </div>
-                <span className="check-dot shrink-0">{selectedCardId === card.id && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M5 12l5 5 9-9" /></svg>}</span>
-              </div>
-            ))}
-
-            <div
-              onClick={() => setSelectedCardId('new')}
-              className={`saved-card-row p-4 flex items-center gap-4 ${selectedCardId === 'new' ? 'selected' : ''}`}
-            >
-              <div className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style={{background: 'var(--purple-100)'}}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
-              </div>
-              <p className="flex-1 font-semibold text-sm" style={{color: 'var(--ink)'}}>Neue Karte verwenden</p>
-              <span className="check-dot shrink-0">{selectedCardId === 'new' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M5 12l5 5 9-9" /></svg>}</span>
-            </div>
-
-            {selectedCardId === 'new' && (
-              <div className="panel p-6 space-y-4">
-                <div className="field flex items-center gap-3 px-4 py-3">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C96A8" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /></svg>
-                  <input type="text" placeholder="Kartennummer" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} maxLength={19} />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="field px-4 py-3"><input type="text" placeholder="Monat (MM)" value={cardExpMonth} onChange={(e) => setCardExpMonth(e.target.value)} maxLength={2} /></div>
-                  <div className="field px-4 py-3"><input type="text" placeholder="Jahr (YYYY)" value={cardExpYear} onChange={(e) => setCardExpYear(e.target.value)} maxLength={4} /></div>
-                </div>
-                <div className="field px-4 py-3"><input type="text" placeholder="Name auf der Karte" value={cardName} onChange={(e) => setCardName(e.target.value)} /></div>
-                <label className="flex items-center gap-2 text-sm" style={{color: 'var(--muted)'}}>
-                  <input type="checkbox" checked={saveCard} onChange={(e) => setSaveCard(e.target.checked)} className="accent-purple-700" />
-                  Diese Karte für zukünftige Zahlungen speichern
-                </label>
-              </div>
-            )}
           </div>
 
+          {/* ─── Right: Booking Summary ─── */}
           <div className="lg:col-span-2">
             <div className="panel p-7 sticky top-6">
               <h3 className="font-bold text-lg mb-6" style={{color: 'var(--ink)'}}>Deine Buchung</h3>
               <div className="space-y-4 text-sm mb-6">
-                {/* Typ + Pack + Service */}
                 <div className="flex items-start gap-3">
-                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                   <div>
                     <p className="font-semibold" style={{color: 'var(--ink)'}}>
                       {draft.bookingType === 'firmen' ? 'Firmenreinigung' : draft.bookingType === 'umzug' ? 'Umzugsreinigung' : 'Wohnungsreinigung'}
@@ -276,25 +215,21 @@ export default function CheckoutPage() {
                     {draft.serviceType && <p style={{color: 'var(--muted)'}}>{draft.serviceType}</p>}
                   </div>
                 </div>
-                {/* Adresse */}
                 <div className="flex items-start gap-3">
-                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z" /></svg>
+                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/></svg>
                   <p style={{color: 'var(--muted)'}}>{draft.address || '–'}</p>
                 </div>
-                {/* Date + Heure */}
                 <div className="flex items-start gap-3">
-                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /></svg>
+                  <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
                   <p style={{color: 'var(--muted)'}}>{dateLabel} · {draft.time || '–'} Uhr</p>
                 </div>
-                {/* Heures + Fréquence (seulement si pas Festpreis) */}
                 {!isFixedPrice && (
                   <div className="flex items-start gap-3">
-                    <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>
+                    <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
                     <p style={{color: 'var(--muted)'}}>{hours} Stunden · {draft.frequency || '–'}</p>
                   </div>
                 )}
               </div>
-              {/* Détail prix */}
               <div className="border-t pt-4 space-y-2 text-sm" style={{borderColor: '#EFEAF6'}}>
                 {isFixedPrice ? (
                   <div className="flex justify-between">
@@ -314,13 +249,10 @@ export default function CheckoutPage() {
                   </div>
                 ))}
                 <div className="flex justify-between font-bold text-base pt-2" style={{color: 'var(--ink)'}}>
-                  <span>Gesamt</span><span style={{color: 'var(--purple-700)'}}>{total} €</span>
+                  <span>Gesamt</span>
+                  <span style={{color: 'var(--purple-700)'}}>{total} €</span>
                 </div>
               </div>
-              <button onClick={handleCardConfirm} disabled={loading} className="btn-gradient w-full mt-6 text-white font-semibold py-4 rounded-full inline-flex items-center justify-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="10" width="16" height="10" rx="2" /></svg>
-                {loading ? 'Wird gebucht...' : 'Jetzt buchen'}
-              </button>
               <p className="text-xs text-center mt-4" style={{color: 'var(--muted)'}}>Bezahlt wird erst nach der Reinigung.</p>
             </div>
           </div>
@@ -329,7 +261,7 @@ export default function CheckoutPage() {
       </section>
 
       <div className="chat-bubble">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" /></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
       </div>
     </>
   );

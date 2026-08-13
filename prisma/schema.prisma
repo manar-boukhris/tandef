@@ -76,7 +76,9 @@ model Cleaner {
   rating      Float        @default(0)
   bio         String?      @db.Text
   status      String       @default("pending")
-  photoUrl    String?      // ⭐ zid hedhi el ligne
+  photoUrl    String?     
+  stripeAccountId  String?
+  stripeOnboarded  Boolean @default(false)
 
   bookings     Booking[]
   availability Availability[]
