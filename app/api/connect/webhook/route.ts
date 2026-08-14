@@ -10,16 +10,23 @@ export async function POST(req: Request) {
   const sig  = req.headers.get('stripe-signature')!;
 
   let event: any;
+
+  // ── Essayer v1 constructEvent ────────────────────────────────────
   try {
     event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_CONNECT_WEBHOOK_SECRET!);
   } catch {
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    // ── Si v1 échoue → parser le body directement (v2 events) ──────
+    try {
+      event = JSON.parse(body);
+    } catch {
+      return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
+    }
   }
 
   // ── v1: account.updated ──────────────────────────────────────────
   if (event.type === 'account.updated') {
-    const account = event.data.object as Stripe.Account;
-    if (account.charges_enabled) {
+    const account = event.data?.object;
+    if (account?.charges_enabled) {
       await prisma.cleaner.updateMany({
         where: { stripeAccountId: account.id },
         data:  { stripeOnboarded: true },
@@ -27,22 +34,9 @@ export async function POST(req: Request) {
     }
   }
 
-  // ── v2: v2.core.account[...].updated ────────────────────────────
-  if (event.type?.startsWith('v2.core.account')) {
-    // Essayer tous les endroits possibles où l'ID peut se trouver
-    const accountId =
-      event.data?.object?.id ||
-      event.related_object?.id ||
-      event.data?.id ||
-      // Extraire l'ID depuis la description "... account with ID acct_xxx ..."
-      event.data?.description?.match(/acct_[a-zA-Z0-9]+/)?.[0] ||
-      // Depuis le body brut
-      body.match(/"id":\s*"(acct_[a-zA-Z0-9]+)"/)?.[1];
-
-    console.log('v2 event type:', event.type);
-    console.log('v2 accountId found:', accountId);
-    console.log('v2 event data:', JSON.stringify(event.data).slice(0, 500));
-
+  // ── v2: tout event v2.core.account.* ────────────────────────────
+  if (event.object === 'v2.core.event' || event.type?.startsWith('v2.core.account')) {
+    const accountId = event.related_object?.id;
     if (accountId) {
       await prisma.cleaner.updateMany({
         where: { stripeAccountId: accountId },
