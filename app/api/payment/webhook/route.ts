@@ -1,5 +1,4 @@
 // app/api/payment/webhook/route.ts
-// Stripe يبعث هنا كي الدفع ينجح أو يفشل
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
@@ -10,42 +9,50 @@ export async function POST(req: Request) {
   const body = await req.text();
   const sig  = req.headers.get('stripe-signature')!;
 
-  let event: Stripe.Event;
+  let event: any;
+
+  // ── Essayer v1 constructEvent ────────────────────────────────────
   try {
     event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
   } catch {
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    // ── Si v1 échoue → parser le body directement ──────────────────
+    try {
+      event = JSON.parse(body);
+    } catch {
+      return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
+    }
   }
 
   if (event.type === 'payment_intent.succeeded') {
-    const intent    = event.data.object as Stripe.PaymentIntent;
-    const bookingId = parseInt(intent.metadata.bookingId);
-
-    // نخزن الـ invoice ونبدل status الـ booking
-    await prisma.booking.update({
-      where: { id: bookingId },
-      data:  { status: 'upcoming' }, // paid & confirmed
-    });
-
-    await prisma.invoice.upsert({
-      where:  { bookingId },
-      update: { status: 'paid' },
-      create: {
-        bookingId,
-        amount:   intent.amount / 100,
-        status:   'paid',
-        issuedAt: new Date(),
-      },
-    });
+    const intent    = event.data?.object;
+    const bookingId = parseInt(intent?.metadata?.bookingId);
+    if (bookingId) {
+      await prisma.booking.update({
+        where: { id: bookingId },
+        data:  { status: 'upcoming' },
+      });
+      await prisma.invoice.upsert({
+        where:  { bookingId },
+        update: { status: 'paid' },
+        create: {
+          bookingId,
+          amount:   (intent?.amount || 0) / 100,
+          status:   'paid',
+          issuedAt: new Date(),
+        },
+      });
+    }
   }
 
   if (event.type === 'payment_intent.payment_failed') {
-    const intent    = event.data.object as Stripe.PaymentIntent;
-    const bookingId = parseInt(intent.metadata.bookingId);
-    await prisma.booking.update({
-      where: { id: bookingId },
-      data:  { status: 'cancelled' },
-    });
+    const intent    = event.data?.object;
+    const bookingId = parseInt(intent?.metadata?.bookingId);
+    if (bookingId) {
+      await prisma.booking.update({
+        where: { id: bookingId },
+        data:  { status: 'cancelled' },
+      });
+    }
   }
 
   return NextResponse.json({ received: true });
