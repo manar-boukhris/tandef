@@ -29,7 +29,20 @@ export async function POST(req: Request) {
 
   // ── v2: v2.core.account[...].updated ────────────────────────────
   if (event.type?.startsWith('v2.core.account')) {
-    const accountId = event.data?.object?.id || event.related_object?.id;
+    // Essayer tous les endroits possibles où l'ID peut se trouver
+    const accountId =
+      event.data?.object?.id ||
+      event.related_object?.id ||
+      event.data?.id ||
+      // Extraire l'ID depuis la description "... account with ID acct_xxx ..."
+      event.data?.description?.match(/acct_[a-zA-Z0-9]+/)?.[0] ||
+      // Depuis le body brut
+      body.match(/"id":\s*"(acct_[a-zA-Z0-9]+)"/)?.[1];
+
+    console.log('v2 event type:', event.type);
+    console.log('v2 accountId found:', accountId);
+    console.log('v2 event data:', JSON.stringify(event.data).slice(0, 500));
+
     if (accountId) {
       await prisma.cleaner.updateMany({
         where: { stripeAccountId: accountId },
