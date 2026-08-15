@@ -8,6 +8,6 @@ export function useLogout(role: 'customer' | 'cleaner' = 'customer') {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ role }),
     });
-    router.push('/login');
+    router.push(role === 'cleaner' ? '/cleaner-login' : '/login');
   };
 }

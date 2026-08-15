@@ -77,7 +77,7 @@ export default function CleanerDashboardPage() {
             <div className="relative">
               <button id="user-menu-btn" className="flex items-center gap-2 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
                 {photoUrl
-                  ? <img src={photoUrl} alt={data?.name || ''} style={{width: '32px', height: '32px', borderRadius: '9999px', objectFit: 'cover', objectPosition: 'center', border: '2px solid var(--purple-100)', flexShrink: 0}} />
+                  ? <img src={`/api/cleaner/photo?url=${encodeURIComponent(photoUrl)}`} alt={data?.name || ''} className="w-8 h-8 rounded-full object-cover" style={{border: '2px solid var(--purple-100)'}} />
                   : <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
                     </span>
