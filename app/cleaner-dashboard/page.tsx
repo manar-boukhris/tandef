@@ -29,6 +29,7 @@ export default function CleanerDashboardPage() {
   }, []);
 
   const firstName = data?.name?.split(' ')[0] || '';
+  const photoUrl = data?.photoUrl || null;
   const stripeOnboarded = data?.stripeOnboarded || false;
 
   const nextSessionText = data?.nextBooking
@@ -75,9 +76,12 @@ export default function CleanerDashboardPage() {
             <span className="rounded-full px-3 py-1 text-xs font-bold" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>Reinigungskraft</span>
             <div className="relative">
               <button id="user-menu-btn" className="flex items-center gap-2 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-                </span>
+                {photoUrl
+                  ? <img src={photoUrl} alt={data?.name || ''} style={{width: '32px', height: '32px', borderRadius: '9999px', objectFit: 'cover', objectPosition: 'center', border: '2px solid var(--purple-100)', flexShrink: 0}} />
+                  : <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+                    </span>
+                }
                 <span className="flex items-center gap-1">
                   {data?.name || '...'}
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>

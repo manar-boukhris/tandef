@@ -50,7 +50,8 @@ export async function GET() {
 
   return NextResponse.json({
     name:             cleaner.user.name,
-    stripeOnboarded:  cleaner.stripeOnboarded || false, // ⭐ jdid
+    photoUrl:         cleaner.photoUrl || null,         // ⭐ jdid
+    stripeOnboarded:  cleaner.stripeOnboarded || false,
     rating:           cleaner.rating,
     completedCount,
     guthaben,
