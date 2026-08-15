@@ -1,3 +1,4 @@
+// app/api/customer/invoices/[id]/pdf/route.ts
 import { NextResponse } from 'next/server';
 import { renderToStream } from '@react-pdf/renderer';
 import { prisma } from '@/lib/prisma';
@@ -21,7 +22,7 @@ export async function GET(
     include: {
       booking: {
         include: {
-          user: { select: { name: true, email: true } },
+          user:    { select: { name: true, email: true } },
           cleaner: { include: { user: { select: { name: true } } } },
         },
       },
@@ -33,22 +34,31 @@ export async function GET(
   }
 
   const logoUrl = `${req.headers.get('origin') || 'http://localhost:3000'}/images/logo.png`;
+  const b = invoice.booking;
+
+  // ⭐ extras: stockés comme "ironing,product" → tableau
+  const extrasArr = b.extras ? b.extras.split(',').filter(Boolean) : [];
 
   const stream = await renderToStream(
     InvoicePDF({
       invoiceNumber: `TDF-${String(invoice.id).padStart(6, '0')}`,
-      issuedAt: invoice.issuedAt.toISOString(),
-      status: invoice.status as 'paid' | 'pending',
-      amount: invoice.amount,
-      customerName: invoice.booking.user.name,
-      customerEmail: invoice.booking.user.email,
+      issuedAt:      invoice.issuedAt.toISOString(),
+      status:        invoice.status as 'paid' | 'pending',
+      amount:        invoice.amount,
+      customerName:  b.user.name,
+      customerEmail: b.user.email,
       booking: {
-        serviceType: invoice.booking.serviceType,
-        date: invoice.booking.date.toISOString(),
-        hours: invoice.booking.hours,
-        address: invoice.booking.address,
+        serviceType:  b.serviceType,
+        date:         b.date.toISOString(),
+        hours:        b.hours,
+        address:      b.address,
+        frequency:    b.frequency    || undefined,
+        bookingType:  b.bookingType  || undefined,
+        packageName:  b.packageName  || undefined,
+        isFixedPrice: false,
+        hasExtras:    extrasArr.length > 0,  // ⭐ jdid
       },
-      cleanerName: invoice.booking.cleaner?.user?.name,
+      cleanerName: b.cleaner?.user?.name,
       logoUrl,
     })
   );
@@ -61,7 +71,7 @@ export async function GET(
 
   return new NextResponse(buffer, {
     headers: {
-      'Content-Type': 'application/pdf',
+      'Content-Type':        'application/pdf',
       'Content-Disposition': `attachment; filename="TANDEF-Rechnung-${invoice.id}.pdf"`,
     },
   });

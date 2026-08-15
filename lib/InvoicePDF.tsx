@@ -1,123 +1,96 @@
-import { Document, Page, Text, View, Image, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, Image, StyleSheet } from '@react-pdf/renderer';
 
 const PURPLE_700 = '#5B21B6';
-const PURPLE_50 = '#F5F3FF';
-const INK = '#1F1339';
-const MUTED = '#6B6478';
+const PURPLE_50  = '#F5F3FF';
+const INK        = '#1F1339';
+const MUTED      = '#6B6478';
 
 const styles = StyleSheet.create({
-  page: {
-    padding: 40,
-    fontSize: 10,
-    fontFamily: 'Helvetica',
-    color: INK,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 30,
-    borderBottomWidth: 2,
-    borderBottomColor: PURPLE_700,
-    paddingBottom: 16,
-  },
-  logo: { width: 110, height: 'auto' },
-  invoiceTitle: { fontSize: 20, fontWeight: 700, color: PURPLE_700, textAlign: 'right' },
-  invoiceMeta: { fontSize: 9, color: MUTED, textAlign: 'right', marginTop: 4 },
-  section: { marginBottom: 22 },
-  sectionTitle: {
-    fontSize: 10, fontWeight: 700, color: PURPLE_700,
-    marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5,
-  },
-  row: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  label: { color: MUTED },
-  value: { color: INK, fontWeight: 700 },
-  card: {
-    backgroundColor: PURPLE_50,
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 22,
-  },
-  table: { marginTop: 6 },
-  tableHeaderRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ECE8F5',
-    paddingBottom: 8,
-    marginBottom: 8,
-  },
-  tableRow: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F2EEFA',
-  },
-  colDesc: { flex: 3 },
-  colQty: { flex: 1, textAlign: 'center' },
-  colPrice: { flex: 1, textAlign: 'right' },
-  th: { fontSize: 9, fontWeight: 700, color: MUTED, textTransform: 'uppercase' },
-  totalsBox: { alignItems: 'flex-end', marginTop: 16 },
-  totalRow: { flexDirection: 'row', width: 220, justifyContent: 'space-between', marginBottom: 6 },
-  grandTotalRow: {
-    flexDirection: 'row', width: 220, justifyContent: 'space-between',
-    borderTopWidth: 2, borderTopColor: PURPLE_700, paddingTop: 8, marginTop: 4,
-  },
-  grandTotalLabel: { fontSize: 12, fontWeight: 700, color: INK },
-  grandTotalValue: { fontSize: 14, fontWeight: 700, color: PURPLE_700 },
-  statusBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#E7F7EE',
-    color: '#15803D',
-    fontSize: 9,
-    fontWeight: 700,
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    borderRadius: 20,
-    marginTop: 6,
-  },
+  page:           { padding: 40, fontSize: 10, fontFamily: 'Helvetica', color: INK },
+  headerRow:      { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30, borderBottomWidth: 2, borderBottomColor: PURPLE_700, paddingBottom: 16 },
+  logo:           { width: 110, height: 'auto' },
+  invoiceTitle:   { fontSize: 20, fontWeight: 700, color: PURPLE_700, textAlign: 'right' },
+  invoiceMeta:    { fontSize: 9, color: MUTED, textAlign: 'right', marginTop: 4 },
+  section:        { marginBottom: 22 },
+  sectionTitle:   { fontSize: 10, fontWeight: 700, color: PURPLE_700, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 },
+  row:            { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  label:          { color: MUTED },
+  value:          { color: INK, fontWeight: 700 },
+  card:           { backgroundColor: PURPLE_50, borderRadius: 8, padding: 16, marginBottom: 22 },
+  table:          { marginTop: 6 },
+  tableHeaderRow: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ECE8F5', paddingBottom: 8, marginBottom: 8 },
+  tableRow:       { flexDirection: 'row', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#F2EEFA' },
+  colDesc:        { flex: 3 },
+  colQty:         { flex: 1, textAlign: 'center' },
+  colPrice:       { flex: 1, textAlign: 'right' },
+  th:             { fontSize: 9, fontWeight: 700, color: MUTED, textTransform: 'uppercase' },
+  totalsBox:      { alignItems: 'flex-end', marginTop: 16 },
+  totalRow:       { flexDirection: 'row', width: 220, justifyContent: 'space-between', marginBottom: 6 },
+  grandTotalRow:  { flexDirection: 'row', width: 220, justifyContent: 'space-between', borderTopWidth: 2, borderTopColor: PURPLE_700, paddingTop: 8, marginTop: 4 },
+  grandTotalLabel:{ fontSize: 12, fontWeight: 700, color: INK },
+  grandTotalValue:{ fontSize: 14, fontWeight: 700, color: PURPLE_700 },
+  statusBadge:    { alignSelf: 'flex-start', backgroundColor: '#E7F7EE', color: '#15803D', fontSize: 9, fontWeight: 700, paddingVertical: 4, paddingHorizontal: 10, borderRadius: 20, marginTop: 6 },
   statusBadgePending: { backgroundColor: '#FEF3C7', color: '#B7791F' },
-  footer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 40,
-    right: 40,
-    borderTopWidth: 1,
-    borderTopColor: '#ECE8F5',
-    paddingTop: 12,
-    fontSize: 8,
-    color: MUTED,
-    textAlign: 'center',
-  },
+  footer:         { position: 'absolute', bottom: 30, left: 40, right: 40, borderTopWidth: 1, borderTopColor: '#ECE8F5', paddingTop: 12, fontSize: 8, color: MUTED, textAlign: 'center' },
 });
 
+const TYPE_LABELS: Record<string, string> = {
+  wohnung: 'Wohnungsreinigung',
+  firmen:  'Firmenreinigung',
+  umzug:   'Umzugsreinigung',
+};
+
+const PACK_LABELS: Record<string, string> = {
+  '1-Zimmer':     '1-Zimmer Wohnung',
+  '2-3-Zimmer':   '2–3 Zimmer Wohnung',
+  '4plus-Zimmer': '4+ Zimmer Wohnung',
+};
+
 type InvoicePDFProps = {
-  invoiceNumber: string;
-  issuedAt: string;
-  status: 'paid' | 'pending';
-  amount: number;
-  customerName: string;
-  customerEmail: string;
+  invoiceNumber:  string;
+  issuedAt:       string;
+  status:         'paid' | 'pending';
+  amount:         number;
+  customerName:   string;
+  customerEmail:  string;
   booking: {
-    serviceType: string;
-    date: string;
-    hours: number;
-    address: string;
-    frequency?: string;
+    serviceType:   string;
+    date:          string;
+    hours:         number;
+    address:       string;
+    frequency?:    string;
+    bookingType?:  string;
+    packageName?:  string;
+    isFixedPrice?: boolean;
+    hourlyRate?:   number;
+    hasExtras?:    boolean;
   };
   cleanerName?: string;
-  logoUrl: string;
+  logoUrl:      string;
 };
 
 export function InvoicePDF({
   invoiceNumber, issuedAt, status, amount,
   customerName, customerEmail, booking, cleanerName, logoUrl,
 }: InvoicePDFProps) {
-  const hourlyRate = (amount / booking.hours).toFixed(2);
+  const isFixed       = booking.isFixedPrice || false;
+  const rate          = booking.hourlyRate || (isFixed ? amount : amount / booking.hours);
+  const bookingTypeLabel = TYPE_LABELS[booking.bookingType || 'wohnung'] || booking.bookingType || '';
+  const packageLabel     = PACK_LABELS[booking.packageName || ''] || booking.packageName || '';
+
+  // Description du service dans le tableau
+  const serviceDesc = [
+    booking.serviceType,
+    packageLabel ? `· ${packageLabel}` : '',
+    isFixed ? '(Festpreis)' : `(${rate.toFixed(2)} €/Std.)`,
+    booking.hasExtras ? '· inkl. Extras' : '',
+  ].filter(Boolean).join(' ');
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
 
+        {/* Header */}
         <View style={styles.headerRow}>
           <Image style={styles.logo} src={logoUrl} />
           <View>
@@ -129,6 +102,7 @@ export function InvoicePDF({
           </View>
         </View>
 
+        {/* Client + Status */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Rechnungsempfänger</Text>
@@ -143,47 +117,77 @@ export function InvoicePDF({
           </View>
         </View>
 
+        {/* Details */}
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Details der Reinigung</Text>
+
+          {bookingTypeLabel ? (
+            <View style={styles.row}>
+              <Text style={styles.label}>Art der Reinigung</Text>
+              <Text style={styles.value}>{bookingTypeLabel}</Text>
+            </View>
+          ) : null}
+
+          {packageLabel ? (
+            <View style={styles.row}>
+              <Text style={styles.label}>Paket</Text>
+              <Text style={styles.value}>{packageLabel}</Text>
+            </View>
+          ) : null}
+
           <View style={styles.row}>
             <Text style={styles.label}>Leistung</Text>
             <Text style={styles.value}>{booking.serviceType}</Text>
           </View>
+
           <View style={styles.row}>
             <Text style={styles.label}>Datum</Text>
             <Text style={styles.value}>
               {new Date(booking.date).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })}
             </Text>
           </View>
+
           <View style={styles.row}>
             <Text style={styles.label}>Adresse</Text>
             <Text style={styles.value}>{booking.address}</Text>
           </View>
-          {cleanerName && (
+
+          {!isFixed && (
             <View style={styles.row}>
-              <Text style={styles.label}>Reinigungskraft</Text>
-              <Text style={styles.value}>{cleanerName}</Text>
+              <Text style={styles.label}>Stunden</Text>
+              <Text style={styles.value}>{booking.hours} Std.</Text>
             </View>
           )}
+
           {booking.frequency && (
             <View style={styles.row}>
               <Text style={styles.label}>Häufigkeit</Text>
               <Text style={styles.value}>{booking.frequency}</Text>
             </View>
           )}
+
+          {cleanerName && (
+            <View style={styles.row}>
+              <Text style={styles.label}>Reinigungskraft</Text>
+              <Text style={styles.value}>{cleanerName}</Text>
+            </View>
+          )}
         </View>
 
+        {/* Kostenaufstellung */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Kostenaufstellung</Text>
           <View style={styles.table}>
             <View style={styles.tableHeaderRow}>
               <Text style={[styles.th, styles.colDesc]}>Beschreibung</Text>
-              <Text style={[styles.th, styles.colQty]}>Stunden</Text>
+              <Text style={[styles.th, styles.colQty]}>{isFixed ? 'Einheit' : 'Std.'}</Text>
               <Text style={[styles.th, styles.colPrice]}>Betrag</Text>
             </View>
+
+            {/* Sطر وحد يجمع كل شيء */}
             <View style={styles.tableRow}>
-              <Text style={styles.colDesc}>{booking.serviceType} ({hourlyRate} €/Std.)</Text>
-              <Text style={styles.colQty}>{booking.hours}</Text>
+              <Text style={styles.colDesc}>{serviceDesc}</Text>
+              <Text style={styles.colQty}>{isFixed ? '1' : booking.hours}</Text>
               <Text style={styles.colPrice}>{amount.toFixed(2)} €</Text>
             </View>
           </View>

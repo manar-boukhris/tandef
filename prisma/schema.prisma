@@ -118,6 +118,7 @@ model Booking {
   hours       Int
   price       Float
   address     String
+  extras        String    @default("")  //
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
   cleaner     Cleaner?  @relation(fields: [cleanerId], references: [id])

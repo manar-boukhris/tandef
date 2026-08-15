@@ -81,6 +81,7 @@ export async function POST(req: Request) {
       paymentMethod: paymentMethod || 'card',
       frequency:     frequency     || 'Einmalig',
       frequencyNote: frequencyNote || null,
+      extras:        (extras || []).join(','),  // ⭐ jdid
     },
   });
 

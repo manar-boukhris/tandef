@@ -10,6 +10,19 @@ const STATUS_META = {
   cancelled: { label: 'Storniert', pillClass: 'status-cancelled', iconBg: '#FBE7E7' },
 };
 
+const TYPE_LABELS = {
+  wohnung: 'Wohnungsreinigung',
+  firmen:  'Firmenreinigung',
+  umzug:   'Umzugsreinigung',
+};
+
+const PACK_LABELS = {
+  'Basic': 'Basic', 'Standard': 'Standard', 'Premium': 'Premium',
+  '1-Zimmer': '1-Zimmer Wohnung', '2-3-Zimmer': '2–3 Zimmer Wohnung', '4plus-Zimmer': '4+ Zimmer Wohnung',
+};
+
+const EXTRAS_LABELS = { ironing: 'Bügeln', product: 'Reinigungsmittel' };
+
 function formatMeta(b) {
   const start = new Date(b.date);
   const end = new Date(start.getTime() + b.hours * 60 * 60 * 1000);
@@ -214,7 +227,35 @@ export default function CleanerBookingsPage() {
                       </p>
                       {!isOffer && <span className={`status-pill ${meta.pillClass}`}>{meta.label}</span>}
                     </div>
-                    <p className="text-sm" style={{color: 'var(--muted)'}}>{formatMeta(b)}</p>
+                    <p className="text-sm mb-2" style={{color: 'var(--muted)'}}>{formatMeta(b)}</p>
+                    {/* ⭐ Details */}
+                    <div className="flex flex-wrap gap-2">
+                      {b.bookingType && (
+                        <span className="text-xs px-2 py-1 rounded-full font-medium" style={{background: 'var(--purple-50)', color: 'var(--purple-700)'}}>
+                          {TYPE_LABELS[b.bookingType] || b.bookingType}
+                        </span>
+                      )}
+                      {b.packageName && (
+                        <span className="text-xs px-2 py-1 rounded-full font-medium" style={{background: 'var(--purple-50)', color: 'var(--purple-700)'}}>
+                          {PACK_LABELS[b.packageName] || b.packageName}
+                        </span>
+                      )}
+                      {b.hours > 0 && !b.bookingType?.includes('umzug') && (
+                        <span className="text-xs px-2 py-1 rounded-full font-medium" style={{background: '#F0F9FF', color: '#0369A1'}}>
+                          {b.hours} Std.
+                        </span>
+                      )}
+                      {b.frequency && b.frequency !== 'Einmalig' && (
+                        <span className="text-xs px-2 py-1 rounded-full font-medium" style={{background: '#F0FDF4', color: '#15803D'}}>
+                          {b.frequency}
+                        </span>
+                      )}
+                      {b.extras && b.extras.split(',').filter(Boolean).map(id => (
+                        <span key={id} className="text-xs px-2 py-1 rounded-full font-medium" style={{background: '#FEF3C7', color: '#B7791F'}}>
+                          {EXTRAS_LABELS[id] || id}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <p className="font-extrabold" style={{color: b.status === 'cancelled' ? 'var(--muted)' : 'var(--purple-700)'}}>
                     {b.status === 'cancelled' ? '—' : `${b.price} €`}
