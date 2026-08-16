@@ -15,7 +15,8 @@ export default function CleanerAvailabilityPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [userName, setUserName] = useState('');
-const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [bookedDays, setBookedDays] = useState<number[]>([]);
 
   useEffect(() => {
     document.title = "TANDEF – Meine Verfügbarkeit";
@@ -38,6 +39,26 @@ const [photoUrl, setPhotoUrl] = useState<string | null>(null);
     fetch(`/api/cleaner/availability?year=${year}&month=${month}`)
       .then(res => res.json())
       .then(data => setAvailableDays(data.availableDays || []));
+  }, [year, month]);
+
+  // ⭐ Charger les jours avec bookings upcoming
+  useEffect(() => {
+    fetch('/api/cleaner/bookings')
+      .then(r => r.json())
+      .then(data => {
+        if (!Array.isArray(data)) return;
+        const days = data
+          .filter(b => b.status === 'upcoming')
+          .map(b => {
+            const d = new Date(b.date);
+            if (d.getFullYear() === year && d.getMonth() + 1 === month) {
+              return d.getDate();
+            }
+            return null;
+          })
+          .filter(Boolean);
+        setBookedDays(days);
+      });
   }, [year, month]);
 
   function toggleDay(day: number) {
@@ -116,6 +137,9 @@ const [photoUrl, setPhotoUrl] = useState<string | null>(null);
         .cal-day.available{background:var(--purple-50);border-color:#C9B8EC;}
         .cal-day.available .num{color:var(--purple-700);}
         .cal-day.available::after{content:'';width:5px;height:5px;border-radius:9999px;background:var(--purple-600);position:absolute;bottom:6px;}
+        .cal-day.booked{background:#FEF3C7;border-color:#F59E0B;}
+        .cal-day.booked .num{color:#B7791F;font-weight:700;}
+        .cal-day.booked::after{content:'';width:5px;height:5px;border-radius:9999px;background:#F59E0B;position:absolute;bottom:6px;}
         .cal-day.today{border-color:var(--purple-600);border-width:2px;}
         .cal-day .num{font-size:.85rem;font-weight:600;color:var(--ink);}
         .legend-dot{width:10px;height:10px;border-radius:9999px;display:inline-block;}
@@ -183,11 +207,13 @@ const [photoUrl, setPhotoUrl] = useState<string | null>(null);
             {cells.map((day, i) => {
               if (day === null) return <div key={`empty-${i}`} />;
               const available = availableDays.includes(day);
+              const booked = bookedDays.includes(day);
               return (
                 <div
                   key={day}
                   onClick={() => toggleDay(day)}
-                  className={`cal-day ${available ? 'available' : ''} ${isToday(day) ? 'today' : ''}`}
+                  className={`cal-day ${available ? 'available' : ''} ${booked ? 'booked' : ''} ${isToday(day) ? 'today' : ''}`}
+                  title={booked ? 'Buchung vorhanden' : ''}
                 >
                   <span className="num">{day}</span>
                 </div>
@@ -198,6 +224,7 @@ const [photoUrl, setPhotoUrl] = useState<string | null>(null);
           <div className="flex items-center gap-6 mt-6 text-sm" style={{color: 'var(--muted)'}}>
             <span className="flex items-center gap-2"><span className="legend-dot" style={{background: 'var(--purple-600)'}}></span>Verfügbar</span>
             <span className="flex items-center gap-2"><span className="legend-dot" style={{background: '#ECE8F5'}}></span>Nicht verfügbar</span>
+            <span className="flex items-center gap-2"><span className="legend-dot" style={{background: '#F59E0B'}}></span>Buchung</span>
             <span className="ml-auto">Tippe auf einen Tag, um ihn umzuschalten</span>
           </div>
         </div>
