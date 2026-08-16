@@ -14,9 +14,17 @@ export default function CleanerAvailabilityPage() {
   const [availableDays, setAvailableDays] = useState<number[]>([]);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [userName, setUserName] = useState('');
+const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "TANDEF – Meine Verfügbarkeit";
+    fetch('/api/cleaner/dashboard')
+  .then(r => r.json())
+  .then(d => {
+    setUserName(d.name || '');
+    setPhotoUrl(d.photoUrl || null);
+  });
 
     const menuBtn = document.getElementById('user-menu-btn');
     const menu = document.getElementById('user-menu');
@@ -122,12 +130,16 @@ export default function CleanerAvailabilityPage() {
             <span className="rounded-full px-3 py-1 text-xs font-bold" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>Reinigungskraft</span>
             <div className="relative">
               <button id="user-menu-btn" className="flex items-center gap-2 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
-                <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
-                </span>
-                <span className="flex items-center gap-1">Konto
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
-                </span>
+              {photoUrl
+  ? <img src={`/api/cleaner/photo?url=${encodeURIComponent(photoUrl)}`} alt={userName} style={{width:'32px',height:'32px',borderRadius:'9999px',objectFit:'cover',border:'2px solid var(--purple-100)',flexShrink:0}} />
+  : <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{background: 'var(--purple-100)'}}>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="1.8"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
+    </span>
+}
+<span className="flex items-center gap-1">
+  {userName ? userName.split(' ')[0] : 'Konto'}
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6" /></svg>
+</span>
               </button>
               <div id="user-menu" className="dropdown-menu hidden absolute right-0 mt-3 w-64 py-2 z-20">
                 <a href="/cleaner-dashboard">Mein Cleaner-Bereich</a>
