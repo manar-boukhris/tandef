@@ -6,7 +6,28 @@ import { getCustomerSession } from '@/lib/session';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-const PLATFORM_FEE_PERCENT = 0.20; // TANDEF prend 20%
+// ⭐ Cleaner reçoit un tarif fixe/h selon le pack
+const CLEANER_RATES: Record<string, Record<string, number>> = {
+    wohnung: { Basic: 18, Standard: 19, Premium: 20 },
+    firmen:  { Basic: 18, Standard: 19, Premium: 20 },
+    umzug:   { default: 0 }, // 80% du total (20% TANDEF)
+  };
+  
+  const bType    = draft.bookingType || 'wohnung';
+  const pName    = draft.packageName  || 'Basic';
+  const isUmzug  = bType === 'umzug';
+  
+  let platformFee: number;
+  
+  if (isUmzug) {
+    // Umzug: TANDEF prend 20% du Festpreis
+    platformFee = Math.round(amountCents * 0.20);
+  } else {
+    // Wohnung/Firmen: cleaner reçoit taux fixe × heures
+    const cleanerRate   = CLEANER_RATES[bType]?.[pName] || 18;
+    const cleanerAmount = cleanerRate * (isFixed ? 1 : nbHours);
+    platformFee         = Math.max(0, amountCents - Math.round(cleanerAmount * 100));
+  }
 
 const EXTRAS: Record<string, number> = {
   ironing: 2,
@@ -97,7 +118,7 @@ export async function POST(req: Request) {
 
   // Split automatique si le cleaner a un compte Stripe actif
   if (cleanerStripeAccountId && cleanerOnboarded) {
-    intentData.application_fee_amount = Math.round(amountCents * PLATFORM_FEE_PERCENT);
+    intentData.application_fee_amount = platformFee;
     intentData.transfer_data          = { destination: cleanerStripeAccountId };
   }
 

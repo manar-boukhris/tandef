@@ -301,7 +301,7 @@ export type ServiceLanding = {
       titleAccent: 'in Deutschland',
       subtitle: 'Abnahme garantiert. Wir reinigen Ihre Wohnung professionell und gründlich – für eine reibungslose Übergabe an den Vermieter.',
       trustBadges: ['Abnahmegarantie', 'Zufriedenheitsgarantie'],
-      priceFrom: '199 €',
+      priceFrom: '300 €',
       priceUnit: 'Festpreis',
       reviewCount: '4,9/5 (über 1.500 Bewertungen)',
       includes: [
@@ -317,7 +317,7 @@ export type ServiceLanding = {
         {
           name: '1-Zimmer Wohnung',
           desc: 'bis 50 m²',
-          price: '199 €',
+          price: '300 €',
           unit: 'Festpreis',
           features: [
             'Gründliche Endreinigung aller Räume',
@@ -330,7 +330,7 @@ export type ServiceLanding = {
         {
           name: '2–3 Zimmer Wohnung',
           desc: '51 – 80 m²',
-          price: '249 €',
+          price: '500 €',
           unit: 'Festpreis',
           popular: true,
           features: [
@@ -345,7 +345,7 @@ export type ServiceLanding = {
         {
           name: '4+ Zimmer Wohnung',
           desc: 'ab 81 m²',
-          price: '299 €',
+          price: '700 €',
           unit: 'Festpreis',
           features: [
             'Gründliche Endreinigung aller Räume',

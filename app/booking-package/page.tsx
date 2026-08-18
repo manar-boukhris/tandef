@@ -17,9 +17,9 @@ const PACKAGES = {
     { name: 'Premium',  desc: 'Für maximale Flexibilität',       price: 44.90, fixed: false, features: ['Alles aus Standard', 'Individueller Reinigungsplan', 'Kostenlose Umbuchung bis 12 Std.', 'Priorisierter Support'] },
   ],
   umzug: [
-    { name: '1-Zimmer',     desc: 'bis 50 m²',   price: 199, fixed: true, features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
-    { name: '2-3-Zimmer',   desc: '51 – 80 m²',  price: 249, fixed: true, popular: true, features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
-    { name: '4plus-Zimmer', desc: 'ab 81 m²',     price: 299, fixed: true, features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
+    { name: '1-Zimmer',     desc: 'bis 50 m²',   price: 300, fixed: true, features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
+    { name: '2-3-Zimmer',   desc: '51 – 80 m²',  price: 500, fixed: true, popular: true, features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
+    { name: '4plus-Zimmer', desc: 'ab 81 m²',     price: 700, fixed: true, features: ['Gründliche Endreinigung', 'Küche & Bad inklusive', 'Fensterreinigung inklusive'] },
   ],
 };
 
