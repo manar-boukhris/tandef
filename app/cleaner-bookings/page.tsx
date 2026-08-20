@@ -23,6 +23,17 @@ const PACK_LABELS = {
 
 const EXTRAS_LABELS = { ironing: 'Bügeln', product: 'Reinigungsmittel' };
 
+const CLEANER_RATES = {
+  wohnung: { Basic: 18, Standard: 19, Premium: 20 },
+  firmen:  { Basic: 18, Standard: 19, Premium: 20 },
+};
+
+function getCleanerEarnings(b) {
+  if (b.bookingType === 'umzug') return (b.price * 0.80).toFixed(2);
+  const rate = CLEANER_RATES[b.bookingType]?.[b.packageName] || 18;
+  return (rate * b.hours).toFixed(2);
+}
+
 function formatMeta(b) {
   const start = new Date(b.date);
   const end = new Date(start.getTime() + b.hours * 60 * 60 * 1000);
@@ -268,7 +279,7 @@ export default function CleanerBookingsPage() {
                     </div>
                   </div>
                   <p className="font-extrabold" style={{color: b.status === 'cancelled' ? 'var(--muted)' : 'var(--purple-700)'}}>
-                    {b.status === 'cancelled' ? '—' : `${b.price} €`}
+                  {b.status === 'cancelled' ? '—' : `${getCleanerEarnings(b)} €`}
                   </p>
                 </div>
 

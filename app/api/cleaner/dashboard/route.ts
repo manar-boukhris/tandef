@@ -96,9 +96,20 @@ export async function GET() {
   const nextBooking = cleaner.bookings.find(b => b.status === 'upcoming' && new Date(b.date) >= now) || null;
   const completedCount = cleaner.bookings.filter(b => b.status === 'completed').length;
 
+  // ⭐ Cleaner reçoit le prix moins la commission TANDEF
+const CLEANER_RATES: Record<string, Record<string, number>> = {
+    wohnung: { Basic: 18, Standard: 19, Premium: 20 },
+    firmen:  { Basic: 18, Standard: 19, Premium: 20 },
+  };
+  
   const guthaben = cleaner.bookings
     .filter(b => b.status === 'completed')
-    .reduce((sum, b) => sum + b.price, 0);
+    .reduce((sum, b) => {
+      const isUmzug = b.bookingType === 'umzug';
+      if (isUmzug) return sum + b.price * 0.80;
+      const cleanerRate = CLEANER_RATES[b.bookingType]?.[b.packageName] || 18;
+      return sum + cleanerRate * b.hours;
+    }, 0);
 
   const startOfWeek = new Date(now);
   startOfWeek.setHours(0, 0, 0, 0);
