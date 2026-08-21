@@ -2,6 +2,7 @@
 
 
 import { useState, useEffect, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import { ServiceHeroArt } from './ServiceHeroArt';
 import type { ServiceLanding } from '@/lib/serviceLandingData';
 import { Fragment } from "react";
@@ -61,14 +62,28 @@ function StarRow({ count }: { count: number }) {
 }
 
 export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
+  const router = useRouter();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
   const [openPlan, setOpenPlan] = useState<string | null>(null);
+  const [bookingHref, setBookingHref] = useState('/login');
+
   useEffect(() => {
     fetch('/api/site/reviews?limit=3')
       .then(res => res.json())
       .then(data => setReviews(Array.isArray(data) ? data : []));
   }, []);
+
+  useEffect(() => {
+    fetch('/api/customer/account')
+      .then(r => { if (r.ok) setBookingHref('/address'); })
+      .catch(() => {});
+  }, []);
+
+  function handleBook(e: React.MouseEvent) {
+    e.preventDefault();
+    router.push(bookingHref);
+  }
   const comparisonFeatures = [
     {
       title: 'Professionelle Reinigung',
@@ -341,7 +356,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
               Login
             </a>
           </nav>
-          <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full inline-flex items-center gap-2">
+          <a href={bookingHref} onClick={handleBook} className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full inline-flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
             Reinigung buchen
           </a>
@@ -369,7 +384,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
           </div>
 
           <div className="flex flex-wrap gap-3 mb-8">
-            <a href="/address" className="btn-primary text-white font-semibold px-7 py-3.5 rounded-xl inline-flex items-center gap-2">
+            <a href={bookingHref} onClick={handleBook} className="btn-primary text-white font-semibold px-7 py-3.5 rounded-xl inline-flex items-center gap-2">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
               Jetzt buchen
             </a>
@@ -442,7 +457,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
                   </li>
                 ))}
               </ul>
-              <a href="/address" className={`plan-btn w-full text-center font-semibold py-3 rounded-xl inline-block ${plan.popular ? 'filled' : ''}`}>
+              <a href={bookingHref} onClick={handleBook} className={`plan-btn w-full text-center font-semibold py-3 rounded-xl inline-block ${plan.popular ? 'filled' : ''}`}>
                 Auswählen
               </a>
              
@@ -552,7 +567,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
               {data.ctaTitle} <span style={{ color: 'var(--purple-700)' }}>{data.ctaAccent}</span>
             </h2>
             <p className="mb-6" style={{ color: 'var(--muted)' }}>{data.ctaSubtitle}</p>
-            <a href="/address" className="btn-primary text-white font-semibold px-7 py-3.5 rounded-xl inline-flex items-center gap-2">
+            <a href={bookingHref} onClick={handleBook} className="btn-primary text-white font-semibold px-7 py-3.5 rounded-xl inline-flex items-center gap-2">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
               {data.ctaButton}
             </a>
