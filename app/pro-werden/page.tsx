@@ -18,7 +18,7 @@ export default function ProWerdenPage() {
     const availValue = document.getElementById('avail-value');
     const avgIncome = document.getElementById('avg-income');
     const maxIncome = document.getElementById('max-income');
-    const RATE = 18;
+    const RATE = 20;
 
     function updateSlider(){
       const hoursPerWeek = parseInt(slider.value, 10);

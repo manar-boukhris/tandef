@@ -7,6 +7,10 @@ import GoogleTranslateGate from '@/components/GoogleTranslateGate';
 export const metadata: Metadata = {
   title: "TANDEF – Trust. Cleanliness. Quality.",
   description: "TANDEF – Zuverlässige Reinigung, gebucht in wenigen Minuten.",
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export const viewport: Viewport = {
@@ -29,8 +33,6 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <style>{`
-          /* Empêche le widget Google Translate de casser la mise en page mobile
-             ET cache complètement la barre "This page has been translated..." */
           .goog-te-banner-frame,
           .goog-te-banner-frame.skiptranslate,
           iframe.goog-te-banner-frame,

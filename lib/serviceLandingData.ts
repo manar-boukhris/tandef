@@ -36,7 +36,7 @@ export type ServiceLanding = {
       trustBadges: ['Geprüfte Profis', 'Zufriedenheitsgarantie'],
       priceFrom: '24,90 €',
       priceUnit: 'pro Stunde',
-      reviewCount: '4,9/5 (über 2.500 Bewertungen)',
+      reviewCount: '4,9/5 (über 500 Bewertungen)',
       includes: [
         { icon: 'kitchen', title: 'Küche', desc: 'Arbeitsflächen, Spüle, Kochfeld, Mikrowelle außen, Schränke außen reinigen' },
         { icon: 'bath', title: 'Badezimmer', desc: 'Waschbecken, Dusche/Badewanne, Toilette, Spiegel, Fliesen und Oberflächen' },
@@ -129,7 +129,7 @@ export type ServiceLanding = {
       trustBadges: ['Geprüfte Profis', 'Zufriedenheitsgarantie'],
       priceFrom: '34,90 €',
       priceUnit: 'pro Stunde',
-      reviewCount: '4,9/5 (über 1.800 Bewertungen)',
+      reviewCount: '4,9/5 (über 800 Bewertungen)',
       includes: [
         { icon: 'buroo', title: 'Arbeitsplätze', desc: 'Reinigung von Schreibtischen, Tischen und Arbeitsbereichen' },
         { icon: 'bath', title: 'Böden & Flächen', desc: 'Saugen, wischen und Pflege aller Bodenbeläge' },
@@ -302,8 +302,8 @@ export type ServiceLanding = {
       subtitle: 'Abnahme garantiert. Wir reinigen Ihre Wohnung professionell und gründlich – für eine reibungslose Übergabe an den Vermieter.',
       trustBadges: ['Abnahmegarantie', 'Zufriedenheitsgarantie'],
       priceFrom: '300 €',
-      priceUnit: 'Festpreis',
-      reviewCount: '4,9/5 (über 1.500 Bewertungen)',
+      priceUnit: '',
+      reviewCount: '4,9/5 (über 200 Bewertungen)',
       includes: [
         { icon: 'bed', title: 'Alle Räume', desc: 'Gründliche Reinigung aller Wohn- und Schlafräume' },
         { icon: 'kitchen', title: 'Küche', desc: 'Reinigung von Schränken, Schubladen, Arbeitsflächen, Spüle und Geräten (außen)' },
@@ -318,7 +318,7 @@ export type ServiceLanding = {
           name: '1-Zimmer Wohnung',
           desc: 'bis 50 m²',
           price: '300 €',
-          unit: 'Festpreis',
+          unit: '',
           features: [
             'Gründliche Endreinigung aller Räume',
             'Küche & Bad inklusive',
@@ -331,7 +331,7 @@ export type ServiceLanding = {
           name: '2–3 Zimmer Wohnung',
           desc: '51 – 80 m²',
           price: '500 €',
-          unit: 'Festpreis',
+          unit: '',
           popular: true,
           features: [
             'Gründliche Endreinigung aller Räume',
@@ -346,7 +346,7 @@ export type ServiceLanding = {
           name: '4+ Zimmer Wohnung',
           desc: 'ab 81 m²',
           price: '700 €',
-          unit: 'Festpreis',
+          unit: '',
           features: [
             'Gründliche Endreinigung aller Räume',
             'Küche & Bad inklusive',

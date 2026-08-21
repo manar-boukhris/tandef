@@ -445,21 +445,7 @@ export function ServiceLandingPage({ data }: { data: ServiceLanding }) {
               <a href="/address" className={`plan-btn w-full text-center font-semibold py-3 rounded-xl inline-block ${plan.popular ? 'filled' : ''}`}>
                 Auswählen
               </a>
-              
-              <button
-                className="text-sm mt-4 font-semibold flex items-center gap-1"
-                style={{color:'var(--purple-700)'}}
-                onClick={() => setOpenPlan(openPlan === plan.name ? null : plan.name)}
-              >
-                {openPlan === plan.name ? 'Weniger anzeigen' : 'Mehr erfahren'}
-                <svg
-                  width="14" height="14" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" strokeWidth="2"
-                  style={{transition:'.2s',transform: openPlan === plan.name ? 'rotate(180deg)' : 'rotate(0deg)'}}
-                >
-                  <path d="M6 9l6 6 6-6"/>
-                </svg>
-              </button>
+             
               {openPlan === plan.name && (
                 <ul className="mt-4 space-y-2 text-sm border-t pt-4" style={{borderColor:'#ECE8F5'}}>
                   {plan.features.map(f => (

@@ -19,7 +19,7 @@ export default function DatenschutzPage() {
         50667 Köln<br />
         Deutschland<br />
         E-Mail: <a href="mailto:info@tandef.de">info@tandef.de</a><br />
-        Telefon: +49 (0) 221 12345678
+        Telefon: +49 15214440144 
       </p>
 
       <h2>2. Arten der verarbeiteten Daten</h2>
@@ -227,7 +227,7 @@ export default function DatenschutzPage() {
         50667 Köln<br />
         Deutschland<br />
         E-Mail: <a href="mailto:datenschutz@tandef.de">datenschutz@tandef.de</a><br />
-        Telefon: +49 (0) 221 12345678
+        Telefon: +49 15214440144
       </p>
     </LegalLayout>
   );
