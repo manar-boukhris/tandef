@@ -14,12 +14,12 @@ export default function DatenschutzPage() {
 
       <h2>1. Verantwortlicher</h2>
       <p>
-        TANDEF<br />
-        Musterstraße 1<br />
-        50667 Köln<br />
+      Delian"s Möbelwelt UG <br />
+        Keupstrasse 123 <br />
+        51063 Köln<br />
         Deutschland<br />
         E-Mail: <a href="mailto:info@tandef.de">info@tandef.de</a><br />
-        Telefon: +49 15214440144 
+        Telefon: +49 17689185772 
       </p>
 
       <h2>2. Arten der verarbeiteten Daten</h2>
@@ -222,12 +222,12 @@ export default function DatenschutzPage() {
 
       <h2>Kontakt zum Datenschutz</h2>
       <p>
-        TANDEF<br />
-        Musterstraße 1<br />
-        50667 Köln<br />
+      Delian"s Möbelwelt UG <br />
+        Keupstrasse 123 <br />
+        51063 Köln<br />
         Deutschland<br />
-        E-Mail: <a href="mailto:datenschutz@tandef.de">datenschutz@tandef.de</a><br />
-        Telefon: +49 15214440144
+        E-Mail: <a href="mailto:info@tandef.de">info@tandef.de</a><br />
+        Telefon: +49 17689185772
       </p>
     </LegalLayout>
   );

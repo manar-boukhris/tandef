@@ -209,7 +209,7 @@ export function InvoicePDF({
         </View>
 
         <Text style={styles.footer}>
-          TANDEF GmbH · info@tandef.de · 030 555 748 20{'\n'}
+          TANDEF GmbH · info@tandef.de · +49 17689185772{'\n'}
           Diese Rechnung wurde automatisch generiert und ist ohne Unterschrift gültig.
         </Text>
 

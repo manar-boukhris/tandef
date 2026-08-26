@@ -6,11 +6,12 @@ export default function ImpressumPage() {
     <LegalLayout title="Impressum">
       <h2>Angaben gemäß § 5 DDG</h2>
       <p>
-        <strong>TANDEF</strong><br />
+        <strong> Delian"s Möbelwelt UG</strong><br />
         Professionelle Reinigungs- und haushaltsnahe Dienstleistungen<br />
-        Musterstraße 1<br />
-        50667 Köln<br />
-        Deutschland
+        
+        Keupstrasse 123 <br />
+        51063 Köln<br />
+        Deutschland<br />
       </p>
 
       <h2>Vertreten durch</h2>
@@ -21,7 +22,7 @@ export default function ImpressumPage() {
 
       <h2>Kontakt</h2>
       <p>
-        Telefon: +49 (0) 221 12345678<br />
+        Telefon: +49 17689185772<br />
         E-Mail: <a href="mailto:info@tandef.de">info@tandef.de</a><br />
         Website: <a href="https://www.tandef.de">www.tandef.de</a>
       </p>
@@ -48,9 +49,9 @@ export default function ImpressumPage() {
       <p>
         Verantwortlich für journalistisch-redaktionelle Inhalte (soweit vorhanden):<br />
         Max Mustermann<br />
-        Musterstraße 1<br />
-        50667 Köln<br />
-        Deutschland
+        Keupstrasse 123 <br />
+        51063 Köln<br />
+        Deutschland<br />
       </p>
 
       <h2>Verbraucherstreitbeilegung</h2>
@@ -93,7 +94,7 @@ export default function ImpressumPage() {
       <h2>Kontakt</h2>
       <p>
         Bei Fragen zu diesem Impressum oder zu unserem Unternehmen erreichen Sie uns unter:<br />
-        Telefon: +49 (0) 221 12345678<br />
+        Telefon: +49 17689185772<br />
         E-Mail: <a href="mailto:info@tandef.de">info@tandef.de</a>
       </p>
     </LegalLayout>
