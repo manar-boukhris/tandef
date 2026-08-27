@@ -38,7 +38,7 @@ export default function ImpressumPage() {
 
       <h2>Umsatzsteuer-Identifikationsnummer</h2>
       <p>
-        Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />
+        Umsatzsteuer - Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />
         DE450493694
       </p>
       <p style={{fontSize: '.85rem', fontStyle: 'italic'}}>
