@@ -16,7 +16,7 @@ export default function ImpressumPage() {
 
       <h2>Vertreten durch</h2>
       <p>
-        Max Mustermann<br />
+        Yousef Alshwakh<br />
         Geschäftsführer
       </p>
 
@@ -30,7 +30,7 @@ export default function ImpressumPage() {
       <h2>Handelsregister</h2>
       <p>
         Handelsregister: Amtsgericht Köln<br />
-        Registernummer: HRB XXXXX
+        Registernummer: HRB 12944 
       </p>
       <p style={{fontSize: '.85rem', fontStyle: 'italic'}}>
         (Falls die Gesellschaft noch nicht im Handelsregister eingetragen ist, ist dieser Abschnitt bis zur Eintragung zu entfernen.)
@@ -39,7 +39,7 @@ export default function ImpressumPage() {
       <h2>Umsatzsteuer-Identifikationsnummer</h2>
       <p>
         Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />
-        DEXXXXXXXXX
+        DE450493694
       </p>
       <p style={{fontSize: '.85rem', fontStyle: 'italic'}}>
         (Nur angeben, sofern bereits erteilt.)
@@ -48,7 +48,7 @@ export default function ImpressumPage() {
       <h2>Verantwortlich für den Inhalt</h2>
       <p>
         Verantwortlich für journalistisch-redaktionelle Inhalte (soweit vorhanden):<br />
-        Max Mustermann<br />
+        Yousef Alshwakh<br />
         Keupstrasse 123 <br />
         51063 Köln<br />
         Deutschland<br />
