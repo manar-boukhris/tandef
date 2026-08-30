@@ -32,27 +32,16 @@ export default function ImpressumPage() {
         Handelsregister: Amtsgericht Köln<br />
         Registernummer: HRB 12944 
       </p>
-      <p style={{fontSize: '.85rem', fontStyle: 'italic'}}>
-        (Falls die Gesellschaft noch nicht im Handelsregister eingetragen ist, ist dieser Abschnitt bis zur Eintragung zu entfernen.)
-      </p>
+      
 
       <h2>Umsatzsteuer-Identifikationsnummer</h2>
       <p>
         Umsatzsteuer - Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br />
         DE450493694
       </p>
-      <p style={{fontSize: '.85rem', fontStyle: 'italic'}}>
-        (Nur angeben, sofern bereits erteilt.)
-      </p>
+      
 
-      <h2>Verantwortlich für den Inhalt</h2>
-      <p>
-        Verantwortlich für journalistisch-redaktionelle Inhalte (soweit vorhanden):<br />
-        Yousef Alshwakh<br />
-        Keupstrasse 123 <br />
-        51063 Köln<br />
-        Deutschland<br />
-      </p>
+      
 
       <h2>Verbraucherstreitbeilegung</h2>
       <p>
