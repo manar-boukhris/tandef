@@ -269,10 +269,10 @@ export default function KarrierePage() {
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
             <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
             <div className="flex gap-3 mt-5">
-              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/1K3tz8VHXv/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z"/></svg>
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+              <a href="https://www.instagram.com/tandef.de?igsi=MTg5N284cmNvYmtudQ==" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
               </a>
               <a href="https://wa.me/4917689185772" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">

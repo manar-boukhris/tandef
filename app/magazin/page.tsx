@@ -193,7 +193,36 @@ export default function MagazinPage() {
             <img src="/images/magazin-hero-basket.png" alt="Reinigungsutensilien" className="w-full max-w-lg object-contain" />
           </div>
         </div>
+
+
+        
       </section>
+
+
+{/* Mehr kommt bald */}
+<section className="max-w-7xl mx-auto px-6 py-16 grid">
+  <div className="hero-card flex flex-col md:flex-row items-center justify-between gap-6 p-8 md:p-10">
+    <div className="max-w-lg">
+      <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>
+        Demnächst verfügbar
+      </span>
+      <h2 className="text-2xl md:text-3xl font-bold mt-4 mb-3 leading-snug" style={{color: 'var(--ink)'}}>
+        Unser Magazin wächst weiter
+      </h2>
+      <p className="text-sm" style={{color: 'var(--muted)'}}>
+        Wir arbeiten laufend an neuen Artikeln, Ratgebern und Tipps rund um Haushalt &amp; Reinigung.
+        Schau bald wieder vorbei oder melde dich für unseren Newsletter an, um nichts zu verpassen.
+      </p>
+    </div>
+    <div className="flex items-center gap-3 shrink-0">
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 3" />
+      </svg>
+    </div>
+  </div>
+</section>
+
 
       {/* Aktuelle Tipps */}
       <section className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-3 gap-10 items-start">
@@ -201,6 +230,7 @@ export default function MagazinPage() {
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold" style={{color: 'var(--ink)'}}>Aktuelle Tipps für dein Zuhause</h2>
+            <span className="tag" style={{background:'#F3F0F8', color:'#8B84A0'}}>Bald verfügbar</span>
             <a href="#" className="text-sm font-semibold flex items-center gap-1 hover:opacity-70" style={{color: 'var(--purple-700)'}}>
               Alle Artikel ansehen
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -298,6 +328,7 @@ export default function MagazinPage() {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 6l10 7 10-7" /></svg>
             </span>
             <h3 className="font-bold text-lg" style={{color: 'var(--ink)'}}>Newsletter</h3>
+            <span className="tag" style={{background:'#F3F0F8', color:'#8B84A0'}}>Bald verfügbar</span>
           </div>
           <p className="text-sm mb-5" style={{color: 'var(--muted)'}}>Erhalte regelmäßig praktische Tipps, exklusive Angebote und Neuigkeiten.</p>
           <div className="field px-4 py-3 mb-3">
@@ -537,6 +568,9 @@ export default function MagazinPage() {
 
       </section>
 
+
+      
+
       {/* Trust strip */}
       <section className="max-w-7xl mx-auto px-6 pb-14">
         <div className="rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-8 py-8 px-6" style={{background: 'var(--purple-50)'}}>
@@ -570,10 +604,10 @@ export default function MagazinPage() {
             <img src="/images/logo.png" alt="TANDEF" className="h-9 w-auto mb-3" />
             <p style={{color: 'var(--muted)'}}>Zuverlässige Reinigung in Deutschland – für Zuhause und Unternehmen.</p>
             <div className="flex gap-3 mt-5">
-              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
+              <a href="https://www.facebook.com/share/1K3tz8VHXv/" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Facebook">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.24 3.57c-2.4 0-4.05 1.47-4.05 4.16v2.17H7.5v3.1h2.7V21h3.3z"/></svg>
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
+              <a href="https://www.instagram.com/tandef.de?igsi=MTg5N284cmNvYmtudQ==" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="Instagram">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg>
               </a>
               <a href="https://wa.me/4917689185772" target="_blank" rel="noopener noreferrer" className="social-icon" aria-label="WhatsApp">
