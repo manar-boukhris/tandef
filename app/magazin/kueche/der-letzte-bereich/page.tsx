@@ -3,11 +3,11 @@
 
 import { useEffect, useState } from 'react';
 
-export default function MagazinHubPage() {
+export default function Page() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "TANDEF – Magazin";
+    document.title = "TANDEF – Der letzte Bereich der Küche";
     const menuBtn = document.getElementById('about-menu-btn');
     const menu = document.getElementById('about-menu');
     if (menuBtn && menu) {
@@ -168,104 +168,144 @@ export default function MagazinHubPage() {
           )}
         </div>
       </header>
+      {/* Breadcrumb */}
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <nav className="breadcrumb flex items-center gap-2 flex-wrap">
+          <a href="/" className="hover:underline">Startseite</a>
+          <span>&gt;</span>
+          <a href="/magazin" className="hover:underline">Magazin</a>
+          <span>&gt;</span>
+          <a href="/magazin/kueche" className="hover:underline">Küche</a>
+          <span>&gt;</span>
+          <span>Der letzte Bereich der Küche</span>
+        </nav>
+      </section>
+
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pt-10">
-        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[420px]">
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[440px]">
           <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
             <span className="eyebrow">TANDEF MAGAZIN</span>
             <span className="eyebrow-rule" />
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4 mb-5" style={{color: 'var(--ink)'}}>
-              Ein saubereres Zuhause.<br />Ein schönerer Alltag.
+              Der letzte Bereich der Küche
             </h1>
-            <p className="text-base max-w-md" style={{color: 'var(--muted)'}}>
-              Praktische Tipps und Inspirationen rund um Reinigung, Pflege und Wohlbefinden – einfach, verständlich und alltagstauglich.
+            <p className="text-base mb-6 max-w-md" style={{color: 'var(--muted)'}}>
+              Zum Abschluss sorgst du dafür, dass alle Oberflächen, Geräte und Details in deiner Küche sauber sind. So wirkt der gesamte Raum gepflegt, hygienisch und einladend. Mit unserer Schritt-für-Schritt-Anleitung bringst du deine Küche einfach auf Hochglanz.
             </p>
+            <div className="handwrite">Saubere Details.<br />Große Wirkung.</div>
           </div>
           <div className="lg:w-1/2 h-56 sm:h-64 lg:h-auto overflow-hidden">
-            <img src="/images/magazin-hub/hero.jpg" alt="TANDEF Magazin" className="w-full h-full object-cover block article-hero-img" />
+            <img src="/images/magazin-kueche-letzte-bereich.png" alt="Der letzte Bereich der Küche" className="w-full h-full object-cover block article-hero-img" />
           </div>
         </div>
       </section>
 
-      {/* Themen */}
+      {/* Steps */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-2xl font-bold mb-8" style={{color: 'var(--ink)'}}>Unsere Themen</h2>
+        <h2 className="text-2xl font-bold mb-2" style={{color: 'var(--ink)'}}>Schritt für Schritt zum letzten Bereich der Küche</h2>
+        <p className="text-sm mb-8" style={{color: 'var(--muted)'}}>Folge diesen einfachen Schritten, um deine Küche vollständig zu reinigen.</p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <a href="/magazin/wohnen" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-8 9 8" /><path d="M5 10v10h14V10" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/wohnen.jpg" alt="Wohnen" className="w-full h-full object-cover" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+          <div className="step-vcard">
+            <span className="step-num mb-3">01</span>
+            <div className="step-vtile" style={{background: "var(--purple-50)"}}>
+            
+            <img src="/images/magazin-kueche-allgemein.png" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wohnen</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Tipps für ein gepflegtes Zuhause.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/kueche" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10a8 4 0 0016 0M4 10a8 4 0 1116 0M4 10v4a8 4 0 0016 0v-4" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/kueche.jpg" alt="Küche" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Arbeitsfläche freiräumen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Nimm alle Gegenstände von der Arbeitsfläche und schaffe eine freie Fläche, damit du gründlich reinigen kannst.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">02</span>
+            <div className="step-vtile" style={{background: "#EAF2FE"}}>
+             
+             <img src="/images/yed.jpg" className="w-full h-full object-cover" />
+             </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Arbeitsfläche reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Wische die Arbeitsfläche mit einem geeigneten Reinigungsmittel ab. Entferne Fett, Verschmutzungen und Essensreste.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">03</span>
+            <div className="step-vtile" style={{background: "#FDEBF0"}}>
+            
+            <img src="/images/2.png" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Küche</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Sauberkeit mit weniger Aufwand.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/badezimmer" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12a8 8 0 0116 0" /><path d="M12 12v9M8 15v6M16 15v6" /><circle cx="12" cy="4" r="2" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/bad.jpg" alt="Bad" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Herd und Kochfeld reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Reinige das Kochfeld mit einem passenden Reiniger und einem weichen Tuch. Achte darauf, keine Kratzer zu verursachen.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">04</span>
+            <div className="step-vtile" style={{background: "#FDF6E3"}}>
+             
+             <img src="/images/hood.png" className="w-full h-full object-cover" />
+             </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Dunstabzugshaube reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Wische die Außenflächen und reinige die Fettfilter (je nach Modell) gemäß Herstellerangaben.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">05</span>
+            <div className="step-vtile" style={{background: "#EAF2FE"}}>
+            
+            <img src="/images/f3.png" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Bad</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Frische und Hygiene im Alltag.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/waesche-textilien" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4L4 7v3h4v10h8V10h4V7l-5-3a3 3 0 01-6 0z" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/waesche.jpg" alt="Wäsche & Textilien" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Spüle und Armatur reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Entferne Kalk, Fettreste und Verschmutzungen. Poliere die Armatur und wische die Spüle gründlich aus.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">06</span>
+            <div className="step-vtile" style={{background: "#FDF1E3"}}>
+            
+            <img src="/images/f6.png" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wäsche &amp; Textilien</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>So bleiben deine Textilien länger schön.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Fronten und Griffe reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Wische alle Schrankfronten, Griffe und Gerätefronten mit einem geeigneten Reiniger. Entferne Fingerabdrücke und Flecken.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">07</span>
+            <div className="step-vtile" style={{background: "#E7F7EE"}}>
+              <img src="/images/mop.png" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Boden reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Entferne Krümel und Schmutz und wische den Boden mit einem passenden Reinigungsmittel.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">08</span>
+            <div className="step-vtile" style={{background: "#F5F3FF"}}>
+             
+             <img src="/images/magazin-kueche-hero.png" className="w-full h-full object-cover" />
+             </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Alles wieder anordnen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Stelle alle Gegenstände geordnet zurück. So bleibt deine Küche sauber, organisiert und bereit für den nächsten Einsatz.</p>
+          </div>
         </div>
 
-        {/* Nachhaltig leben banner */}
-        <div className="tip-banner flex flex-col md:flex-row items-center gap-6 p-7 md:p-8 overflow-hidden">
-          <div className="flex-1">
-            <span className="tip-icon-circle mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg>
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="tip-banner p-6">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="tip-icon-circle" style={{width: 34, height: 34}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6M10 22h4M12 2a6 6 0 00-3.6 10.8c.5.4.8 1 .8 1.7V15h5.6v-.5c0-.7.3-1.3.8-1.7A6 6 0 0012 2z" /></svg>
+              </span>
+              <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>TANDEF-Tipp</span>
+            </div>
+            <p className="font-bold mb-2" style={{color: 'var(--ink)'}}>Regelmäßige Reinigung lohnt sich.</p>
+            <p className="text-sm" style={{color: 'var(--muted)'}}>Nimm dir am besten einmal pro Woche etwas Zeit für eine gründliche Küchenreinigung – so bleibt deine Küche länger hygienisch und du hast mehr Freude beim Kochen.</p>
+          </div>
+
+        <div className="hinweise-box p-6">
+          <div className="flex items-center gap-2.5 mb-4">
+            <span className="hinweise-icon-circle">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EA580C" strokeWidth="2.5"><circle cx="12" cy="12" r="10" /><path d="M12 8v5M12 16h.01" /></svg>
             </span>
-            <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>NACHHALTIG LEBEN</span>
-            <p className="font-bold text-xl mt-3 mb-2 leading-snug max-w-md" style={{color: 'var(--ink)'}}>Natürlich reinigen – wirksam &amp; umweltfreundlich.</p>
-            <p className="text-sm mb-5 max-w-md" style={{color: 'var(--muted)'}}>Entdecke einfache Tipps für mehr Nachhaltigkeit in deinem Zuhause.</p>
-            <a href="/magazin/nachhaltigkeit" className="bg-white inline-flex items-center gap-2 text-sm font-semibold px-5 py-3 rounded-full" style={{color: 'var(--ink)'}}>
-              Mehr erfahren
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </a>
+            <p className="font-bold" style={{color: 'var(--ink)'}}>Wichtige Hinweise</p>
           </div>
-          <div className="w-full md:w-72 h-40 md:h-48 rounded-2xl overflow-hidden shrink-0" >
-            <img src="/images/magazin-hub/soap-leaves-tight.png" alt="" className="w-full h-full object-cover" />
-          </div>
+          <ul className="space-y-3 text-sm" style={{color: 'var(--muted)'}}>
+            <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Verwende geeignete, schonende Reinigungsmittel.</li>
+            <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Keine aggressiven oder scheuernden Mittel auf empfindlichen Oberflächen (z. B. Kochfeld, Edelstahl) verwenden.</li>
+            <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Alle Oberflächen gut trocknen lassen.</li>
+            <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Für einen frischen Duft eignen sich natürliche Hausmittel wie Essig, Natron oder Zitronen.</li>
+          </ul>
+        </div>
         </div>
       </section>
 

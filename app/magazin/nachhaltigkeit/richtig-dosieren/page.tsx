@@ -3,11 +3,11 @@
 
 import { useEffect, useState } from 'react';
 
-export default function MagazinHubPage() {
+export default function Page() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "TANDEF – Magazin";
+    document.title = "TANDEF – Richtig dosieren & vermeiden";
     const menuBtn = document.getElementById('about-menu-btn');
     const menu = document.getElementById('about-menu');
     if (menuBtn && menu) {
@@ -168,103 +168,125 @@ export default function MagazinHubPage() {
           )}
         </div>
       </header>
+      {/* Breadcrumb */}
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <nav className="breadcrumb flex items-center gap-2 flex-wrap">
+          <a href="/" className="hover:underline">Startseite</a>
+          <span>&gt;</span>
+          <a href="/magazin" className="hover:underline">Magazin</a>
+          <span>&gt;</span>
+          <a href="/magazin/nachhaltigkeit" className="hover:underline">Nachhaltigkeit</a>
+          <span>&gt;</span>
+          <span>Richtig dosieren & vermeiden</span>
+        </nav>
+      </section>
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pt-10">
-        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[420px]">
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[440px]">
           <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
             <span className="eyebrow">TANDEF MAGAZIN</span>
             <span className="eyebrow-rule" />
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4 mb-5" style={{color: 'var(--ink)'}}>
-              Ein saubereres Zuhause.<br />Ein schönerer Alltag.
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4 mb-3" style={{color: 'var(--ink)'}}>
+              Richtig dosieren<br />&amp; vermeiden.
             </h1>
-            <p className="text-base max-w-md" style={{color: 'var(--muted)'}}>
-              Praktische Tipps und Inspirationen rund um Reinigung, Pflege und Wohlbefinden – einfach, verständlich und alltagstauglich.
+            <p className="font-semibold mb-3" style={{color: 'var(--ink)'}}>Weniger ist mehr.</p>
+            <p className="text-base mb-6 max-w-md" style={{color: 'var(--muted)'}}>
+              Die richtige Dosierung von Reinigungsmitteln sorgt für ein sauberes Zuhause, schont die Umwelt und spart Kosten. Oft wird mehr verwendet als nötig – das belastet nicht nur die Natur, sondern kann auch zu Rückständen und Schäden führen. Hier erfährst du, wie du Reinigungsmittel richtig dosierst und unnötigen Verbrauch vermeidest.
             </p>
+            
+            <a href="/magazin/nachhaltigkeit" className="btn-primary inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-full" style={{width:'fit-content'}}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
+              Zurück zur Übersicht
+            </a>
           </div>
-          <div className="lg:w-1/2 h-56 sm:h-64 lg:h-auto overflow-hidden">
-            <img src="/images/magazin-hub/hero.jpg" alt="TANDEF Magazin" className="w-full h-full object-cover block article-hero-img" />
+          <div className="lg:w-1/2 h-56 sm:h-64 lg:h-auto overflow-hidden relative">
+            <img src="/images/nachhaltigkeit/dosieren/header.png" alt="Richtig dosieren & vermeiden" className="w-full h-full object-cover block article-hero-img" />
+            <span className="handwrite hidden lg:block absolute top-6 right-8 text-white text-right" style={{textShadow: '0 2px 10px rgba(0,0,0,.25)'}}>
+              Bewusst reinigen.<br />Nachhaltig leben.
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Themen */}
+      {/* Warum */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-2xl font-bold mb-8" style={{color: 'var(--ink)'}}>Unsere Themen</h2>
+        <h2 className="text-2xl font-bold mb-2" style={{color: 'var(--ink)'}}>Warum die richtige Dosierung wichtig ist.</h2>
+        <p className="text-sm mb-8 max-w-3xl" style={{color: 'var(--muted)'}}>Zu viel Reinigungsmittel bringt nicht automatisch bessere Ergebnisse. Im Gegenteil: Es kann Rückstände hinterlassen, Materialien angreifen und die Umwelt unnötig belasten. Die richtige Dosierung sorgt für eine effektive Reinigung, spart Ressourcen und ist besser für dich, dein Zuhause und die Natur.</p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <a href="/magazin/wohnen" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-8 9 8" /><path d="M5 10v10h14V10" /></svg>
-            </span>
+          <div className="content-card p-5">
+            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg></span>
             <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/wohnen.jpg" alt="Wohnen" className="w-full h-full object-cover" />
+              <img src="/images/nachhaltigkeit/dosieren/01-umwelt.png" alt="Umwelt schonen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wohnen</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Tipps für ein gepflegtes Zuhause.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/kueche" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10a8 4 0 0016 0M4 10a8 4 0 1116 0M4 10v4a8 4 0 0016 0v-4" /></svg>
-            </span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Umwelt schonen</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Weniger Chemikalien gelangen in das Abwasser und belasten Gewässer und Böden weniger.</p>
+          </div>
+          <div className="content-card p-5">
+            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="8" rx="7" ry="3"/><path d="M5 8v6c0 1.7 3.1 3 7 3s7-1.3 7-3V8"/><path d="M5 14v3c0 1.7 3.1 3 7 3s7-1.3 7-3v-3"/></svg></span>
             <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/kueche.jpg" alt="Küche" className="w-full h-full object-cover" />
+              <img src="/images/nachhaltigkeit/dosieren/02-kosten.png" alt="Kosten sparen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Küche</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Sauberkeit mit weniger Aufwand.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/badezimmer" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12a8 8 0 0116 0" /><path d="M12 12v9M8 15v6M16 15v6" /><circle cx="12" cy="4" r="2" /></svg>
-            </span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Kosten sparen</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Mit der richtigen Dosierung hält dein Reinigungsmittel länger und du brauchst weniger Nachschub.</p>
+          </div>
+          <div className="content-card p-5">
+            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
             <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/bad.jpg" alt="Bad" className="w-full h-full object-cover" />
+              <img src="/images/nachhaltigkeit/dosieren/03-materialien.png" alt="Materialien schützen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Bad</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Frische und Hygiene im Alltag.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/waesche-textilien" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4L4 7v3h4v10h8V10h4V7l-5-3a3 3 0 01-6 0z" /></svg>
-            </span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Materialien schützen</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Die passenden Mengen verhindern Rückstände und schonen Oberflächen, Geräte und Textilien.</p>
+          </div>
+          <div className="content-card p-5">
+            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></span>
             <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/waesche.jpg" alt="Wäsche & Textilien" className="w-full h-full object-cover" />
+              <img src="/images/nachhaltigkeit/dosieren/04-handeln.png" alt="Nachhaltig handeln" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wäsche &amp; Textilien</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>So bleiben deine Textilien länger schön.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Nachhaltig handeln</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Weniger Verbrauch bedeutet weniger Verpackungsmüll und einen kleineren ökologischen Fußabdruck.</p>
+          </div>
         </div>
 
-        {/* Nachhaltig leben banner */}
-        <div className="tip-banner flex flex-col md:flex-row items-center gap-6 p-7 md:p-8 overflow-hidden">
-          <div className="flex-1">
-            <span className="tip-icon-circle mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg>
-            </span>
-            <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>NACHHALTIG LEBEN</span>
-            <p className="font-bold text-xl mt-3 mb-2 leading-snug max-w-md" style={{color: 'var(--ink)'}}>Natürlich reinigen – wirksam &amp; umweltfreundlich.</p>
-            <p className="text-sm mb-5 max-w-md" style={{color: 'var(--muted)'}}>Entdecke einfache Tipps für mehr Nachhaltigkeit in deinem Zuhause.</p>
-            <a href="/magazin/nachhaltigkeit" className="bg-white inline-flex items-center gap-2 text-sm font-semibold px-5 py-3 rounded-full" style={{color: 'var(--ink)'}}>
-              Mehr erfahren
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </a>
+        <h2 className="text-2xl font-bold mb-2 mt-14" style={{color: 'var(--ink)'}}>So dosierst du richtig.</h2>
+        <p className="text-sm mb-8 max-w-3xl" style={{color: 'var(--muted)'}}>Mit diesen einfachen Tipps findest du immer die passende Menge:</p>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <div className="content-card p-5 text-center flex flex-col items-center">
+            <span className="tip-icon-circle mb-3" style={{width:48,height:48}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 2h6M10 2v6l-6 10a2 2 0 002 3h12a2 2 0 002-3l-6-10V2"/></svg></span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Herstellerangaben beachten</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Halte dich an die Dosierempfehlungen auf der Verpackung. Diese sind auf die Wirksamkeit optimal abgestimmt.</p>
           </div>
-          <div className="w-full md:w-72 h-40 md:h-48 rounded-2xl overflow-hidden shrink-0" >
-            <img src="/images/magazin-hub/soap-leaves-tight.png" alt="" className="w-full h-full object-cover" />
+          <div className="content-card p-5 text-center flex flex-col items-center">
+            <span className="tip-icon-circle mb-3" style={{width:48,height:48}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3h9l3 15a2 2 0 01-2 2H5a2 2 0 01-2-2L6 3z"/><path d="M7 9h7M8 14h5"/></svg></span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Dosierhilfen nutzen</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Verwende den mitgelieferten Messbecher oder eine Dosierkappe, um die richtige Menge genau abzumessen.</p>
+          </div>
+          <div className="content-card p-5 text-center flex flex-col items-center">
+            <span className="tip-icon-circle mb-3" style={{width:48,height:48}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2s7 7.5 7 12a7 7 0 01-14 0c0-4.5 7-12 7-12z"/></svg></span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Auf die Verschmutzung anpassen</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Bei leichten Verschmutzungen reicht oft eine kleinere Menge. Mehr ist nur bei starken Verschmutzungen notwendig.</p>
+          </div>
+          <div className="content-card p-5 text-center flex flex-col items-center">
+            <span className="tip-icon-circle mb-3" style={{width:48,height:48}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></svg></span>
+            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Unnötige Zusätze vermeiden</p>
+            <p className="text-xs" style={{color:'var(--muted)'}}>Verzichte auf überflüssige Duft- und Farbstoffe. Sie sind nicht nötig und können die Umwelt zusätzlich belasten.</p>
+          </div>
+        </div>
+
+        <div className="tip-banner flex items-center justify-between gap-6 p-7 md:p-8 overflow-hidden">
+          <div className="flex items-start gap-4">
+            <span className="tip-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg>
+            </span>
+            <div>
+              <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>TANDEF-Tipp</span>
+              <p className="font-bold text-lg mt-2 max-w-md leading-snug" style={{color: 'var(--ink)'}}>Die richtige Menge macht den Unterschied.</p>
+              <p className="text-sm mt-1 max-w-md" style={{color: 'var(--muted)'}}>So reinigst du effektiv, sparst Ressourcen und trägst aktiv zu einer sauberen Umwelt bei – heute und in Zukunft.</p>
+            </div>
+          </div>
+          <div className="hidden md:block w-24 h-28 rounded-2xl overflow-hidden shrink-0 -my-2">
+            <img src="/images/plante-tight.png" alt="" className="w-full h-full object-cover block pointer-events-none select-none" />
           </div>
         </div>
       </section>

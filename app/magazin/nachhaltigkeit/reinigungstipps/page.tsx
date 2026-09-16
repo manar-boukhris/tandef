@@ -3,11 +3,11 @@
 
 import { useEffect, useState } from 'react';
 
-export default function MagazinHubPage() {
+export default function Page() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "TANDEF – Magazin";
+    document.title = "TANDEF – Nachhaltige Reinigungstipps";
     const menuBtn = document.getElementById('about-menu-btn');
     const menu = document.getElementById('about-menu');
     if (menuBtn && menu) {
@@ -168,103 +168,131 @@ export default function MagazinHubPage() {
           )}
         </div>
       </header>
+      {/* Breadcrumb */}
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <nav className="breadcrumb flex items-center gap-2 flex-wrap">
+          <a href="/" className="hover:underline">Startseite</a>
+          <span>&gt;</span>
+          <a href="/magazin" className="hover:underline">Magazin</a>
+          <span>&gt;</span>
+          <a href="/magazin/nachhaltigkeit" className="hover:underline">Nachhaltigkeit</a>
+          <span>&gt;</span>
+          <span>Nachhaltige Reinigungstipps</span>
+        </nav>
+      </section>
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pt-10">
-        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[420px]">
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[440px]">
           <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
             <span className="eyebrow">TANDEF MAGAZIN</span>
             <span className="eyebrow-rule" />
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4 mb-5" style={{color: 'var(--ink)'}}>
-              Ein saubereres Zuhause.<br />Ein schönerer Alltag.
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4 mb-3" style={{color: 'var(--ink)'}}>
+              Nachhaltige<br />Reinigungstipps.
             </h1>
-            <p className="text-base max-w-md" style={{color: 'var(--muted)'}}>
-              Praktische Tipps und Inspirationen rund um Reinigung, Pflege und Wohlbefinden – einfach, verständlich und alltagstauglich.
+            <p className="font-semibold mb-3" style={{color: 'var(--ink)'}}>Einfach im Alltag. Große Wirkung.</p>
+            <p className="text-base mb-6 max-w-md" style={{color: 'var(--muted)'}}>
+              Mit ein paar einfachen Gewohnheiten kannst du dein Zuhause nachhaltig reinigen, Ressourcen sparen und gleichzeitig für ein sauberes und gesundes Umfeld sorgen. Hier findest du praktische Tipps, die sich leicht in den Alltag integrieren lassen.
             </p>
+            
+            <a href="/magazin/nachhaltigkeit" className="btn-primary inline-flex items-center gap-2 text-white font-semibold px-6 py-3 rounded-full" style={{width:'fit-content'}}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
+              Zurück zur Übersicht
+            </a>
           </div>
-          <div className="lg:w-1/2 h-56 sm:h-64 lg:h-auto overflow-hidden">
-            <img src="/images/magazin-hub/hero.jpg" alt="TANDEF Magazin" className="w-full h-full object-cover block article-hero-img" />
+          <div className="lg:w-1/2 h-56 sm:h-64 lg:h-auto overflow-hidden relative">
+            <img src="/images/nachhaltigkeit/tipps/header.png" alt="Nachhaltige Reinigungstipps" className="w-full h-full object-cover block article-hero-img" />
+            <span className="handwrite hidden lg:block absolute top-6 right-8 text-white text-right" style={{textShadow: '0 2px 10px rgba(0,0,0,.25)'}}>
+              Kleine Tipps.<br />Große Wirkung.
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Themen */}
+      {/* Steps */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-2xl font-bold mb-8" style={{color: 'var(--ink)'}}>Unsere Themen</h2>
+        <h2 className="text-2xl font-bold mb-2" style={{color: 'var(--ink)'}}>8 praktische Tipps für eine nachhaltige Reinigung</h2>
+        <p className="text-sm mb-8" style={{color: 'var(--muted)'}}>Mit diesen einfachen Tipps kannst du im Alltag viel bewirken – für ein sauberes Zuhause und eine bessere Umwelt.</p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <a href="/magazin/wohnen" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-8 9 8" /><path d="M5 10v10h14V10" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/wohnen.jpg" alt="Wohnen" className="w-full h-full object-cover" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+          <div className="step-vcard">
+            <span className="step-num mb-3">01</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/01.png" alt="Weniger Reinigungsmittel verwenden" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wohnen</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Tipps für ein gepflegtes Zuhause.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/kueche" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10a8 4 0 0016 0M4 10a8 4 0 1116 0M4 10v4a8 4 0 0016 0v-4" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/kueche.jpg" alt="Küche" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Weniger Reinigungsmittel verwenden</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Oft reicht eine kleine Menge, um effektiv zu reinigen. So sparst du Ressourcen und vermeidest unnötige Chemie im Abwasser.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">02</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/02.png" alt="Mehrweg statt Einweg" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Küche</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Sauberkeit mit weniger Aufwand.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/badezimmer" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12a8 8 0 0116 0" /><path d="M12 12v9M8 15v6M16 15v6" /><circle cx="12" cy="4" r="2" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/bad.jpg" alt="Bad" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Mehrweg statt Einweg</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Setze auf wiederverwendbare Produkte und nachfüllbare Verpackungen, um Plastikmüll zu reduzieren.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">03</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/03.png" alt="Wasser bewusst einsetzen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Bad</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Frische und Hygiene im Alltag.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/waesche-textilien" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4L4 7v3h4v10h8V10h4V7l-5-3a3 3 0 01-6 0z" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/waesche.jpg" alt="Wäsche & Textilien" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Wasser bewusst einsetzen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Nutze nur so viel Wasser wie nötig und vermeide, dass Wasser unnötig läuft. Auch beim Putzen zählt jeder Tropfen.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">04</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/04.png" alt="Mikrofasertücher richtig nutzen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wäsche &amp; Textilien</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>So bleiben deine Textilien länger schön.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Mikrofasertücher richtig nutzen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Mikrofasertücher reinigen effektiv – oft sogar nur mit Wasser. Sie sind langlebig und können mehrmals gewaschen werden.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">05</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/05.png" alt="Reinigungsmittel richtig dosieren" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Reinigungsmittel richtig dosieren</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Halte dich an die Dosierangaben. Mehr hilft nicht mehr, sondern belastet die Umwelt und kann Rückstände hinterlassen.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">06</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/06.png" alt="Verpackungen vermeiden" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Verpackungen vermeiden</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Bevorzuge Produkte in recycelbaren oder nachfüllbaren Verpackungen. Das reduziert Abfall und schont die Umwelt.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">07</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/07.png" alt="Geräte effizient nutzen" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Geräte effizient nutzen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Nutze energieeffiziente Geräte und starte sie nur bei voller Beladung. Das spart Strom und verlängert die Lebensdauer.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">08</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/nachhaltigkeit/tipps/08.png" alt="Natürlich reinigen" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Natürlich reinigen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Hausmittel wie Essig, Zitronensaft oder Natron sind effektive und umweltfreundliche Alternativen für viele Reinigungsaufgaben.</p>
+          </div>
         </div>
 
-        {/* Nachhaltig leben banner */}
-        <div className="tip-banner flex flex-col md:flex-row items-center gap-6 p-7 md:p-8 overflow-hidden">
-          <div className="flex-1">
-            <span className="tip-icon-circle mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg>
+        <div className="tip-banner flex items-center justify-between gap-6 p-7 md:p-8 overflow-hidden">
+          <div className="flex items-start gap-4">
+            <span className="tip-icon-circle">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg>
             </span>
-            <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>NACHHALTIG LEBEN</span>
-            <p className="font-bold text-xl mt-3 mb-2 leading-snug max-w-md" style={{color: 'var(--ink)'}}>Natürlich reinigen – wirksam &amp; umweltfreundlich.</p>
-            <p className="text-sm mb-5 max-w-md" style={{color: 'var(--muted)'}}>Entdecke einfache Tipps für mehr Nachhaltigkeit in deinem Zuhause.</p>
-            <a href="/magazin/nachhaltigkeit" className="bg-white inline-flex items-center gap-2 text-sm font-semibold px-5 py-3 rounded-full" style={{color: 'var(--ink)'}}>
-              Mehr erfahren
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </a>
+            <div>
+              <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>TANDEF-Tipp</span>
+              <p className="font-bold text-lg mt-2 max-w-md leading-snug" style={{color: 'var(--ink)'}}>Nachhaltigkeit beginnt mit kleinen Schritten.</p>
+              <p className="text-sm mt-1 max-w-md" style={{color: 'var(--muted)'}}>Jede bewusste Entscheidung im Alltag macht einen Unterschied. Für ein sauberes Zuhause, eine gesunde Umwelt und eine bessere Zukunft.</p>
+            </div>
           </div>
-          <div className="w-full md:w-72 h-40 md:h-48 rounded-2xl overflow-hidden shrink-0" >
-            <img src="/images/magazin-hub/soap-leaves-tight.png" alt="" className="w-full h-full object-cover" />
+          <div className="hidden md:block w-24 h-28 rounded-2xl overflow-hidden shrink-0 -my-2">
+            <img src="/images/plante-tight.png" alt="" className="w-full h-full object-cover block pointer-events-none select-none" />
           </div>
         </div>
       </section>

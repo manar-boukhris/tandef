@@ -3,11 +3,11 @@
 
 import { useEffect, useState } from 'react';
 
-export default function MagazinHubPage() {
+export default function Page() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "TANDEF – Magazin";
+    document.title = "TANDEF – Wäsche und Textilien reinigen";
     const menuBtn = document.getElementById('about-menu-btn');
     const menu = document.getElementById('about-menu');
     if (menuBtn && menu) {
@@ -168,103 +168,137 @@ export default function MagazinHubPage() {
           )}
         </div>
       </header>
+      {/* Breadcrumb */}
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <nav className="breadcrumb flex items-center gap-2 flex-wrap">
+          <a href="/" className="hover:underline">Startseite</a>
+          <span>&gt;</span>
+          <a href="/magazin" className="hover:underline">Magazin</a>
+          <span>&gt;</span>
+          <a href="/magazin/waesche-textilien" className="hover:underline">Wäsche und Textilien</a>
+          <span>&gt;</span>
+          <span>Richtig reinigen</span>
+        </nav>
+      </section>
+
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 pt-10">
-        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[420px]">
+      <section className="max-w-7xl mx-auto px-6 pt-6">
+        <div className="article-hero flex flex-col lg:flex-row lg:min-h-[440px]">
           <div className="lg:w-1/2 p-8 md:p-12 flex flex-col justify-center">
             <span className="eyebrow">TANDEF MAGAZIN</span>
             <span className="eyebrow-rule" />
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight mt-4 mb-5" style={{color: 'var(--ink)'}}>
-              Ein saubereres Zuhause.<br />Ein schönerer Alltag.
+              Wäsche und Textilien reinigen
             </h1>
-            <p className="text-base max-w-md" style={{color: 'var(--muted)'}}>
-              Praktische Tipps und Inspirationen rund um Reinigung, Pflege und Wohlbefinden – einfach, verständlich und alltagstauglich.
+            <p className="text-base mb-6 max-w-md" style={{color: 'var(--muted)'}}>
+              Saubere Textilien sorgen für ein frisches Zuhause, fühlen sich angenehm an und halten länger. Mit der richtigen Pflege bleiben deine Kleidung, Handtücher und Heimtextilien hygienisch sauber und sehen wie neu aus. Hier findest du eine einfache Schritt-für-Schritt-Anleitung und hilfreiche Tipps.
             </p>
+            <div className="handwrite">Frische Textilien<br />für ein gutes Gefühl.</div>
           </div>
           <div className="lg:w-1/2 h-56 sm:h-64 lg:h-auto overflow-hidden">
-            <img src="/images/magazin-hub/hero.jpg" alt="TANDEF Magazin" className="w-full h-full object-cover block article-hero-img" />
+            <img src="/images/waesche/header.png" alt="Wäsche und Textilien reinigen" className="w-full h-full object-cover block article-hero-img" />
           </div>
         </div>
       </section>
 
-      {/* Themen */}
+      {/* Steps */}
       <section className="max-w-7xl mx-auto px-6 py-16">
-        <h2 className="text-2xl font-bold mb-8" style={{color: 'var(--ink)'}}>Unsere Themen</h2>
+        <h2 className="text-2xl font-bold mb-2" style={{color: 'var(--ink)'}}>Schritt für Schritt zu sauberen Wäsche und Textilien</h2>
+        <p className="text-sm mb-8" style={{color: 'var(--muted)'}}>Folge diesen einfachen Schritten, um deine Wäsche und Textilien richtig zu reinigen und zu pflegen.</p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <a href="/magazin/wohnen" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-8 9 8" /><path d="M5 10v10h14V10" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/wohnen.jpg" alt="Wohnen" className="w-full h-full object-cover" />
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+          <div className="step-vcard">
+            <span className="step-num mb-3">01</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/01-waesche-sortieren.png" alt="Wäsche sortieren" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wohnen</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Tipps für ein gepflegtes Zuhause.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/kueche" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10a8 4 0 0016 0M4 10a8 4 0 1116 0M4 10v4a8 4 0 0016 0v-4" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/kueche.jpg" alt="Küche" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Wäsche sortieren</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Trenne die Wäsche nach Farben (hell, dunkel, bunt) und Textilarten. Überprüfe die Pflegeetiketten, um Schäden zu vermeiden.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">02</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/02-waschmittel-dosieren.png" alt="Waschmittel richtig dosieren" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Küche</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Sauberkeit mit weniger Aufwand.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/badezimmer" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12a8 8 0 0116 0" /><path d="M12 12v9M8 15v6M16 15v6" /><circle cx="12" cy="4" r="2" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/bad.jpg" alt="Bad" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Waschmittel richtig dosieren</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Verwende ein geeignetes Waschmittel und beachte die Dosierempfehlung. Zu viel Waschmittel kann Rückstände in der Kleidung hinterlassen.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">03</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/03-programm-waehlen.png" alt="Passendes Programm wählen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Bad</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>Frische und Hygiene im Alltag.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
-
-          <a href="/magazin/waesche-textilien" className="content-card p-5">
-            <span className="tip-icon-circle" style={{width:40,height:40,marginBottom:'0.75rem'}}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4L4 7v3h4v10h8V10h4V7l-5-3a3 3 0 01-6 0z" /></svg>
-            </span>
-            <div className="rounded-xl overflow-hidden mb-3" style={{height:130}}>
-              <img src="/images/magazin-hub/waesche.jpg" alt="Wäsche & Textilien" className="w-full h-full object-cover" />
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Passendes Programm wählen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Wähle das richtige Waschprogramm und die passende Temperatur je nach Textilart und Verschmutzungsgrad.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">04</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/04-waesche-trocknen.png" alt="Wäsche richtig trocknen" className="w-full h-full object-cover" />
             </div>
-            <p className="font-bold text-sm mb-1.5" style={{color:'var(--ink)'}}>Wäsche &amp; Textilien</p>
-            <p className="text-xs mb-3" style={{color:'var(--muted)'}}>So bleiben deine Textilien länger schön.</p>
-            <span className="category-arrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </span>
-          </a>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Wäsche richtig trocknen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Lasse die Wäsche an der frischen Luft oder im Trockner trocknen. Achte darauf, die Textilien nicht zu überhitzen, um ihre Qualität zu erhalten.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">05</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/05-buegeln.png" alt="Bei Bedarf bügeln" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Bei Bedarf bügeln</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Bügle Kleidung und Textilien nach Bedarf auf der empfohlenen Temperatur. Das sorgt für ein gepflegtes Aussehen und entfernt Bakterien.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">06</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/06-aufbewahren.png" alt="Richtig aufbewahren" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Richtig aufbewahren</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Bewahre saubere und trockene Textilien an einem trockenen, sauberen Ort auf. Verwende Schubladen oder Körbe, um Ordnung zu halten.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">07</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/07-textilien-pflegen.png" alt="Textilien pflegen" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Textilien pflegen</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Beachte die Pflegehinweise auf dem Etikett und verwende bei Bedarf spezielle Pflegeprodukte, um die Lebensdauer deiner Textilien zu verlängern.</p>
+          </div>
+          <div className="step-vcard">
+            <span className="step-num mb-3">08</span>
+            <div className="step-vtile" style={{overflow: "hidden"}}>
+              <img src="/images/waesche/08-bettwaesche-wechseln.png" alt="Bettwäsche regelmäßig wechseln" className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-sm mb-1.5" style={{color: "var(--ink)"}}>Bettwäsche regelmäßig wechseln</p>
+            <p className="text-xs" style={{color: "var(--muted)"}}>Wechsle Bettwäsche, Handtücher und andere Textilien regelmäßig, um ein hygienisches und frisches Zuhause zu erhalten.</p>
+          </div>
         </div>
 
-        {/* Nachhaltig leben banner */}
-        <div className="tip-banner flex flex-col md:flex-row items-center gap-6 p-7 md:p-8 overflow-hidden">
-          <div className="flex-1">
-            <span className="tip-icon-circle mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 3.5 18.5 2c1 6 2.5 12-2 16-2.5 2.5-7 2.5-9.5 0" /></svg>
-            </span>
-            <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>NACHHALTIG LEBEN</span>
-            <p className="font-bold text-xl mt-3 mb-2 leading-snug max-w-md" style={{color: 'var(--ink)'}}>Natürlich reinigen – wirksam &amp; umweltfreundlich.</p>
-            <p className="text-sm mb-5 max-w-md" style={{color: 'var(--muted)'}}>Entdecke einfache Tipps für mehr Nachhaltigkeit in deinem Zuhause.</p>
-            <a href="/magazin/nachhaltigkeit" className="bg-white inline-flex items-center gap-2 text-sm font-semibold px-5 py-3 rounded-full" style={{color: 'var(--ink)'}}>
-              Mehr erfahren
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6" /></svg>
-            </a>
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="tip-banner p-6">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="tip-icon-circle" style={{width: 34, height: 34}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6M10 22h4M12 2a6 6 0 00-3.6 10.8c.5.4.8 1 .8 1.7V15h5.6v-.5c0-.7.3-1.3.8-1.7A6 6 0 0012 2z" /></svg>
+              </span>
+              <span className="tag" style={{background: 'var(--purple-100)', color: 'var(--purple-700)'}}>TANDEF-Tipp</span>
+            </div>
+            <p className="font-bold mb-2" style={{color: 'var(--ink)'}}>Regelmäßiges Waschen lohnt sich.</p>
+            <p className="text-sm" style={{color: 'var(--muted)'}}>Frische und saubere Textilien sorgen nicht nur für ein angenehmes Gefühl, sondern auch für mehr Hygiene und eine längere Lebensdauer deiner Kleidung und Heimtextilien.</p>
           </div>
-          <div className="w-full md:w-72 h-40 md:h-48 rounded-2xl overflow-hidden shrink-0" >
-            <img src="/images/magazin-hub/soap-leaves-tight.png" alt="" className="w-full h-full object-cover" />
+
+          <div className="hinweise-box p-6">
+            <div className="flex items-center gap-2.5 mb-4">
+              <span className="hinweise-icon-circle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EA580C" strokeWidth="2.5"><circle cx="12" cy="12" r="10" /><path d="M12 8v5M12 16h.01" /></svg>
+              </span>
+              <p className="font-bold" style={{color: 'var(--ink)'}}>Wichtige Hinweise</p>
+            </div>
+            <ul className="space-y-3 text-sm" style={{color: 'var(--muted)'}}>
+              <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Beachte immer die Pflegehinweise auf dem Etikett.</li>
+              <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Verwende für empfindliche Textilien ein schonendes Programm.</li>
+              <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Überlade die Waschmaschine nicht.</li>
+              <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Lüfte Textilien regelmäßig, auch wenn sie nicht gewaschen werden.</li>
+              <li className="flex items-start gap-2.5"><span className="hinweise-check mt-0.5"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><path d="M20 6L9 17l-5-5" /></svg></span>Nutze umweltfreundliche Waschmittel, wenn möglich.</li>
+            </ul>
           </div>
         </div>
       </section>
