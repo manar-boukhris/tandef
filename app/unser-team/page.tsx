@@ -24,7 +24,11 @@ const LEADERSHIP = [
 
 export default function UnserTeamPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  function handleBookingClick(e) {
+    e.preventDefault();
+    const isLoggedIn = !!localStorage.getItem('authToken'); 
+    window.location.href = isLoggedIn ? '/address' : '/login';
+  }
   useEffect(() => {
     document.title = "TANDEF – Unser Team";
 
@@ -93,7 +97,7 @@ export default function UnserTeamPage() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <a href="/login" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick} className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
             <button
               className="md:hidden flex items-center justify-center w-10 h-10"
               onClick={() => setMobileMenuOpen(v => !v)}
@@ -117,7 +121,7 @@ export default function UnserTeamPage() {
             <a href="/karriere" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Karriere</a>
             <a href="/kontakt" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Kontakt</a>
             <a href="/login" className="py-3">Login</a>
-            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick}  className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
           </nav>
         )}
       </header>
@@ -203,7 +207,7 @@ export default function UnserTeamPage() {
             <h2 className="text-2xl font-extrabold mb-2">Werden Sie Teil der <span style={{color: 'var(--purple-700)'}}>TANDEF</span> Familie</h2>
             <p className="mb-5" style={{color: 'var(--muted)'}}>Gemeinsam machen wir Köln jeden Tag ein Stück sauberer.</p>
             <div className="flex flex-wrap gap-3">
-              <a href="/address" className="btn-primary text-white font-semibold px-6 py-3 rounded-lg">Jetzt Reinigung buchen</a>
+              <a href="/address" onClick={handleBookingClick}  className="btn-primary text-white font-semibold px-6 py-3 rounded-lg">Jetzt Reinigung buchen</a>
               <a href="/karriere" className="btn-outline font-semibold px-6 py-3 rounded-lg">Karriere bei TANDEF</a>
             </div>
           </div>

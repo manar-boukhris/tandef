@@ -25,7 +25,11 @@ function HeroImg({ src, height, position = 'center 30%' }) {
 export default function UeberUnsPage() {
   const [stats, setStats] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  function handleBookingClick(e) {
+    e.preventDefault();
+    const isLoggedIn = !!localStorage.getItem('authToken'); 
+    window.location.href = isLoggedIn ? '/address' : '/login';
+  }
   useEffect(() => {
     document.title = "TANDEF – Über uns";
     fetch('/api/site/stats').then(r => r.json()).then(setStats);
@@ -100,7 +104,7 @@ export default function UeberUnsPage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <a href="/address" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick}  className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
             <button
               className="md:hidden flex items-center justify-center w-10 h-10"
               onClick={() => setMobileMenuOpen(v => !v)}
@@ -124,7 +128,7 @@ export default function UeberUnsPage() {
             <a href="/karriere" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Karriere</a>
             <a href="/kontakt" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Kontakt</a>
             <a href="/login" className="py-3">Login</a>
-            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick} className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
           </nav>
         )}
       </header>
@@ -144,7 +148,7 @@ export default function UeberUnsPage() {
           Unsere Mission ist es, hochwertige Reinigungsdienstleistungen für Privat- und Geschäftskunden so einfach zugänglich zu machen wie eine Online-Bestellung. Mit geprüften Partnern, transparenten Abläufen und höchsten Qualitätsstandards sorgen wir für erstklassige Ergebnisse – jedes Mal.
           </p>
           <div className="flex flex-wrap gap-3 mb-10">
-            <a href="/address" className="btn-primary text-white font-semibold px-6 py-3 rounded-lg">Jetzt Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick}  className="btn-primary text-white font-semibold px-6 py-3 rounded-lg">Jetzt Reinigung buchen</a>
             <a href="#geschichte" className="btn-outline font-semibold px-6 py-3 rounded-lg">Mehr über uns</a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -254,7 +258,7 @@ export default function UeberUnsPage() {
             <p className="text-sm font-bold mb-2" style={{color: 'var(--purple-700)'}}>BEREIT FÜR EIN SAUBERES ZUHAUSE?</p>
             <h2 className="text-2xl font-extrabold mb-2" style={{color: 'var(--ink)'}}>Erleben Sie den <span style={{color: 'var(--purple-700)'}}>TANDEF</span> Unterschied.</h2>
             <p className="mb-5" style={{color: 'var(--muted)'}}>Buchen Sie jetzt Ihre Reinigung in Köln – schnell, einfach und zuverlässig.</p>
-            <a href="/address" className="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-block">Jetzt Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick}  className="btn-primary text-white font-semibold px-6 py-3 rounded-lg inline-block">Jetzt Reinigung buchen</a>
           </div>
           <img src="/images/cleaning-supplies.png" className="w-56 h-40 object-contain shrink-0" />
         </div>

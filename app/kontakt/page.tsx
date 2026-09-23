@@ -23,7 +23,11 @@ export default function KontaktPage() {
   const [error, setError] = useState('');
   const [openFaq, setOpenFaq] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  function handleBookingClick(e) {
+    e.preventDefault();
+    const isLoggedIn = !!localStorage.getItem('authToken'); 
+    window.location.href = isLoggedIn ? '/address' : '/login';
+  }
   useEffect(() => {
     document.title = "TANDEF – Kontakt";
 
@@ -130,7 +134,7 @@ export default function KontaktPage() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <a href="/address" className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick} className="hidden md:inline-flex btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-full items-center">Reinigung buchen</a>
             <button
               className="md:hidden flex items-center justify-center w-10 h-10"
               onClick={() => setMobileMenuOpen(v => !v)}
@@ -154,7 +158,7 @@ export default function KontaktPage() {
             <a href="/karriere" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Karriere</a>
             <a href="/kontakt" className="py-3 pl-4 text-sm" style={{color: 'var(--muted)'}}>Kontakt</a>
             <a href="/login" className="py-3">Login</a>
-            <a href="/address" className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
+            <a href="/address" onClick={handleBookingClick} className="btn-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center mt-2">Reinigung buchen</a>
           </nav>
         )}
       </header>
